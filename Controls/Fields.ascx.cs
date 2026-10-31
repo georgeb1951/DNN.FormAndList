@@ -19,18 +19,9 @@ namespace BCC.Modules.BCCForms.Controls
 {
     public partial class Fields : System.Web.UI.UserControl
     {
-        private readonly INavigationManager navigationManager;
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private INavigationManager navigationManager => ModuleServices.Get<INavigationManager>();
 
-        public Fields()
-        {
-            // In DNN 10 we should be able to use constructor injection here instead of this reflection hack.
-            var globalsType = typeof(Globals);
-            var dependencyProviderProperty = globalsType.GetProperty("DependencyProvider",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var dependencyProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-
-            this.navigationManager = dependencyProvider.GetRequiredService<INavigationManager>();
-        }
         public ModuleInstanceContext ModuleContext { get; set; }
         public Func<string, string> LocalizeString { get; set; }
 

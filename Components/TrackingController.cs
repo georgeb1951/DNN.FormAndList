@@ -82,7 +82,7 @@ namespace BCC.Modules.BCCForms.Components
             }
             else
             {
-                script = Globals.GetPortalSettings().HomeDirectory + script;
+                script = ModuleServices.PortalSettings.HomeDirectory + script;
             }
             subject =
                 ((new TokenReplace()).ReplaceEnvironmentTokens(subject, data.Tables[DataSetTableName.Data].Rows[0]));
@@ -135,7 +135,7 @@ namespace BCC.Modules.BCCForms.Components
                 {
                     if (from == string.Empty)
                     {
-                        from = Globals.GetPortalSettings().Email;
+                        from = ModuleServices.PortalSettings.Email;
                     }
 
                     var xslArgs = new XsltArgumentList();
@@ -152,7 +152,8 @@ namespace BCC.Modules.BCCForms.Components
 
                     var noAttachments = new List<MailAttachment>();
                     Mail.SendMail(from, mailTo, cc, bcc, replyto, MailPriority.Normal, subject, MailFormat.Html,
-                                  Encoding.UTF8, body, noAttachments, "", "", "", "", Host.EnableSMTPSSL);
+                                  Encoding.UTF8, body, noAttachments, "", "", "", "",
+                                  ModuleServices.Get<DotNetNuke.Abstractions.Application.IMailSettings>().GetSecureConnectionEnabled(ModuleServices.PortalSettings.PortalId));
                 }
             }
         }

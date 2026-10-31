@@ -142,7 +142,7 @@ namespace BCC.Modules.BCCForms
 
         void DeleteMe()
         {
-            var m = new ModuleController();
+            var m = ModuleController.Instance;
             m.DeleteTabModule(ModuleContext.TabId, ModuleContext.ModuleId, false);
             m.DeleteModule(ModuleContext.ModuleId);
             Response.Redirect(this.navigationManager.NavigateURL(ModuleContext.TabId), true);
@@ -157,7 +157,9 @@ namespace BCC.Modules.BCCForms
                 (TemplateController.Templates[HttpUtility.HtmlDecode((GridView1.SelectedRow.Cells[1].Text))].
                     ExportContent));
 
-            var lists = new ListController();
+            var lists = new ListController(
+                this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Logging.IEventLogger>(),
+                this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Application.IHostSettings>());
 
             var xmlnsManager = new XmlNamespaceManager(doc.NameTable);
             xmlnsManager.AddNamespace("ask", "DotNetNuke/ModuleTemplate");

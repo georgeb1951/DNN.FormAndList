@@ -130,6 +130,7 @@
     <Compile Include="Components\GlobalConstants.cs" />
     <Compile Include="Components\GravatarPropertyAccess.cs" />
     <Compile Include="Components\ModuleSecurity.cs" />
+    <Compile Include="Components\ModuleServices.cs" />
     <Compile Include="Components\ReCaptcha.cs" />
     <Compile Include="Components\ReCaptchaReply.cs" />
     <Compile Include="Components\Settings.cs" />

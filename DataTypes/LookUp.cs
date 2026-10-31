@@ -75,7 +75,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                         if (strFileId != string.Empty)
                         {
                             PropertySource["file"] = new DownloadPropertyAccess(strFileId,
-                                                                                Globals.GetPortalSettings().PortalId,
+                                                                                ModuleServices.PortalSettings.PortalId,
                                                                                 _moduleId);
                         }
                         break;

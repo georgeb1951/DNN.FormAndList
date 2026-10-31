@@ -79,7 +79,7 @@ namespace BCC.Modules.BCCForms
                     txtInitialDate.Attributes.Add("readonly", "readonly");
                     txtFinalDate.Attributes.Add("readonly", "readonly");
 
-                    var moduleController = new ModuleController();
+                    var moduleController = ModuleController.Instance;
                     var objModule = moduleController.GetModule(_moduleId, TabId, false);
                     if (objModule != null)
                     {
@@ -143,7 +143,7 @@ namespace BCC.Modules.BCCForms
         {
             var strMessage = "";
 
-            var moduleController = new ModuleController();
+            var moduleController = ModuleController.Instance;
             var moduleInfo = moduleController.GetModule(moduleId, TabId, false);
             var extension = Path.GetExtension(fileName);
             if (extension != null && (extension.ToUpper() == ".CSV" && moduleInfo != null))

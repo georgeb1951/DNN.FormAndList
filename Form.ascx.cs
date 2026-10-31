@@ -179,13 +179,12 @@ namespace BCC.Modules.BCCForms
                 _labelcontrols.Add(l, editcontrol);
                 return d;
             }
-            var label = new PropertyLabelControl
-            {
-                ID = string.Format("{0}_label", XmlConvert.EncodeName(title)),
-                Caption = title,
-                HelpText = help,
-                EditControl = editcontrol,
-            };
+            // built through DI so DNN 10's PropertyLabelControl gets its services (parameterless ctor is deprecated)
+            var label = ActivatorUtilities.CreateInstance<PropertyLabelControl>(this.DependencyProvider);
+            label.ID = string.Format("{0}_label", XmlConvert.EncodeName(title));
+            label.Caption = title;
+            label.HelpText = help;
+            label.EditControl = editcontrol;
             _propertylabelcontrols.Add(label, editcontrol);
             return label;
         }

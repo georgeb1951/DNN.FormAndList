@@ -36,19 +36,11 @@ namespace BCC.Modules.BCCForms
     /// -----------------------------------------------------------------------------
     public partial class Configuration : ModuleUserControlBase, IActionable, IPostBackEventHandler
     {
-        private readonly INavigationManager navigationManager;
-        private readonly IPortalAliasService portalAliasService;
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private INavigationManager navigationManager => ModuleServices.Get<INavigationManager>();
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private IPortalAliasService portalAliasService => ModuleServices.Get<IPortalAliasService>();
 
-        public Configuration()
-        {
-            // In DNN 10 we should be able to use constructor injection here instead of this reflection hack.
-            var globalsType = typeof(Globals);
-            var dependencyProviderProperty = globalsType.GetProperty("DependencyProvider", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var serviceProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-
-            this.navigationManager = serviceProvider.GetRequiredService<INavigationManager>();
-            this.portalAliasService = serviceProvider.GetRequiredService<IPortalAliasService>();
-        }
 
         // ReSharper disable InconsistentNaming
         protected LabelControl lblNormalizeFlag;
@@ -67,16 +59,16 @@ namespace BCC.Modules.BCCForms
         // ReSharper restore InconsistentNaming
 
 
-        ModuleController _objModules;
+        IModuleController _objModules;
         const string StrAuto = "[AUTO]";
         protected int RowCount;
         UserDefinedTableController _udtController;
 
         #region Private Properties
 
-        public ModuleController ModulesController
+        public IModuleController ModulesController
         {
-            get { return _objModules ?? (_objModules = new ModuleController()); }
+            get { return _objModules ?? (_objModules = ModuleController.Instance); }
         }
 
         UserDefinedTableController UdtController
@@ -475,7 +467,11 @@ namespace BCC.Modules.BCCForms
             Fields.LocalizeString = LocalizeString;
             Fields.LocalResourceFile = LocalResourceFile;
             Fields.ModuleContext = ModuleContext;
-            DotNetNuke.Framework.JavaScriptLibraries.JavaScript.RequestRegistration(DotNetNuke.Framework.JavaScriptLibraries.CommonJs.DnnPlugins);
+            DotNetNuke.Framework.JavaScriptLibraries.JavaScript.RequestRegistration(
+                ModuleServices.Get<DotNetNuke.Abstractions.Application.IApplicationStatusInfo>(),
+                ModuleServices.Get<DotNetNuke.Abstractions.Logging.IEventLogger>(),
+                ModuleContext.PortalSettings,
+                DotNetNuke.Framework.JavaScriptLibraries.CommonJs.DnnPlugins);
             ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
         }
 

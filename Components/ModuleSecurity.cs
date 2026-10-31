@@ -1,4 +1,5 @@
 using System;
+using DotNetNuke.Abstractions.Application;
 using System.Collections;
 using System.Data;
 using DotNetNuke.Common;
@@ -28,7 +29,7 @@ namespace BCC.Modules.BCCForms.Components
 
         //public ModuleSecurity(int moduleId, int tabId, Hashtable settings)
         //{
-        //    var moduleController = new ModuleController();
+        //    var moduleController = ModuleController.Instance;
         //    var s = settings ?? moduleController.GetModuleSettings(moduleId);
         //    Settings = new Settings(s);
         //    return this.ModuleSecurity(moduleId, tabId, Settings);
@@ -36,8 +37,8 @@ namespace BCC.Modules.BCCForms.Components
 
         public ModuleSecurity(int moduleId, int tabId, Components.Settings settings)
         {
-            var moduleController = new ModuleController();
-            var moduleInfo = moduleController.GetModule(moduleId, tabId);
+            var moduleController = ModuleController.Instance;
+            var moduleInfo = moduleController.GetModule(moduleId, tabId, false);
             Settings = settings ?? new Settings(moduleInfo.ModuleSettings);
             if (moduleInfo == null) return;
             var mp = moduleInfo.ModulePermissions;
@@ -112,7 +113,7 @@ namespace BCC.Modules.BCCForms.Components
 
         public static bool IsAdministrator()
         {
-            var administratorRoleName = Globals.GetPortalSettings().AdministratorRoleName;
+            var administratorRoleName = ModuleServices.PortalSettings.AdministratorRoleName;
             return PortalSecurity.IsInRole(administratorRoleName);
         }
 
@@ -122,13 +123,13 @@ namespace BCC.Modules.BCCForms.Components
             roles += string.Format("|{0}", Globals.glbRoleAllUsersName);
             if (IsAdministrator())
             {
-                roles += string.Format("|{0}", Globals.GetPortalSettings().AdministratorRoleName);
+                roles += string.Format("|{0}", ModuleServices.PortalSettings.AdministratorRoleName);
             }
             return string.Format("{0}|", roles);
         }
 
 
-        public static string BestUserName(string userName, int portalId)
+        public static string BestUserName(string userName, int portalId, IHostSettings hostSettings = null)
         {
             var cacheKey = string.Format("UDT_BestUserNameFor{0}", userName);
 
@@ -140,14 +141,14 @@ namespace BCC.Modules.BCCForms.Components
                 bestUserName = ui == null ? userName.AsString("Unknown Account") : ui.DisplayName;
 
                 // cache data
-                var intCacheTimeout = Convert.ToInt32(20*Convert.ToInt32(Host.PerformanceSetting));
+                var intCacheTimeout = Convert.ToInt32(20*Convert.ToInt32((hostSettings ?? ModuleServices.HostSettings).PerformanceSetting));
                 DataCache.SetCache(cacheKey, bestUserName, TimeSpan.FromMinutes(intCacheTimeout));
             }
 
             return bestUserName;
         }
 
-        public static int UserId(string username, int portalId)
+        public static int UserId(string username, int portalId, IHostSettings hostSettings = null)
         {
             var strCacheKey = string.Format("UDT_UserIDFor{0}", username);
 
@@ -159,7 +160,7 @@ namespace BCC.Modules.BCCForms.Components
                 id = ui == null ? 0 : Convert.ToInt32(ui.UserID);
 
                 // cache data
-                var intCacheTimeout = Convert.ToInt32(20*Convert.ToInt32(Host.PerformanceSetting));
+                var intCacheTimeout = Convert.ToInt32(20*Convert.ToInt32((hostSettings ?? ModuleServices.HostSettings).PerformanceSetting));
                 DataCache.SetCache(strCacheKey, id, TimeSpan.FromMinutes(intCacheTimeout));
             }
             return id;

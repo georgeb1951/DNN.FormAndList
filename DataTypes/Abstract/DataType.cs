@@ -85,7 +85,7 @@ namespace BCC.Modules.BCCForms
                             }
                             try
                             {
-                                var type = (DataType)(Reflection.CreateObject(systemTypeName, systemTypeName));
+                                var type = (DataType)ModuleServices.CreateByTypeName(systemTypeName, false);
                                 _colDataTypes.Add(type.Name, type);
                             }
                             catch (Exception)
@@ -98,7 +98,7 @@ namespace BCC.Modules.BCCForms
                                 systemTypeName = systemTypeName.Replace(
                                     "BCC.Modules.BCCForms.DataTypes.",
                                     "BCC.Modules.BCCForms.");
-                                var type = (DataType) (Reflection.CreateObject(systemTypeName, systemTypeName));
+                                var type = (DataType)ModuleServices.CreateByTypeName(systemTypeName, false);
                                 _colDataTypes.Add(type.Name, type);
                             }
                       
@@ -217,7 +217,7 @@ namespace BCC.Modules.BCCForms
             get
             {
                 var typeName = ("BCC.Modules.BCCForms.DataTypes.Edit" + Name);
-                return ((EditControl) (Reflection.CreateObject(typeName, typeName)));
+                return (EditControl)ModuleServices.CreateByTypeName(typeName, true);
             }
         }
 

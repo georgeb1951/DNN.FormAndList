@@ -125,7 +125,6 @@ namespace BCC.Modules.BCCForms.DataTypes
            
             if (fields.Count > 0)
             {
-                var portalSecurity = new PortalSecurity();
                 var portalId = Null.NullInteger; 
                 if (HttpContext.Current != null)
                 {

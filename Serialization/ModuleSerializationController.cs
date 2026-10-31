@@ -12,7 +12,10 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using BCC.Modules.BCCForms.Components;
 using BCC.Modules.BCCForms.Interfaces;
+using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Abstractions.Security.Permissions;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.EventQueue;
@@ -29,8 +32,7 @@ namespace BCC.Modules.BCCForms.Serialization
             {
                 try
                 {
-                    var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
-                                                                     module.DesktopModule.BusinessControllerClass);
+                    var businessController = ModuleServices.CreateByTypeName(module.DesktopModule.BusinessControllerClass, true);
 
                     var content = string.Empty;
                     if (businessController is IPortable2)
@@ -95,8 +97,7 @@ namespace BCC.Modules.BCCForms.Serialization
             {
                 try
                 {
-                    var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
-                                                                     module.DesktopModule.BusinessControllerClass);
+                    var businessController = ModuleServices.CreateByTypeName(module.DesktopModule.BusinessControllerClass, true);
                     if (businessController is IPortable2)
                     {
                         handleModuleSettings =
@@ -246,8 +247,8 @@ namespace BCC.Modules.BCCForms.Serialization
 
         static void DeserializeModulePermissions(XmlNodeList nodeModulePermissions, int portalId, ModuleInfo module)
         {
-            var objRoleController = new RoleController();
-            var objPermissionController = new PermissionController();
+            var objRoleController = RoleController.Instance;
+            var permissionDefinitions = ModuleServices.Get<IPermissionDefinitionService>();
 
             foreach (XmlNode node in nodeModulePermissions)
             {
@@ -276,13 +277,10 @@ namespace BCC.Modules.BCCForms.Serialization
                 if (roleId != int.MinValue)
                 {
                     var permissionId = Convert.ToInt32(- 1);
-                    var arrPermissions = objPermissionController.GetPermissionByCodeAndKey(permissionCode, permissionKey);
-
-                    int i;
-                    for (i = 0; i <= arrPermissions.Count - 1; i++)
+                    // (as before, the last matching definition wins)
+                    foreach (var permission in permissionDefinitions.GetDefinitionsByCodeAndKey(permissionCode, permissionKey))
                     {
-                        var permission = (PermissionInfo) (arrPermissions[i]);
-                        permissionId = permission.PermissionID;
+                        permissionId = permission.PermissionId;
                     }
 
                     // if role was found add, otherwise ignore
@@ -291,10 +289,10 @@ namespace BCC.Modules.BCCForms.Serialization
                         var modulePermission = new ModulePermissionInfo
                                                    {
                                                        ModuleID = module.ModuleID,
-                                                       PermissionID = permissionId,
-                                                       RoleID = roleId,
                                                        AllowAccess = allowAccess
                                                    };
+                        ((IPermissionDefinitionInfo)modulePermission).PermissionId = permissionId;
+                        ((IPermissionInfo)modulePermission).RoleId = roleId;
                         module.ModulePermissions.Add(modulePermission);
                     }
                 }
@@ -304,8 +302,8 @@ namespace BCC.Modules.BCCForms.Serialization
 
         static void DeserializeModuleSettings(XmlNodeList nodeModuleSettings, int moduleId)
         {
-            var objModules = new ModuleController();
-            var applySettings = Convert.ToBoolean(objModules.GetModule(moduleId).ModuleSettings.Count == 0);
+            var objModules = ModuleController.Instance;
+            var applySettings = Convert.ToBoolean(objModules.GetModule(moduleId, Null.NullInteger, true).ModuleSettings.Count == 0);
 
             foreach (XmlElement nodeSetting in nodeModuleSettings)
             {
@@ -320,8 +318,8 @@ namespace BCC.Modules.BCCForms.Serialization
 
         static void DeserializeTabModuleSettings(XmlNodeList nodeTabModuleSettings, int moduleId, int tabId)
         {
-            var objModules = new ModuleController();
-            var module = objModules.GetModule(moduleId, tabId);
+            var objModules = ModuleController.Instance;
+            var module = objModules.GetModule(moduleId, tabId, false);
             var tabModuleId = module.TabModuleID;
 
             var applySettings = Convert.ToBoolean(module.TabModuleSettings.Count == 0);
@@ -339,7 +337,7 @@ namespace BCC.Modules.BCCForms.Serialization
 
         static bool FindModule(XmlNode nodeModule, int tabId, PortalTemplateModuleAction mergeTabs)
         {
-            var modules = new ModuleController();
+            var modules = ModuleController.Instance;
             var tabModules = modules.GetTabModules(tabId);
 
             var moduleFound = false;
@@ -357,7 +355,7 @@ namespace BCC.Modules.BCCForms.Serialization
 
         static void GetModuleContent(XmlNode nodeModule, int moduleId, int tabId, int portalId, bool isInstance)
         {
-            var moduleController = new ModuleController();
+            var moduleController = ModuleController.Instance;
             var module = moduleController.GetModule(moduleId, tabId, true);
             var contentNode = nodeModule.SelectSingleNode("content[@type]");
             var strVersion = contentNode.Attributes["version"].Value;
@@ -371,7 +369,7 @@ namespace BCC.Modules.BCCForms.Serialization
 
             if (module.DesktopModule.BusinessControllerClass != "" && strcontent != "")
             {
-                var portalController = new PortalController();
+                var portalController = PortalController.Instance;
                 var portal = portalController.GetPortal(portalId);
 
                 //Determine if the Module is copmpletely installed
@@ -390,8 +388,7 @@ namespace BCC.Modules.BCCForms.Serialization
                     {
                         try
                         {
-                            var objObject = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
-                                                                    module.DesktopModule.BusinessControllerClass);
+                            var objObject = ModuleServices.CreateByTypeName(module.DesktopModule.BusinessControllerClass, true);
                             if (objObject is IPortable2)
                             {
                                 ((IPortable2) objObject).ImportModule(moduleId, tabId, strcontent, strVersion,
@@ -427,7 +424,7 @@ namespace BCC.Modules.BCCForms.Serialization
             //Get the DesktopModule defined by the <definition> element
             var objDesktopModule =
                 DesktopModuleController.GetDesktopModuleByModuleName(
-                    XmlUtils.GetNodeValue(nodeModule, "definition", ""), Null.NullInteger);
+                    ModuleServices.HostSettings, XmlUtils.GetNodeValue(nodeModule, "definition", ""), Null.NullInteger);
             if (objDesktopModule != null)
             {
                 //Get the moduleDefinition from the <moduledefinition> element
@@ -466,7 +463,7 @@ namespace BCC.Modules.BCCForms.Serialization
         public static void DeserializeModule(XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId,
                                              PortalTemplateModuleAction mergeTabs, Hashtable hModules)
         {
-            var moduleController = new ModuleController();
+            var moduleController = ModuleController.Instance;
             var objModuleDefinition = GetModuleDefinition(nodeModule);
 
             // will be instance or module
@@ -599,7 +596,7 @@ namespace BCC.Modules.BCCForms.Serialization
 
             var objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(objModule.ModuleDefID);
             newnode.InnerText =
-                DesktopModuleController.GetDesktopModule(objModuleDef.DesktopModuleID, objModule.PortalID).ModuleName;
+                DesktopModuleController.GetDesktopModule(ModuleServices.HostSettings, objModuleDef.DesktopModuleID, objModule.PortalID).ModuleName;
             nodeModule.AppendChild(newnode);
 
             //Add Module Definition Info

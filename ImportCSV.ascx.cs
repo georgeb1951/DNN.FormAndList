@@ -83,7 +83,7 @@ namespace BCC.Modules.BCCForms
             cboFiles.Items.Clear();
             if (cboFolders.SelectedIndex != 0)
             {
-                var objModules = new ModuleController();
+                var objModules = ModuleController.Instance;
                 var objModule = objModules.GetModule(_moduleId, TabId, false);
 
                 if (objModule != null)
@@ -117,7 +117,7 @@ namespace BCC.Modules.BCCForms
             {
                 if (cboFiles.SelectedItem != null)
                 {
-                    var objModules = new ModuleController();
+                    var objModules = ModuleController.Instance;
                     var objModule = objModules.GetModule(_moduleId, TabId, false);
                     if (objModule != null)
                     {
@@ -153,7 +153,7 @@ namespace BCC.Modules.BCCForms
         {
             var strMessage = "";
 
-            var mc = new ModuleController();
+            var mc = ModuleController.Instance;
             var moduleInfo = mc.GetModule(moduleId, TabId, false);
 
             if (Path.GetExtension(fileName).ToUpper() == ".CSV" && moduleInfo != null)

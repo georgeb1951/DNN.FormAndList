@@ -29,20 +29,11 @@ namespace BCC.Modules.BCCForms
     /// -----------------------------------------------------------------------------
     public abstract class  EditControl : Control
     {
-        private readonly INavigationManager navigationManager;
-        private readonly IPortalAliasService portalAliasService;
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private INavigationManager navigationManager => ModuleServices.Get<INavigationManager>();
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private IPortalAliasService portalAliasService => ModuleServices.Get<IPortalAliasService>();
 
-        protected EditControl()
-        {
-            // In DNN 10 we should be able to use constructor injection here instead of this reflection hack.
-            var globalsType = typeof(Globals);
-            var dependencyProviderProperty = globalsType.GetProperty("DependencyProvider",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var serviceProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-
-            this.navigationManager = serviceProvider.GetRequiredService<INavigationManager>();
-            this.portalAliasService = serviceProvider.GetRequiredService<IPortalAliasService>();
-        }
 
         protected INavigationManager NavigationManager => navigationManager;
 
@@ -264,7 +255,13 @@ namespace BCC.Modules.BCCForms
             //1) encode helperstring + input (Enforces decoding inside inputfilter!)
             input = HttpUtility.HtmlEncode(string.Concat("<>", input));
             //2) apply filter
-            input = new PortalSecurity().InputFilter(input, PortalSecurity.FilterFlag.NoScripting);
+            // NoScripting strips script (script tags, on* handlers, javascript: URLs) but keeps other HTML,
+            // which rich-text fields rely on. DNN deprecated it in favour of WebUtility.HtmlEncode, but that
+            // encodes ALL markup and would break those fields. Keep it until BCC Forms has a real HTML
+            // sanitizer (tracked for a later phase); the flag is only removed in DNN 11.
+#pragma warning disable 618 // CS0618: obsolete member (see comment above)
+            input = PortalSecurity.Instance.InputFilter(input, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore 618
             //3) return decoded String minus helperstring
 // ReSharper disable PossibleNullReferenceException
             return HttpUtility.HtmlDecode(input).Substring(2);

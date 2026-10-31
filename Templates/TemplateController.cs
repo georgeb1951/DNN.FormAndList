@@ -22,7 +22,7 @@ namespace BCC.Modules.BCCForms.Templates
     {
         static string CacheKey
         {
-            get { return string.Format("UDT_Tempaltes{0}", Globals.GetPortalSettings().PortalId); }
+            get { return string.Format("UDT_Tempaltes{0}", ModuleServices.PortalSettings.PortalId); }
         }
 
         static readonly object TemplateLock = new object();
@@ -40,7 +40,7 @@ namespace BCC.Modules.BCCForms.Templates
                         templates = new Dictionary<string, TemplateInfo>();
                         var folderNames = new[]
                                               {
-                                                  Globals.GetPortalSettings().HomeDirectoryMapPath +
+                                                  ModuleServices.PortalSettings.HomeDirectoryMapPath +
                                                   Definition.TemplateFolderName,
                                                   Globals.HostMapPath + Definition.TemplateFolderName
                                               };
@@ -115,7 +115,7 @@ namespace BCC.Modules.BCCForms.Templates
                                         bool forceOverwrite, int maxNumberOfRecords)
         {
             var doc = new XmlDocument();
-            var moduleInfo = new ModuleController().GetModule(context.Configuration.ModuleID, context.Configuration.TabID);
+            var moduleInfo = ModuleController.Instance.GetModule(context.Configuration.ModuleID, context.Configuration.TabID, false);
             var node = ModuleSerializationController.SerializeModule(doc, moduleInfo, true, maxNumberOfRecords);
             // add PaneName as element "name"
             var paneNode = doc.CreateElement("name");

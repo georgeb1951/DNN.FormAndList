@@ -33,18 +33,11 @@ namespace BCC.Modules.BCCForms.DataTypes
     public class EditURL : EditControl
 // ReSharper restore InconsistentNaming
     {
-        private readonly IApplicationStatusInfo applicationStatusInfo;
-        private readonly INavigationManager navigationManager;
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private IApplicationStatusInfo applicationStatusInfo => ModuleServices.Get<IApplicationStatusInfo>();
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private INavigationManager navigationManager => ModuleServices.Get<INavigationManager>();
 
-        public EditURL()
-        {
-            var globalsTypes = typeof(Globals);
-            var dependencyProviderProperty = globalsTypes.GetProperty("DependencyProvider", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var serviceProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-
-            this.applicationStatusInfo = serviceProvider.GetRequiredService<IApplicationStatusInfo>();
-            this.navigationManager = serviceProvider.GetRequiredService<INavigationManager>();
-        }
 
         protected UrlControl CtlUrl;
         protected ListControl CtlValueBox;
@@ -141,8 +134,8 @@ namespace BCC.Modules.BCCForms.DataTypes
                 string returnValue;
                 if (IsNotAListOfValues)
                 {
-                    var mc = new ModuleController();
-                    var settings = mc.GetModule(ModuleId).ModuleSettings;
+                    var mc = ModuleController.Instance;
+                    var settings = mc.GetModule(ModuleId, Null.NullInteger, true).ModuleSettings;
 
                     var urlController = new UrlController();
                     var trackDownloads = GetFieldSetting("TrackDownloads").AsBoolean();
@@ -194,20 +187,11 @@ namespace BCC.Modules.BCCForms.DataTypes
     public class DataTypeURL : DataType
 // ReSharper restore InconsistentNaming
     {
-        private readonly IApplicationStatusInfo applicationStatusInfo;
-        private readonly INavigationManager navigationManager;
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private IApplicationStatusInfo applicationStatusInfo => ModuleServices.Get<IApplicationStatusInfo>();
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private INavigationManager navigationManager => ModuleServices.Get<INavigationManager>();
 
-        public DataTypeURL()
-        {
-            // In DNN 10 we should be able to use constructor injection here instead of this reflection hack.
-            var globalsTypes = typeof(Globals);
-            var dependencyProviderProperty = globalsTypes.GetProperty("DependencyProvider", System.Reflection.BindingFlags.Static
-                | System.Reflection.BindingFlags.NonPublic);
-            var serviceProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-            
-            this.applicationStatusInfo = serviceProvider.GetRequiredService<IApplicationStatusInfo>();
-            this.navigationManager = serviceProvider.GetRequiredService<INavigationManager>();
-        }
 
         public override string Name
         {
@@ -253,7 +237,7 @@ namespace BCC.Modules.BCCForms.DataTypes
 
                 var portalSettings = PortalController.Instance.GetCurrentSettings();
                 
-                var tabCtrl = new TabController();
+                var tabCtrl = TabController.Instance;
                 foreach (DataRow row in tableData.Rows)
                 {
                     foreach (FieldSetting field in fields)
@@ -265,7 +249,7 @@ namespace BCC.Modules.BCCForms.DataTypes
         }
 
         void FillTypeColumns(int moduleId, TokenReplace objTokenReplace, IPortalSettings portalSettings,
-                                TabController tabCtrl,
+                                ITabController tabCtrl,
                                DataRow row, FieldSetting field)
         {
             var link = row[field.Title].ToString();

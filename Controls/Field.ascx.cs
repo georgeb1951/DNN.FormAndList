@@ -18,19 +18,11 @@ namespace BCC.Modules.BCCForms.Controls
 {
     public partial class Field : UserControl
     {
-        private INavigationManager navigationManager;
-        private IPortalAliasService portalAliasService;
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private INavigationManager navigationManager => ModuleServices.Get<INavigationManager>();
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private IPortalAliasService portalAliasService => ModuleServices.Get<IPortalAliasService>();
 
-        public Field()
-        {
-            // In DNN 10 we should be able to use constructor injection here instead of this reflection hack.
-            var globalsType = typeof(Globals);
-            var dependencyProviderProperty = globalsType.GetProperty("DependencyProvider", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var serviceProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-
-            this.navigationManager = serviceProvider.GetRequiredService<INavigationManager>();
-            this.portalAliasService = serviceProvider.GetRequiredService<IPortalAliasService>();
-        }
 
         protected LabelControl DefaultLabel;
         protected LabelControl InputSettingsLabel;
