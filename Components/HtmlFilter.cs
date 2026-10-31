@@ -63,6 +63,52 @@ namespace BCC.Modules.BCCForms.Components
             return decoded.IndexOf('<') < 0 && decoded.IndexOf('>') < 0 ? decoded : html;
         }
 
+        /// <summary>
+        ///   Makes a stored value safe to show as HTML. Values without '&lt;' cannot contain markup and are
+        ///   returned unchanged (cheap for the common case); anything else goes through the sanitizer, so
+        ///   formatting survives but scripts, handlers and javascript: links do not.
+        /// </summary>
+        public static string SanitizeForDisplay(string value)
+        {
+            if (string.IsNullOrEmpty(value) || value.IndexOf('<') < 0)
+            {
+                return value ?? string.Empty;
+            }
+            return SanitizeHtml(value);
+        }
+
+        static readonly string[] SafeSchemes = { "http", "https", "mailto", "tel", "ftp", "ftps" };
+
+        /// <summary>
+        ///   True when <paramref name="url"/> is relative or uses a harmless scheme. Rejects
+        ///   javascript:, vbscript:, data: and friends, including the forms browsers still accept
+        ///   with tabs, newlines or control characters inside the scheme.
+        /// </summary>
+        public static bool IsSafeLinkUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return false;
+
+            var scheme = new System.Text.StringBuilder();
+            foreach (var c in url.Trim())
+            {
+                if (c == ':')
+                {
+                    var name = scheme.ToString().ToLowerInvariant();
+                    return Array.IndexOf(SafeSchemes, name) >= 0;
+                }
+                if (c == '/' || c == '?' || c == '#')
+                {
+                    return true; // no scheme: relative URL
+                }
+                if (char.IsWhiteSpace(c) || char.IsControl(c))
+                {
+                    continue; // browsers strip these from a scheme
+                }
+                scheme.Append(c);
+            }
+            return true; // no ':' at all: relative URL (e.g. "page.aspx", "fileid=12", "57")
+        }
+
         static HtmlSanitizer GetSanitizer()
         {
             if (_sanitizer != null || _sanitizerUnavailable)

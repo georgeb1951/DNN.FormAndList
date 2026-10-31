@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -128,6 +129,13 @@ namespace BCC.Modules.BCCForms.DataTypes
             {
                 return _fieldSettingTypes;
             }
+        }
+
+        /// <summary>Stored text may contain markup (editors may enter it on purpose, imports and older
+        ///   data were never filtered), so it is sanitized before it is shown.</summary>
+        public override void RenderValuesToHtmlInsideDataSet(DataSet ds, int moduleId, bool noScript)
+        {
+            SanitizeColumnsForDisplay(ds);
         }
 
         public override string Name

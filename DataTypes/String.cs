@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using System.Linq;
@@ -120,6 +121,13 @@ namespace BCC.Modules.BCCForms.DataTypes
     /// -----------------------------------------------------------------------------
     public class DataTypeString : DataType
     {
+        /// <summary>Stored text may contain markup (editors may enter it on purpose, imports and older
+        ///   data were never filtered), so it is sanitized before it is shown.</summary>
+        public override void RenderValuesToHtmlInsideDataSet(DataSet ds, int moduleId, bool noScript)
+        {
+            SanitizeColumnsForDisplay(ds);
+        }
+
         public override string Name
         {
             get { return "String"; }

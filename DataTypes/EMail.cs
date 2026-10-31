@@ -99,6 +99,8 @@ namespace BCC.Modules.BCCForms.DataTypes
                         var strUrl = row[field.Title].ToString().Trim();
                         //strip optional parameter like subject or body for display:
                         var strLink = strUrl.IndexOf("?", System.StringComparison.Ordinal) != - 1 ? strUrl.Substring(0, strUrl.IndexOf("?", System.StringComparison.Ordinal)) : strUrl;
+                        // the address is shown as text: encode it (imported or older data was never validated)
+                        strLink = HttpUtility.HtmlEncode(strLink);
 
                         if (strLink != string.Empty)
                         {

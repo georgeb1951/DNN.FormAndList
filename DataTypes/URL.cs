@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -320,7 +321,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                                 }
                                 else
                                 {
-                                    caption = tab.TabName;
+                                    caption = HttpUtility.HtmlEncode(tab.TabName);
                                 }
                             }
                             url = field.EnforceDownload ? url : this.navigationManager.NavigateURL(int.Parse(link));
@@ -346,21 +347,21 @@ namespace BCC.Modules.BCCForms.DataTypes
                                 {
                                     if (! field.Abbreviate)
                                     {
-                                        caption = file.Folder + file.FileName;
+                                        caption = HttpUtility.HtmlEncode(file.Folder + file.FileName);
                                     }
                                     else
                                     {
-                                        caption = file.FileName;
+                                        caption = HttpUtility.HtmlEncode(file.FileName);
                                     }
                                 }
                             }
                             else if (field.Abbreviate && link.IndexOf("/", StringComparison.Ordinal) > - 1)
                             {
-                                caption = link.Substring(Convert.ToInt32(link.LastIndexOf("/", StringComparison.Ordinal) + 1));
+                                caption = HttpUtility.HtmlEncode(link.Substring(Convert.ToInt32(link.LastIndexOf("/", StringComparison.Ordinal) + 1)));
                             }
                             else
                             {
-                                caption = link;
+                                caption = HttpUtility.HtmlEncode(link);
                             }
                         }
                         break;
@@ -371,18 +372,24 @@ namespace BCC.Modules.BCCForms.DataTypes
                         {
                             if (field.Abbreviate && link.IndexOf("/", StringComparison.Ordinal) > - 1)
                             {
-                                caption = link.Substring(Convert.ToInt32(link.LastIndexOf("/", StringComparison.Ordinal) + 1));
+                                caption = HttpUtility.HtmlEncode(link.Substring(Convert.ToInt32(link.LastIndexOf("/", StringComparison.Ordinal) + 1)));
                             }
                             else
                             {
-                                caption = link;
+                                caption = HttpUtility.HtmlEncode(link);
                             }
                         }
                         if (!field.TrackDownloads) url = link;
+                        if (!HtmlFilter.IsSafeLinkUrl(link))
+                        {
+                            // javascript:, data: etc. - show the text, never make it a link
+                            isLink = false;
+                        }
                         break;
                 }
 
 
+                url = HttpUtility.HtmlAttributeEncode(url);
                 if (field.EnforceDownload) url += "&amp;forcedownload=true";
 
                 string strFieldvalue;
