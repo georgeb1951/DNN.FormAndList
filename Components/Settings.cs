@@ -6,7 +6,7 @@ using System.Web;
 using DotNetNuke.Common.Utilities;
 using Microsoft.VisualBasic;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public class Settings
     {

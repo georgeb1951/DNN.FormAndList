@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.UserDefinedTable {
+namespace BCC.Modules.BCCForms {
     
     
     public partial class Settings {

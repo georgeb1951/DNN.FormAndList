@@ -4,7 +4,7 @@ using System.Globalization;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public class FieldController
     {

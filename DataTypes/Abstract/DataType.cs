@@ -8,12 +8,12 @@ using System.Web.Hosting;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Framework;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.DataTypes;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.DataTypes;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
                             }
                             else
                             {
-                                systemTypeName = string.Format("DotNetNuke.Modules.UserDefinedTable.DataTypes.DataType{0}",
+                                systemTypeName = string.Format("BCC.Modules.BCCForms.DataTypes.DataType{0}",
                                                                elem.GetAttribute("name"));
                             }
                             try
@@ -90,14 +90,14 @@ namespace DotNetNuke.Modules.UserDefinedTable
                             }
                             catch (Exception)
                             {
-                                if (!systemTypeName.StartsWith("DotNetNuke.Modules.UserDefinedTable.DataTypes."))
+                                if (!systemTypeName.StartsWith("BCC.Modules.BCCForms.DataTypes."))
                                 {
                                     throw;
                                 }
                                 //Supporting old namespace
                                 systemTypeName = systemTypeName.Replace(
-                                    "DotNetNuke.Modules.UserDefinedTable.DataTypes.",
-                                    "DotNetNuke.Modules.UserDefinedTable.");
+                                    "BCC.Modules.BCCForms.DataTypes.",
+                                    "BCC.Modules.BCCForms.");
                                 var type = (DataType) (Reflection.CreateObject(systemTypeName, systemTypeName));
                                 _colDataTypes.Add(type.Name, type);
                             }
@@ -216,7 +216,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
         {
             get
             {
-                var typeName = ("DotNetNuke.Modules.UserDefinedTable.DataTypes.Edit" + Name);
+                var typeName = ("BCC.Modules.BCCForms.DataTypes.Edit" + Name);
                 return ((EditControl) (Reflection.CreateObject(typeName, typeName)));
             }
         }

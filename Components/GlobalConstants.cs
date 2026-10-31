@@ -1,6 +1,6 @@
 using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public class RenderingMethod
     {
@@ -13,10 +13,10 @@ namespace DotNetNuke.Modules.UserDefinedTable.Components
     public class Definition
     {
         public const string NameOfAnonymousUser = "Anonymous";
-        public const string PathOfCustomConfig = "/Portals/_Default/UserDefinedTable/";
-        public const string PathOfModule = "/DesktopModules/UserDefinedTable/";
+        public const string PathOfCustomConfig = "/Portals/_Default/BCCForms/";
+        public const string PathOfModule = "/DesktopModules/BCCForms/";
         public const string ModuleDefinitionFriendlyName = "Form and List";
-        public const string ModuleName = "DNN_UserDefinedTable";
+        public const string ModuleName = "BCCForms";
         public const string QueryStringParameter = "udt_{0}_param";
         public const string XSLFolderName = "XslStyleSheets";
         public const string TemplateFolderName = "templates";
@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.Components
         public const string ShowAllUserDefinedColumnsPermission = "COLUMNVISIBLE";
         public const string EditRestricedFieldsPermission = "PRIVATECOLUMNS";
         public const string ShowListPermission = "SHOWLIST";
-        public const string Code = "UDTEDIT";
+        public const string Code = "BCCFORMS";
     }
 
     public class DataSetTableName

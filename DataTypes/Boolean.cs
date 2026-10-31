@@ -4,13 +4,13 @@ using System.Data;
 using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Services.Localization;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Globals = DotNetNuke.Common.Globals;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

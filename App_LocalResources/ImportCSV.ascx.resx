@@ -136,7 +136,7 @@
     <value>Import CSV File</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;Import CSV&lt;/h1&gt;&lt;p&gt;Administrators can import content out of a CSV file into a Form and List Module. The process will delete any existing data inside the module.&lt;/p&gt;</value>
+    <value>&lt;h1&gt;Import CSV&lt;/h1&gt;&lt;p&gt;Administrators can import content out of a CSV file into a BCC Forms Module. The process will delete any existing data inside the module.&lt;/p&gt;</value>
   </data>
   <data name="NoContent.Text" xml:space="preserve">
     <value>The module specified does not have any content</value>

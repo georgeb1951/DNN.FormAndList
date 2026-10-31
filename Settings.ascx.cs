@@ -1,9 +1,9 @@
 using System;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using System.Web.UI.WebControls;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

@@ -11,7 +11,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Globals = DotNetNuke.Common.Globals;
 using TabInfo = DotNetNuke.Entities.Tabs.TabInfo;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

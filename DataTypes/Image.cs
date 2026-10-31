@@ -8,12 +8,12 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Services.FileSystem;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

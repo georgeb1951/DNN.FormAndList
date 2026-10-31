@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web;
 using DotNetNuke.Common;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.Interfaces;
 using DotNetNuke.Services.Mail;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

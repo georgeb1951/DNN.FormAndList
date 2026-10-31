@@ -5,10 +5,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.UI.Modules;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     public partial class FieldEditor :  ModuleUserControlBase
     {

@@ -1,6 +1,6 @@
 using System.Web.UI;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public class FormColumnInfo
     {

@@ -10,7 +10,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.UI.Modules;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public class ModuleSecurity
     {

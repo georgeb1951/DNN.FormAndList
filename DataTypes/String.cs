@@ -3,7 +3,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using System.Linq;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

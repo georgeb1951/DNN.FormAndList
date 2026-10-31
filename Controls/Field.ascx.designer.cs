@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.UserDefinedTable.Controls {
+namespace BCC.Modules.BCCForms.Controls {
     
     
     public partial class Field {
@@ -343,7 +343,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Modules.UserDefinedTable.Controls.FieldSettings FormFieldSettings;
+        protected global::BCC.Modules.BCCForms.Controls.FieldSettings FormFieldSettings;
         
         /// <summary>
         /// lblListSettings control.
@@ -397,7 +397,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Modules.UserDefinedTable.Controls.FieldSettings ListFieldSettings;
+        protected global::BCC.Modules.BCCForms.Controls.FieldSettings ListFieldSettings;
         
         /// <summary>
         /// cmdUpdate control.

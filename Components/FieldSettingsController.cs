@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using DotNetNuke.Common;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public static class FieldSettingsController
     {

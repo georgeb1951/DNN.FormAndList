@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using DotNetNuke.Framework;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -27,7 +27,9 @@ namespace DotNetNuke.Modules.UserDefinedTable.Components
         // dynamically create provider
         static void CreateProvider()
         {
-            _provider = (DataProvider) (Reflection.CreateObject("data", "DotNetNuke.Modules.UserDefinedTable", ""));
+            // BCCForms ships a single SQL Server provider; construct it directly instead of
+            // resolving it by reflection (the old Reflection.CreateObject overload is removed in DNN 11).
+            _provider = new SqlDataProvider();
         }
 
         // return the provider

@@ -9,12 +9,12 @@ using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.UserControls;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Controls
+namespace BCC.Modules.BCCForms.Controls
 {
     public partial class Field : UserControl
     {
@@ -277,11 +277,11 @@ namespace DotNetNuke.Modules.UserDefinedTable.Controls
         {
 
             var helpUrL = string.Format("javascript:OpenHelpWindow(\'{0}\')",
-                                           ResolveUrl("~/desktopmodules/userdefinedtable/HelpPopup.aspx?resourcekey=Help_Tokens_6"));
+                                           ResolveUrl("~/DesktopModules/BCCForms/HelpPopup.aspx?resourcekey=Help_Tokens_6"));
             hlpToken.NavigateUrl = helpUrL;
 
             helpUrL = string.Format("javascript:OpenHelpWindow(\'{0}\')",
-                                    ResolveUrl("~/desktopmodules/userdefinedtable/HelpPopup.aspx?resourcekey=Help_HiddenColumns"));
+                                    ResolveUrl("~/DesktopModules/BCCForms/HelpPopup.aspx?resourcekey=Help_HiddenColumns"));
             hlpColumns.NavigateUrl = helpUrL;
         }
 

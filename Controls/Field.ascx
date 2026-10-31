@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#"CodeBehind="Field.ascx.cs" Inherits="DotNetNuke.Modules.UserDefinedTable.Controls.Field" AutoEventWireup="false"%>
+﻿<%@ Control Language="C#"CodeBehind="Field.ascx.cs" Inherits="BCC.Modules.BCCForms.Controls.Field" AutoEventWireup="false"%>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Import Namespace="DotNetNuke.Entities.Icons" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
@@ -126,7 +126,7 @@
     </ul>
 </div>
 
-<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/UserDefinedTable/CaptionValueEditor.js" />
+<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/BCCForms/CaptionValueEditor.js" />
   
 
 

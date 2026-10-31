@@ -1,4 +1,4 @@
-<%@ Control Language="C#"  Inherits="DotNetNuke.Modules.UserDefinedTable.TemplateList"
+<%@ Control Language="C#"  Inherits="BCC.Modules.BCCForms.TemplateList"
             CodeBehind="TemplateList.ascx.cs" AutoEventWireup="false" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <div style="margin-bottom:1em;">
@@ -27,7 +27,7 @@
     <PagerSettings Visible="False" />
 </asp:GridView>
 <asp:ObjectDataSource ID="TemplateDataSource" runat="server" SelectMethod="TemplateList"
-                      TypeName="DotNetNuke.Modules.UserDefinedTable.Templates.TemplateController" />
+                      TypeName="BCC.Modules.BCCForms.Templates.TemplateController" />
 <div>
     <asp:Label runat="server" ID ="lblCustomizeTemplate"></asp:Label>
     <dnn:CollectionEditorControl runat="server" ID="TemplateCustomValuesEditor" EditorDataField="Editor"

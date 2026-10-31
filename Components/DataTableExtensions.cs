@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public static class DataTableExtensions
     {

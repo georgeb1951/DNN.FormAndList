@@ -7,12 +7,12 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.Serialization;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.Serialization;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.Modules;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Templates
+namespace BCC.Modules.BCCForms.Templates
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.Templates
                             if (Directory.Exists(folderName))
                             {
                                 var folder = new DirectoryInfo(folderName);
-                                foreach (var file in folder.GetFiles("*.dnn_userdefinedtable.module.template"))
+                                foreach (var file in folder.GetFiles("*.bccforms.module.template"))
                                 {
                                     try
                                     {

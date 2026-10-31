@@ -1,7 +1,7 @@
 using System;
 using System.Xml;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Templates
+namespace BCC.Modules.BCCForms.Templates
 {
     [Serializable]
     public class TemplateValueInfo

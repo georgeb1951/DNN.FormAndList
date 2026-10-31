@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="MakeThumbnail.ashx.cs" Class="DotNetNuke.Modules.UserDefinedTable.MakeThumbnail" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="MakeThumbnail.ashx.cs" Class="BCC.Modules.BCCForms.MakeThumbnail" %>

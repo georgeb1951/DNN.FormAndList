@@ -9,15 +9,15 @@ using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.Interfaces;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 using Globals = DotNetNuke.Common.Globals;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     public class BusinessController : ModuleSearchBase, IPortable, IPortable2
     {

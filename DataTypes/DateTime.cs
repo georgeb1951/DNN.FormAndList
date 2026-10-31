@@ -10,11 +10,11 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Services.Localization;
 using Microsoft.VisualBasic;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

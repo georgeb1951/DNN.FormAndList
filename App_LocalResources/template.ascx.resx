@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdSaveFile.Text" xml:space="preserve">
-    <value>Save as Form and List - Module Template</value>
+    <value>Save as BCC Forms - Module Template</value>
   </data>
   <data name="ControlTitle_createtemplate.Text" xml:space="preserve">
-    <value>Form and List - Module Template</value>
+    <value>BCC Forms - Module Template</value>
   </data>
   <data name="dshCreateTemplate.Text" xml:space="preserve">
     <value>Create Module Template</value>
@@ -136,7 +136,7 @@
     <value>Description</value>
   </data>
   <data name="plTitle.Help" xml:space="preserve">
-    <value>Name of Form and List - Module Template</value>
+    <value>Name of BCC Forms - Module Template</value>
   </data>
   <data name="plTitle.Text" xml:space="preserve">
     <value>Name</value>

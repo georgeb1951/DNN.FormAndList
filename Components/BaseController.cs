@@ -8,7 +8,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.UI.Modules;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public abstract class BaseController
     {

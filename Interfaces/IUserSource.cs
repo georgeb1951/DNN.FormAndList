@@ -1,7 +1,7 @@
 using System.Data;
 using DotNetNuke.Entities.Users;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Interfaces
+namespace BCC.Modules.BCCForms.Interfaces
 {
     public interface IUserSource
     {

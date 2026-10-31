@@ -1,4 +1,4 @@
-<%@ Control Language="C#"  Inherits="DotNetNuke.Modules.UserDefinedTable.Settings" AutoEventWireup="True" CodeBehind="Settings.ascx.cs" %>
+<%@ Control Language="C#"  Inherits="BCC.Modules.BCCForms.Settings" AutoEventWireup="True" CodeBehind="Settings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div style="margin-top: 14px;">
     <p>

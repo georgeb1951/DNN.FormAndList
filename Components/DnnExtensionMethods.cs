@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Entities.Users;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public static class DnnExtensionMethods
     {

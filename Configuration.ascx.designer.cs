@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.UserDefinedTable {
+namespace BCC.Modules.BCCForms {
     
     
     public partial class Configuration {
@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Modules.UserDefinedTable.Controls.Fields Fields;
+        protected global::BCC.Modules.BCCForms.Controls.Fields Fields;
         
         /// <summary>
         /// plPrivacy control.

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" CodeBehind="ExportCSV.ascx.cs" Inherits="DotNetNuke.Modules.UserDefinedTable.ExportCsv" AutoEventWireup="false" %>
+<%@ Control Language="C#" CodeBehind="ExportCSV.ascx.cs" Inherits="BCC.Modules.BCCForms.ExportCsv" AutoEventWireup="false" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 

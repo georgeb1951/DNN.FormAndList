@@ -1,0 +1,12 @@
+﻿<h3>BCC Forms 01.00.00</h3>
+
+<p>First release of BCC Forms, a standalone module derived from DNN Form and List 06.05.09 (MIT, DNN Community).</p>
+
+<ul>
+  <li>Requires DNN Platform 10.3.3 or later and .NET Framework 4.8.</li>
+  <li>Installs as its own module (<code>BCCForms</code>, folder <code>DesktopModules/BCCForms</code>) with its own tables (<code>BCCForms_*</code>); runs side by side with Form and List.</li>
+  <li>Single consolidated install script replaces the 22 historical Form and List upgrade scripts.</li>
+  <li>Security: the thumbnail handler now enforces folder view permissions, limits image types to jpg/png/gif/bmp, and caps width/height at 2000&nbsp;px.</li>
+  <li>Security: reCAPTCHA tokens are verified with a POST request (secret no longer in the query string), with a 10-second timeout.</li>
+  <li>Removed the use of <code>DotNetNuke.Services.SystemDateTime</code>, which no longer exists in DNN 10.</li>
+</ul>

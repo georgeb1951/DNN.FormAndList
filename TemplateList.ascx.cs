@@ -9,14 +9,14 @@ using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.Templates;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.Templates;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

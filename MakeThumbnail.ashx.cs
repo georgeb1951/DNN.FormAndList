@@ -7,11 +7,12 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// <summary>
     ///   Summary description for MakeThumbnail
@@ -29,35 +30,36 @@ namespace DotNetNuke.Modules.UserDefinedTable
 
             try
             {
-                // Get max. width, if any
-                if (request.Params["w"] != string.Empty)
-                {
-                    intMaxWidth = request.QueryString["w"].AsInt();
-                }
+                // Get max. width / height, if any. Clamped so a request can't allocate a huge bitmap.
+                intMaxWidth = ClampDimension(request.QueryString["w"].AsInt());
+                intMaxHeight = ClampDimension(request.QueryString["h"].AsInt());
 
-                // Get max. height, if any
-                if (request.Params["h"] != string.Empty)
-                {
-                    intMaxHeight = request.QueryString["h"].AsInt();
-                }
-
-                // Get source image path
-                var strFilepath = request.Params["image"];
-                //only virtual paths are valid!
-
+                // Get source image path (portal-relative)
+                var strFilepath = request.QueryString["image"];
                 var ps = PortalController.Instance.GetCurrentSettings();
 
+                // Resolve the file and enforce folder view permissions BEFORE touching the cache,
+                // otherwise a thumbnail cached for one user would be served to everyone.
+                var file = string.IsNullOrEmpty(strFilepath) ? null : FileManager.Instance.GetFile(ps.PortalId, strFilepath);
+                if (file == null || !AllowedExtensions.Contains((file.Extension ?? string.Empty).ToLowerInvariant()))
+                {
+                    context.Response.StatusCode = 404;
+                    return;
+                }
+                var folder = FolderManager.Instance.GetFolder(file.FolderId) as FolderInfo;
+                if (folder == null || !FolderPermissionController.CanViewFolder(folder))
+                {
+                    context.Response.StatusCode = 403;
+                    return;
+                }
 
-
-                // Check cache for thumbnail
-                //add prefix to identify cache item as belonging to UDT
-                var cacheKey = "UDT_TN" + strFilepath + intMaxWidth + "x" + intMaxHeight;
+                // Check cache for thumbnail (keyed by file id, so renamed/moved files don't collide)
+                var cacheKey = "BCCForms_TN" + file.FileId + "_" + intMaxWidth + "x" + intMaxHeight;
                 var image = DataCache.GetCache(cacheKey);
                 ImageFormat iFormat;
                 if (image == null)
                 {
                     // Get source Image
-                    var file = FileManager.Instance.GetFile(ps.PortalId, strFilepath);
                     sourceImageStream = FileManager.Instance.GetFileContent(file);
                     sourceImage = new Bitmap(sourceImageStream);
 
@@ -132,6 +134,16 @@ namespace DotNetNuke.Modules.UserDefinedTable
         public bool IsReusable
         {
             get { return false; }
+        }
+
+        const int MaxDimension = 2000;
+
+        static readonly string[] AllowedExtensions = { "jpg", "jpeg", "png", "gif", "bmp" };
+
+        static int ClampDimension(int value)
+        {
+            if (value < 0) return 0;
+            return value > MaxDimension ? MaxDimension : value;
         }
 
         static string GetContentType(ImageFormat iFormat)

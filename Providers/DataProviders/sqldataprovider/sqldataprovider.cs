@@ -4,11 +4,11 @@ using System.Data;
 using System.Data.SqlClient;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.Providers;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using Microsoft.ApplicationBlocks.Data;
 
 // ReSharper disable CheckNamespace
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 // ReSharper restore CheckNamespace
 {
     /// -----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
         #region Private Members
 
         const string ProviderType = "data";
-        const string SPPrefix = "UserDefinedTable_";
+        const string SPPrefix = "BCCForms_";
 
         readonly ProviderConfiguration _providerConfiguration =ProviderConfiguration.GetProviderConfiguration (ProviderType);
 

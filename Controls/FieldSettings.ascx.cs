@@ -2,10 +2,10 @@
 using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.UI.UserControls;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Controls
+namespace BCC.Modules.BCCForms.Controls
 {
     public partial class FieldSettings : System.Web.UI.UserControl
     {

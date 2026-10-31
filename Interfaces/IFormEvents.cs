@@ -1,6 +1,6 @@
 using System;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Interfaces
+namespace BCC.Modules.BCCForms.Interfaces
 {
     public interface IFormEvents
     {

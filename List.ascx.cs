@@ -14,7 +14,7 @@ using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
@@ -23,7 +23,7 @@ using DotNetNuke.UI.Skins.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using Globals = DotNetNuke.Common.Globals;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -783,7 +783,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
             var modSecurity = new ModuleSecurity(ModuleContext);
             if (modSecurity.IsAllowedToAdministrateModule())
             {
-                 UI.Skins.Skin.AddModuleMessage(moduleControl, message,ModuleMessage.ModuleMessageType.YellowWarning);
+                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(moduleControl, message,ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 

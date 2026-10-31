@@ -1,7 +1,7 @@
-﻿<%@ Control Language="C#" CodeBehind="FieldSettings.ascx.cs" Inherits="DotNetNuke.Modules.UserDefinedTable.Controls.FieldSettings" %>
+﻿<%@ Control Language="C#" CodeBehind="FieldSettings.ascx.cs" Inherits="BCC.Modules.BCCForms.Controls.FieldSettings" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
-<%@ Import Namespace="DotNetNuke.Modules.UserDefinedTable.Components" %>
+<%@ Import Namespace="BCC.Modules.BCCForms.Components" %>
 <asp:Repeater ID="Repeater1" runat="server">
     <ItemTemplate>
         <div id="Div1" class="dnnFormItem" runat="server"> 

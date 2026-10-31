@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Data;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

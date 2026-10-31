@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace DotNetNuke.Modules.UserDefinedTable.CSV
+namespace BCC.Modules.BCCForms.CSV
 {
     public class CSVWriter
     {

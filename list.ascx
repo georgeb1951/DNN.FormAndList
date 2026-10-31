@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="DotNetNuke.Modules.UserDefinedTable.List" AutoEventWireup="false" CodeBehind="List.ascx.cs" %>
+<%@ Control Language="C#" Inherits="BCC.Modules.BCCForms.List" AutoEventWireup="false" CodeBehind="List.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Import Namespace="DotNetNuke.Entities.Icons" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>

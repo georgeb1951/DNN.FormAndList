@@ -4,7 +4,7 @@ using System.Text;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public class GravatarPropertyAccess : IPropertyAccess
     {

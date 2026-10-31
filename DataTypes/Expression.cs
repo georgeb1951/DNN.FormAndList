@@ -6,9 +6,9 @@ using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

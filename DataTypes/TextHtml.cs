@@ -4,9 +4,9 @@ using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Modules.HTMLEditorProvider;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

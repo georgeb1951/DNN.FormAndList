@@ -1,4 +1,4 @@
-<%@ Control Language="C#" CodeBehind="ImportCSV.ascx.cs" Inherits="DotNetNuke.Modules.UserDefinedTable.ImportCsv" AutoEventWireup="false"%>
+<%@ Control Language="C#" CodeBehind="ImportCSV.ascx.cs" Inherits="BCC.Modules.BCCForms.ImportCsv" AutoEventWireup="false"%>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 

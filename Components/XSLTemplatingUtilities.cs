@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public class XslTemplatingUtilities
     {
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.Components
         {
             var templateDoc = new XmlDocument();
             templateDoc.Load(
-                HttpContext.Current.Request.MapPath("~/DesktopModules/UserDefinedTable/xslStyleSheets/xslScripts.xml"));
+                HttpContext.Current.Request.MapPath("~/DesktopModules/BCCForms/xslStyleSheets/xslScripts.xml"));
             var xslTemplate =
 // ReSharper disable PossibleNullReferenceException
                 HttpUtility.HtmlDecode(templateDoc.SelectSingleNode("/root/data[@name=\"XSLT\"]/value").InnerText);

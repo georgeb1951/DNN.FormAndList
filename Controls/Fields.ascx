@@ -1,9 +1,9 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="Fields.ascx.cs" Inherits="DotNetNuke.Modules.UserDefinedTable.Controls.Fields" %>
-<%@ Import Namespace="DotNetNuke.Modules.UserDefinedTable.Components" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="Fields.ascx.cs" Inherits="BCC.Modules.BCCForms.Controls.Fields" %>
+<%@ Import Namespace="BCC.Modules.BCCForms.Components" %>
 
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Import Namespace="DotNetNuke.Entities.Icons" %>
-<%@ Import Namespace="DotNetNuke.Modules.UserDefinedTable.Components" %>
+<%@ Import Namespace="BCC.Modules.BCCForms.Components" %>
 <%@ Register src="Field.ascx" tagname="Field" tagprefix="fnl" %>
 <asp:HiddenField ID="FieldOrder" runat="server" />
 <asp:DataGrid ID="grdFields" DataKeyField="UserDefinedFieldId" BorderWidth="0px"

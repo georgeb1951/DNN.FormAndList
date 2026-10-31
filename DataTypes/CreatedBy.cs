@@ -7,11 +7,11 @@ using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.Interfaces;
 using Globals = DotNetNuke.Common.Globals;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

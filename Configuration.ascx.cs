@@ -7,8 +7,8 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.Interfaces;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
@@ -27,7 +27,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Abstractions.Portals;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
                             var type = DataType.ByName((string)(rows[0][FieldsTableColumn.Type]));
                             if (!(type is IEmailAdressSource))
                             {
-                                UI.Skins.Skin.AddModuleMessage(this,
+                                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this,
                                                                string.Format(
                                                                    Localization.GetString("NotEmailSource",
                                                                                           LocalResourceFile), fieldtitle),
@@ -246,7 +246,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
                         }
                         else if (rows.Length == 0)
                         {
-                            UI.Skins.Skin.AddModuleMessage(this,
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this,
                                                            string.Format(
                                                                Localization.GetString("NotEmailSource",
                                                                                       LocalResourceFile), fieldtitle),
@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
                     {
                         if (!Mail.IsValidEmailAddress(source, ModuleContext.PortalId))
                         {
-                            UI.Skins.Skin.AddModuleMessage(this,
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this,
                                                            string.Format(
                                                                Localization.GetString("NotEmailAddress",
                                                                                       LocalResourceFile), source),
@@ -440,11 +440,11 @@ namespace DotNetNuke.Modules.UserDefinedTable
         {
             var helpUrL = string.Format("javascript:OpenHelpWindow(\'{0}\')",
                                         ResolveUrl(
-                                            "~/desktopmodules/userdefinedtable/HelpPopup.aspx?resourcekey=Help_Tokens_6"));
+                                            "~/DesktopModules/BCCForms/HelpPopup.aspx?resourcekey=Help_Tokens_6"));
             hlpToken2.NavigateUrl = helpUrL;
             helpUrL = string.Format("javascript:OpenHelpWindow(\'{0}\')",
                                     ResolveUrl(
-                                        "~/desktopmodules/userdefinedtable/HelpPopup.aspx?resourcekey=Help_HiddenColumns"));
+                                        "~/DesktopModules/BCCForms/HelpPopup.aspx?resourcekey=Help_HiddenColumns"));
             hlpColumns2.NavigateUrl = helpUrL;
         }
 
@@ -475,7 +475,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
             Fields.LocalizeString = LocalizeString;
             Fields.LocalResourceFile = LocalResourceFile;
             Fields.ModuleContext = ModuleContext;
-            Framework.JavaScriptLibraries.JavaScript.RequestRegistration(Framework.JavaScriptLibraries.CommonJs.DnnPlugins);
+            DotNetNuke.Framework.JavaScriptLibraries.JavaScript.RequestRegistration(DotNetNuke.Framework.JavaScriptLibraries.CommonJs.DnnPlugins);
             ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
         }
 

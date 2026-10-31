@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Templates
+namespace BCC.Modules.BCCForms.Templates
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

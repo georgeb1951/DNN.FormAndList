@@ -2,12 +2,12 @@
 // <automatisch generiert>
 //     Dieser Code wurde von einem Tool generiert.
 //
-//     Änderungen an dieser Datei können fehlerhaftes Verhalten verursachen und gehen verloren, wenn
+//     Ã„nderungen an dieser Datei kÃ¶nnen fehlerhaftes Verhalten verursachen und gehen verloren, wenn
 //     der Code neu generiert wird.
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.UserDefinedTable {
+namespace BCC.Modules.BCCForms {
     
     
     public partial class List {
@@ -17,7 +17,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panSearch;
         
@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phSearchSentence;
         
@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdSearch;
         
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdResetSearch;
         
@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.UserControl plSearch;
         
@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNoRecordsFound;
         
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView grdData;
         
@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.PagingControl ctlPagingControl;
         
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder XslOutput;
         
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl placeholderActions;
         
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.UserDefinedTable {
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
+        /// Zum Ã„ndern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink ActionLink;
     }

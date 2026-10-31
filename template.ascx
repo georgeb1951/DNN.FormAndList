@@ -1,5 +1,5 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Control Language="C#"  Inherits="DotNetNuke.Modules.UserDefinedTable.Template"
+<%@ Control Language="C#"  Inherits="BCC.Modules.BCCForms.Template"
     CodeBehind="Template.ascx.cs" AutoEventWireup="false" %>
 
 

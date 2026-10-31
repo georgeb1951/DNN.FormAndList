@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Web;
 using System.Xml;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
-    public class TokenReplace : Services.Tokens.TokenReplace
+    public class TokenReplace : DotNetNuke.Services.Tokens.TokenReplace
     {
         readonly bool _escapeApostrophe;
 
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.Components
         }
     }
 
-    public class TokenReplaceForForms : Services.Tokens.BaseCustomTokenReplace
+    public class TokenReplaceForForms : DotNetNuke.Services.Tokens.BaseCustomTokenReplace
     {
         class PlaceHolderForControl_PropertyAccess : IPropertyAccess
         {

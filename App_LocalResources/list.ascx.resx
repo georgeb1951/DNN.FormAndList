@@ -145,7 +145,7 @@
     <value>Show All Data as XML</value>
   </data>
   <data name="NoFieldsDefined.ErrorMessage" xml:space="preserve">
-    <value>There are no columns defined. Setup the module inside the &lt;a href="{0}"&gt;Form and List Configuration&lt;/a&gt;.</value>
+    <value>There are no columns defined. Setup the module inside the &lt;a href="{0}"&gt;BCC Forms Configuration&lt;/a&gt;.</value>
   </data>
   <data name="SearchMode.Contain" xml:space="preserve">
     <value>contain</value>
@@ -157,10 +157,10 @@
     <value>Are you sure you wish to delete all records stored in this table?</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About the Form and List Module&lt;/h1&gt;
-&lt;p&gt;The Form and List Module allows you to manage an individual table of data, where each column of data is a specific data type and each row represents a single record.&amp;#160;Column headings, when clicked, reorder data alphanumerically&amp;#160;A-Z or Z-A. If the feature is enabled, you may &lt;strong&gt;Search&lt;/strong&gt; through records that contain only select data.&lt;/p&gt;
+    <value>&lt;h1&gt;About the BCC Forms Module&lt;/h1&gt;
+&lt;p&gt;The BCC Forms Module allows you to manage an individual table of data, where each column of data is a specific data type and each row represents a single record.&amp;#160;Column headings, when clicked, reorder data alphanumerically&amp;#160;A-Z or Z-A. If the feature is enabled, you may &lt;strong&gt;Search&lt;/strong&gt; through records that contain only select data.&lt;/p&gt;
 &lt;p&gt;If granted permission by the site Administrator,&amp;#160;you can &lt;strong&gt;Add&amp;#160;New Record&lt;/strong&gt; and&amp;#160;optionally&amp;#160;&lt;strong&gt;Edit&lt;/strong&gt;&amp;#160;and &lt;strong&gt;Delete&lt;/strong&gt; any records or only those records you have added yourself. If you have the ability to&amp;#160;add or edit records without being logged in this site, you may need to enter a CAPTCHA confirmation code.&lt;/p&gt;
-&lt;p&gt;Page Administrators can edit &lt;strong&gt;Module Settings&lt;/strong&gt; and select &lt;strong&gt;Form and List Configuration&lt;/strong&gt; from the module Action Menu to define columns and column properties.&lt;/p&gt;</value>
+&lt;p&gt;Page Administrators can edit &lt;strong&gt;Module Settings&lt;/strong&gt; and select &lt;strong&gt;BCC Forms Configuration&lt;/strong&gt; from the module Action Menu to define columns and column properties.&lt;/p&gt;</value>
   </data>
   <data name="cmdShowAll.Text" xml:space="preserve">
     <value>Reset Search</value>

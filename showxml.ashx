@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="ShowXml.ashx.cs" Class="DotNetNuke.Modules.UserDefinedTable.ShowXml" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="ShowXml.ashx.cs" Class="BCC.Modules.BCCForms.ShowXml" %>

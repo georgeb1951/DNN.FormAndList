@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Explicit="True" Inherits="DotNetNuke.Modules.UserDefinedTable.Configuration"
+<%@ Control Language="C#" Explicit="True" Inherits="BCC.Modules.BCCForms.Configuration"
     TargetSchema="http://schemas.microsoft.com/intellisense/ie5" CodeBehind="Configuration.ascx.cs" AutoEventWireup="false" %>
 <%@ Register TagPrefix="Portal" TagName="URL" Src="~/controls/URLControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>

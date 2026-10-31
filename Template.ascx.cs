@@ -1,11 +1,11 @@
 using System;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
-using DotNetNuke.Modules.UserDefinedTable.Templates;
+using BCC.Modules.BCCForms.Templates;
 using DotNetNuke.UI.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

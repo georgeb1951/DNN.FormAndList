@@ -5,7 +5,7 @@ using System.Net;
 using System.Web.UI.WebControls;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -15,7 +15,7 @@ using DotNetNuke.UI.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Globals = DotNetNuke.Common.Globals;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Controls
+namespace BCC.Modules.BCCForms.Controls
 {
     public partial class Fields : System.Web.UI.UserControl
     {
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.Controls
             }
 
             name = WebUtility.HtmlEncode(name);
-            UI.Skins.Skin.AddModuleMessage(this,
+            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this,
                                            string.Format(
                                                Localization.GetString("DataTypeNotInstalled", LocalResourceFile),
                                                name), ModuleMessage.ModuleMessageType.RedError);

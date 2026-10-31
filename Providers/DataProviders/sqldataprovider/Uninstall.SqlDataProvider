@@ -1,0 +1,109 @@
+/************************************************************/
+/*****  BCCForms 01.00.00 - uninstall                *****/
+/*****  Schema derived from DNN Form and List 06.05.08   *****/
+/*****  (MIT licensed, DNN Community) and renamed.       *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_AddData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddData]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_AddField]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddField]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_AddRow]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddRow]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_DeleteData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteData]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_DeleteField]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteField]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_DeleteRow]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteRow]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_DeleteRows]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteRows]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_FillDefaultData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_FillDefaultData]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetData]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetField]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetField]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetFieldDataCount]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFieldDataCount]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetFieldSettings]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFieldSettings]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetFields]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFields]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRow]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRow]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRows]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRows]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRowsWithDates]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRowsWithDates]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_Reset]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_Reset]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_SetFieldOrder]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_SetFieldOrder]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_SwapFieldOrder]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_SwapFieldOrder]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_UpdateData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_UpdateData]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_UpdateField]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_UpdateField]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_UpdateFieldSetting]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_UpdateFieldSetting]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_FieldSettings]') AND type = N'U')
+    DROP TABLE {databaseOwner}[{objectQualifier}BCCForms_FieldSettings]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_Data]') AND type = N'U')
+    DROP TABLE {databaseOwner}[{objectQualifier}BCCForms_Data]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_Fields]') AND type = N'U')
+    DROP TABLE {databaseOwner}[{objectQualifier}BCCForms_Fields]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_Rows]') AND type = N'U')
+    DROP TABLE {databaseOwner}[{objectQualifier}BCCForms_Rows]
+GO

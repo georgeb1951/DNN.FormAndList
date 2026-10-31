@@ -7,8 +7,8 @@ using System.Text;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.UserDefinedTable.CSV;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.CSV;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -19,7 +19,7 @@ using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Abstractions.Portals;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     public partial class ExportCsv : PortalModuleBase
     {
@@ -114,12 +114,12 @@ namespace DotNetNuke.Modules.UserDefinedTable
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
                     }
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Validation", LocalResourceFile),
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Validation", LocalResourceFile),
                                                    ModuleMessage.ModuleMessageType.RedError);
                 }
             }

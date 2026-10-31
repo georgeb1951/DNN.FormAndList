@@ -11,7 +11,7 @@
 *.sln.docstates
 *.local.sln
 *.sln.GhostDoc.xml
-DotNetNuke.Modules.UserDefinedTable.xml
+BCC.Modules.BCCForms.xml
 web.config
 web.Debug.config
 web.Release.config
@@ -220,3 +220,11 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 Website/Install/Temp/
+
+## BCCForms build output
+*_Install.zip
+*_Source.zip
+Resources.zip
+Package/
+ResourcesZip/
+BCC.Modules.BCCForms.xml

@@ -1,4 +1,4 @@
-<%@ Page Language="C#"  Inherits="DotNetNuke.Modules.UserDefinedTable.HelpPopup" Codebehind="HelpPopup.aspx.cs" %>
+<%@ Page Language="C#"  Inherits="BCC.Modules.BCCForms.HelpPopup" Codebehind="HelpPopup.aspx.cs" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>

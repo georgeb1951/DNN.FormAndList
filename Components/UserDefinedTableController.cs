@@ -4,7 +4,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
 using System;
@@ -17,7 +17,7 @@ using System.Threading;
 using System.Web;
 using System.Xml;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// <summary>
     ///   The UserDefinedTableController class provides Business Layer methods of
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
         /// -----------------------------------------------------------------------------
         public void FillDefaultData(int fieldId, string defaultExpression)
         {
-            var tr = new Services.Tokens.TokenReplace {ModuleId = ModuleId, ModuleInfo = Configuration};
+            var tr = new DotNetNuke.Services.Tokens.TokenReplace {ModuleId = ModuleId, ModuleInfo = Configuration};
             if (tr.ContainsTokens(defaultExpression))
             {
                 var ds = GetDataSet(false);

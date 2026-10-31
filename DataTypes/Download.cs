@@ -5,11 +5,11 @@ using System.Data;
 using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Services.FileSystem;
 using Globals = DotNetNuke.Common.Globals;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl

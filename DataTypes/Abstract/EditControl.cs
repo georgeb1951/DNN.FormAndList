@@ -9,15 +9,15 @@ using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.Interfaces;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable CheckNamespace
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 // ReSharper restore CheckNamespace
 {
     /// -----------------------------------------------------------------------------

@@ -1,8 +1,7 @@
  using System;
 using System.Web.UI;
- using DotNetNuke.Services.SystemDateTime;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl
@@ -27,7 +26,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
             {
                 if (ViewState[TimeStamp] == null)
                 {
-                    return Common.Utilities.DateUtils.GetDatabaseUtcTime().ToString("s");
+                    return DotNetNuke.Common.Utilities.DateUtils.GetDatabaseUtcTime().ToString("s");
                 }
                 return DateTime.Parse((string)ViewState[TimeStamp]).ToString("s");
             }

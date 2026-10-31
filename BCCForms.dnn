@@ -1,0 +1,201 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="BCCForms" type="Module" version="01.00.00">
+      <friendlyName>BCC Forms</friendlyName>
+      <description>BCC Forms: build data-entry forms and lists with custom fields, validation and permissions. Based on DNN Form and List (MIT).</description>
+      <iconFile>DesktopModules/BCCForms/icon_fnl_32px.gif</iconFile>
+      <owner>
+        <name>George</name>
+        <organization>BCC</organization>
+        <url></url>
+        <email></email>
+      </owner>
+      <license src="License.htm"/>
+      <releaseNotes src="ReleaseNotes.htm" />
+      <dependencies>
+        <dependency type="CoreVersion">10.03.03</dependency>
+      </dependencies>
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\BCCForms</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="UnInstall">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+          </scripts>
+        </component>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>BCCForms</moduleName>
+            <foldername>BCCForms</foldername>
+            <businessControllerClass>BCC.Modules.BCCForms.BusinessController, BCC.Modules.BCCForms</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Portable" />
+              <supportedFeature type="Searchable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>BCC Forms</friendlyName>
+                <defaultCacheTime>-1</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/BCCForms/Default.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl>http://www.dotnetnuke.com/default.aspx?tabid=787</helpUrl>
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>CreateTemplate</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/Template.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>Admin</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Edit</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/Form.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Edit User Defined Table</controlTitle>
+                    <controlType>Anonymous</controlType>
+                    <iconFile />
+                    <helpUrl>http://www.dotnetnuke.com/default.aspx?tabid=787</helpUrl>
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>EditField</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/FieldEditor.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>ExportCSV</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/ExportCSV.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Export to CSV</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>GenerateXsl</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/Token2Xsl.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Generate XSL</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl>http://www.dotnetnuke.com/default.aspx?tabid=787</helpUrl>
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>ImportCSV</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/ImportCSV.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Import from CSV</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>List</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/List.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Manage</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/Configuration.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Manage UDT</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl>http://www.dotnetnuke.com/default.aspx?tabid=787</helpUrl>
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Settings</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/Settings.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>More Permission Settings</controlTitle>
+                    <controlType>Admin</controlType>
+                    <iconFile />
+                    <helpUrl>http://www.dotnetnuke.com/default.aspx?tabid=787</helpUrl>
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>TemplateList</controlKey>
+                    <controlSrc>DesktopModules/BCCForms/TemplateList.ascx</controlSrc>
+                    <supportsPartialRendering>True</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <supportsPopUps>False</supportsPopUps>
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                </moduleControls>
+                <permissions>
+                  <permission code="BCCFORMS" key="ROWEDIT" name="Edit Row" />
+                  <permission code="BCCFORMS" key="ROWDELETE" name="Delete Row" />
+                  <permission code="BCCFORMS" key="ROWADD" name="Create New Row" />
+                  <permission code="BCCFORMS" key="COLUMNVISIBLE" name="ShowColumns" />
+                  <permission code="BCCFORMS" key="PRIVATECOLUMNS" name="PrivateColumns" />
+                  <permission code="BCCFORMS" key="SHOWLIST" name="ShowList" />
+                </permissions>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>BCC.Modules.BCCForms.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/BCCForms</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

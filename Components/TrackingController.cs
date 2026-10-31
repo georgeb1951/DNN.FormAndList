@@ -11,11 +11,11 @@ using System.Xml.Xsl;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Host;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Interfaces;
 using DotNetNuke.Services.Mail;
 using MailPriority = DotNetNuke.Services.Mail.MailPriority;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public class TrackingController
     {
@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.Components
 
             if (script == "[AUTO]")
             {
-                script = "~/DesktopModules/UserDefinedTable/XslStyleSheets/Tracking/Auto.xsl";
+                script = "~/DesktopModules/BCCForms/XslStyleSheets/Tracking/Auto.xsl";
             }
             else
             {

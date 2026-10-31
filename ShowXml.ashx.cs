@@ -6,11 +6,11 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Security.Permissions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     /// <summary>
     /// Summary description for ShowXml

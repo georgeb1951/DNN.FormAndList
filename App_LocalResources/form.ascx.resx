@@ -121,13 +121,13 @@
     <value>Edit Record</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Form and List Module - Edit Records&lt;/h1&gt;
-&lt;p&gt;The Form and List module allows you to define an individual table of data. On this page you can add or edit&amp;#160;records&amp;#160;that contain columns that have been previously defined by a site or page&amp;#160;Administrator in &lt;strong&gt;Form and List Configuration&lt;/strong&gt;.&amp;#160;&lt;/p&gt;
+    <value>&lt;h1&gt;About BCC Forms Module - Edit Records&lt;/h1&gt;
+&lt;p&gt;The BCC Forms module allows you to define an individual table of data. On this page you can add or edit&amp;#160;records&amp;#160;that contain columns that have been previously defined by a site or page&amp;#160;Administrator in &lt;strong&gt;BCC Forms Configuration&lt;/strong&gt;.&amp;#160;&lt;/p&gt;
 &lt;p&gt;Depending on the&amp;#160;column type definition, you can enter a value&amp;#160;in a field or&amp;#160;select a value from a dropdown list. Some&amp;#160;columns&amp;#160;have special&amp;#160;entry functions, for example, with &lt;strong&gt;Date&lt;/strong&gt; columns,&amp;#160;you can select a date from a&amp;#160;popup calendar. To enter a&amp;#160;&lt;strong&gt;Link &lt;/strong&gt;you can choose between an external URL, a link to a page or&amp;#160;a link to a file stored on this site. When you choose &lt;strong&gt;File&lt;/strong&gt;&amp;#160;to&amp;#160;link to a local file, you may choose to upload a file to the site.&lt;/p&gt;
 &lt;p&gt;Click &lt;strong&gt;Update&lt;/strong&gt; to save your changes, or click&amp;#160;&lt;strong&gt;Cancel&lt;/strong&gt; to undo the changes you have made. If the site Administrator has granted permissions, you may&amp;#160;&lt;strong&gt;D&lt;/strong&gt;&lt;strong&gt;elete&lt;/strong&gt;&amp;#160;the current record. If you are adding or editing&amp;#160;records and&amp;#160;you are not&amp;#160;logged into the site, you might need to verify your changes by entering a CAPTCHA&amp;#160;security code.&lt;/p&gt;</value>
   </data>
   <data name="ContentOptions.Action" xml:space="preserve">
-    <value>Form and List Configuration</value>
+    <value>BCC Forms Configuration</value>
   </data>
   <data name="List.Action" xml:space="preserve">
     <value>Show Records</value>

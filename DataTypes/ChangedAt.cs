@@ -1,6 +1,5 @@
-using DotNetNuke.Services.SystemDateTime;
 
-namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
+namespace BCC.Modules.BCCForms.DataTypes
 {
 
     #region EditControl
@@ -14,7 +13,7 @@ namespace DotNetNuke.Modules.UserDefinedTable.DataTypes
     {
         public override string Value
         {
-            get { return Common.Utilities.DateUtils.GetDatabaseUtcTime().ToString("s"); }
+            get { return DotNetNuke.Common.Utilities.DateUtils.GetDatabaseUtcTime().ToString("s"); }
             
             set { base.Value = value; }
         }

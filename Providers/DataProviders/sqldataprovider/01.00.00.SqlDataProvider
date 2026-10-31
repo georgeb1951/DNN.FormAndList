@@ -1,0 +1,563 @@
+/************************************************************/
+/*****  BCCForms 01.00.00 - fresh install                *****/
+/*****  Schema derived from DNN Form and List 06.05.08   *****/
+/*****  (MIT licensed, DNN Community) and renamed.       *****/
+/************************************************************/
+
+/** Tables **/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_Rows]') AND type = N'U')
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}BCCForms_Rows]
+    (
+        [UserDefinedRowId] INT NOT NULL IDENTITY(1, 1),
+        [ModuleId]         INT NOT NULL,
+        [CreatedAt]        DATETIME NULL,
+        CONSTRAINT [PK_{objectQualifier}BCCForms_Rows] PRIMARY KEY CLUSTERED ([UserDefinedRowId]),
+        CONSTRAINT [FK_{objectQualifier}BCCForms_Rows_Modules] FOREIGN KEY ([ModuleId])
+            REFERENCES {databaseOwner}[{objectQualifier}Modules] ([ModuleID]) ON DELETE CASCADE
+    )
+    CREATE NONCLUSTERED INDEX [IX_{objectQualifier}BCCForms_Rows] ON {databaseOwner}[{objectQualifier}BCCForms_Rows] ([ModuleId], [CreatedAt])
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_Fields]') AND type = N'U')
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}BCCForms_Fields]
+    (
+        [UserDefinedFieldId] INT NOT NULL IDENTITY(1, 1),
+        [ModuleId]           INT NOT NULL,
+        [FieldTitle]         NVARCHAR(2000) NOT NULL,
+        [Visible]            BIT NOT NULL,
+        [FieldOrder]         INT NOT NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_FieldOrder] DEFAULT (0),
+        [FieldType]          VARCHAR(20) NOT NULL,
+        [Required]           BIT NOT NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_Required] DEFAULT (0),
+        [Default]            NVARCHAR(2000) NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_Default] DEFAULT (''),
+        [OutputSettings]     NVARCHAR(2000) NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_OutputSettings] DEFAULT (''),
+        [InputSettings]      NVARCHAR(MAX) NULL,
+        [ValidationRule]     NVARCHAR(512) NULL,
+        [ValidationMessage]  NVARCHAR(512) NULL,
+        [NormalizeFlag]      BIT NOT NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_NormalizeFlag] DEFAULT (0),
+        [HelpText]           NVARCHAR(MAX) NULL,
+        [Searchable]         BIT NOT NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_Searchable] DEFAULT (0),
+        [ShowOnEdit]         BIT NOT NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_ShowOnEdit] DEFAULT (1),
+        [PrivateField]       BIT NOT NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_PrivateField] DEFAULT (0),
+        [EditStyle]          NVARCHAR(512) NULL,
+        [MultipleValues]     BIT NOT NULL CONSTRAINT [DF_{objectQualifier}BCCForms_Fields_MultipleValues] DEFAULT (0),
+        CONSTRAINT [PK_{objectQualifier}BCCForms_Fields] PRIMARY KEY CLUSTERED ([UserDefinedFieldId]),
+        CONSTRAINT [FK_{objectQualifier}BCCForms_Fields_Modules] FOREIGN KEY ([ModuleId])
+            REFERENCES {databaseOwner}[{objectQualifier}Modules] ([ModuleID]) ON DELETE CASCADE
+    )
+    CREATE NONCLUSTERED INDEX [IX_{objectQualifier}BCCForms_Fields_ModuleId] ON {databaseOwner}[{objectQualifier}BCCForms_Fields] ([ModuleId])
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_Data]') AND type = N'U')
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}BCCForms_Data]
+    (
+        [UserDefinedFieldId] INT NOT NULL,
+        [UserDefinedRowId]   INT NOT NULL,
+        [FieldValue]         NVARCHAR(MAX) NULL,
+        CONSTRAINT [PK_{objectQualifier}BCCForms_Data] PRIMARY KEY CLUSTERED ([UserDefinedFieldId], [UserDefinedRowId]),
+        CONSTRAINT [FK_{objectQualifier}BCCForms_Data_Fields] FOREIGN KEY ([UserDefinedFieldId])
+            REFERENCES {databaseOwner}[{objectQualifier}BCCForms_Fields] ([UserDefinedFieldId]),
+        CONSTRAINT [FK_{objectQualifier}BCCForms_Data_Rows] FOREIGN KEY ([UserDefinedRowId])
+            REFERENCES {databaseOwner}[{objectQualifier}BCCForms_Rows] ([UserDefinedRowId]) ON DELETE CASCADE
+    )
+    CREATE NONCLUSTERED INDEX [IX_{objectQualifier}BCCForms_Data_RowId] ON {databaseOwner}[{objectQualifier}BCCForms_Data] ([UserDefinedRowId])
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_FieldSettings]') AND type = N'U')
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}BCCForms_FieldSettings]
+    (
+        [FieldId]      INT NOT NULL,
+        [SettingName]  NVARCHAR(50) NOT NULL,
+        [SettingValue] NVARCHAR(MAX) NULL,
+        CONSTRAINT [PK_{objectQualifier}BCCForms_FieldSettings] PRIMARY KEY CLUSTERED ([FieldId], [SettingName]),
+        CONSTRAINT [FK_{objectQualifier}BCCForms_FieldSettings_Fields] FOREIGN KEY ([FieldId])
+            REFERENCES {databaseOwner}[{objectQualifier}BCCForms_Fields] ([UserDefinedFieldId]) ON DELETE CASCADE
+    )
+END
+GO
+
+/** Stored procedures **/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_AddData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddData]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddData]
+@UserDefinedRowId    int,
+@UserDefinedFieldId  int,
+@FieldValue          nvarchar(max)
+AS
+INSERT INTO {databaseOwner}[{objectQualifier}dbo.BCCForms_Data]
+			( UserDefinedFieldId,  UserDefinedRowId,  FieldValue)
+	 VALUES (@UserDefinedFieldId, @UserDefinedRowId, @FieldValue)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_AddField]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddField]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddField]
+@ModuleId       INT,
+@FieldTitle     NVARCHAR(2000),
+@BeforePos      INT,
+@HelpText       NVARCHAR(MAX),
+@Required       BIT,
+@FieldType      VARCHAR(20),
+@Default       NVARCHAR(2000),
+@Visible        BIT,
+@ShowOnEdit     BIT,
+@Searchable     BIT,
+@Private        BIT,
+@MultipleValues BIT,
+@InputSettings  NVARCHAR(MAX),
+@OutputSettings NVARCHAR(2000),
+@NormalizeFlag  BIT, 
+@ValidationRule NVARCHAR(512),
+@ValidationMessage NVARCHAR(512),
+@EditStyle NVarChar(512)
+AS
+DECLARE @InsPos INT
+/* find insert position and adjust field order of subsequent fields: */
+SET @InsPos = (SELECT MAX(FieldOrder) AS MaxPos FROM {databaseOwner}{objectQualifier}BCCForms_Fields WHERE ModuleID = @ModuleID GROUP BY ModuleID) + 1 
+IF @InsPos IS Null SET @InsPos = 1
+IF @BeforePos Is Null SET @BeforePos = @InsPos
+IF @InsPos > @BeforePos BEGIN
+        UPDATE [{objectQualifier}BCCForms_Fields]
+        SET FieldOrder = FieldOrder + 1
+        WHERE ModuleID = @ModuleID AND FieldOrder >= @BeforePos
+        SET  @InsPos = @BeforePos 
+    END
+        
+INSERT INTO {databaseOwner}[{objectQualifier}BCCForms_Fields] ( 
+    ModuleId,
+    FieldTitle,
+    HelpText,
+    Required,
+    FieldType,
+    FieldOrder,
+    [Default],
+    Visible,
+    ShowOnEdit,
+    Searchable,
+    PrivateField,
+	MultipleValues,
+    InputSettings,
+    OutputSettings, 
+    NormalizeFlag,
+    ValidationRule,
+    ValidationMessage,
+    EditStyle 
+)
+VALUES (
+    @ModuleId,
+    @FieldTitle,
+    @HelpText,
+    @Required,
+    @FieldType,
+    @InsPos,
+    @Default,
+    @Visible,
+    @ShowOnEdit,
+    @Searchable,
+    @Private,
+	@MultipleValues,
+    @InputSettings,
+    @OutputSettings,
+    @NormalizeFlag,
+    @ValidationRule, 
+    @ValidationMessage,
+    @EditStyle
+)
+SELECT SCOPE_IDENTITY()
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_AddRow]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddRow]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_AddRow]
+@ModuleId         int
+AS
+INSERT INTO {databaseOwner}{objectQualifier}BCCForms_Rows ( 
+  ModuleId, CreatedAt
+)
+VALUES (
+  @ModuleId, GETUTCDATE()
+)
+SELECT SCOPE_IDENTITY()
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_DeleteData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteData]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}BCCForms_DeleteData
+@UserDefinedRowId    int, 
+@UserDefinedFieldId  int
+AS
+DELETE 
+FROM {objectQualifier}BCCForms_Data
+WHERE  UserDefinedFieldId = @UserDefinedFieldId
+AND    UserDefinedRowId = @UserDefinedRowId
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_DeleteField]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteField]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteField]
+@UserDefinedFieldId    int 
+AS
+DELETE FROM {databaseOwner}[{objectQualifier}BCCForms_Data]
+WHERE (UserDefinedFieldId = @UserDefinedFieldId)
+DELETE FROM {databaseOwner}[{objectQualifier}BCCForms_Fields]
+WHERE  UserDefinedFieldId = @UserDefinedFieldId
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_DeleteRow]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteRow]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}BCCForms_DeleteRow
+
+	@UserDefinedRowId    int,
+	@ModuleID    int
+AS
+DELETE 
+FROM {databaseOwner}{objectQualifier}BCCForms_Rows
+WHERE  UserDefinedRowId = @UserDefinedRowId AND ModuleId=@ModuleID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_DeleteRows]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_DeleteRows]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}BCCForms_DeleteRows
+	@ModuleID    int
+AS
+DELETE 
+FROM {databaseOwner}{objectQualifier}BCCForms_Rows
+WHERE  ModuleId=@ModuleID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_FillDefaultData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_FillDefaultData]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_FillDefaultData]
+@ModuleID         INT,
+@FieldId          INT, /* can be null for any field */
+@DefaultValue	  NVarChar(max) /*can be Null to copy default expression (no evaluation!) */
+AS
+IF @DefaultValue is Null
+	INSERT INTO {databaseOwner}[{objectQualifier}BCCForms_Data] (UserDefinedFieldId, UserDefinedRowId, FieldValue)
+	SELECT F.UserDefinedFieldId, R.UserDefinedRowId, [Default]
+	FROM ({databaseOwner}[{objectQualifier}BCCForms_Fields] F       
+	INNER JOIN {databaseOwner}[{objectQualifier}BCCForms_Rows] R ON F.ModuleId = R.ModuleId)      
+	LEFT JOIN  {databaseOwner}[{objectQualifier}BCCForms_Data] D ON F.UserDefinedFieldId = D.UserDefinedFieldId AND R.UserDefinedRowId = D.UserDefinedRowId
+	WHERE (D.UserDefinedRowID Is Null) AND ([Default] IS Not Null) AND (@ModuleID = F.ModuleId) AND (@FieldId IS Null OR F.UserDefinedFieldId = @FieldId)
+ ELSE
+	INSERT INTO {databaseOwner}[{objectQualifier}BCCForms_Data] (UserDefinedFieldId, UserDefinedRowId, FieldValue)
+	SELECT @FieldId, R.UserDefinedRowId, @DefaultValue
+	FROM ({databaseOwner}[{objectQualifier}BCCForms_Fields] F       
+	INNER JOIN {databaseOwner}[{objectQualifier}BCCForms_Rows] R ON F.ModuleId = R.ModuleId)      
+	LEFT JOIN  {databaseOwner}[{objectQualifier}BCCForms_Data] D ON F.UserDefinedFieldId = D.UserDefinedFieldId AND R.UserDefinedRowId = D.UserDefinedRowId
+	WHERE (D.UserDefinedRowID Is Null) AND (@ModuleID = F.ModuleId) AND (@FieldId IS Null OR F.UserDefinedFieldId = @FieldId)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetData]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}BCCForms_GetData
+@UserDefinedRowId    int,
+@UserDefinedFieldId  int
+AS
+SELECT * 
+FROM   {databaseOwner}{objectQualifier}BCCForms_Data 
+WHERE  UserDefinedFieldId = @UserDefinedFieldId 
+AND    UserDefinedRowId = @UserDefinedRowId
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetField]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetField]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetField]
+@UserDefinedFieldId  INT
+AS
+SELECT UserDefinedFieldId,
+    ModuleID,
+    FieldTitle,
+    HelpText,
+    Required,
+    FieldOrder,
+    FieldType, 
+    [default],
+    Visible,
+    ShowOnEdit,
+    Searchable,
+    PrivateField,
+	MultipleValues,
+    InputSettings,
+    OutputSettings, 
+    NormalizeFlag,
+    ValidationRule,
+    ValidationMessage,
+    EditStyle
+FROM {databaseOwner}[{objectQualifier}BCCForms_Fields]
+WHERE UserDefinedFieldId = @UserDefinedFieldId
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetFieldDataCount]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFieldDataCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFieldDataCount]
+@FieldId INT
+AS
+SELECT COUNT(*) FROM  {databaseOwner}[{objectQualifier}BCCForms_Data] WHERE  (UserDefinedFieldId = @FieldId)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetFieldSettings]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFieldSettings]
+GO
+
+Create PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFieldSettings]
+@ModuleId   int
+AS
+SELECT        UDFS.FieldId, UDFS.SettingName, UDFS.SettingValue
+FROM            {databaseOwner}[{objectQualifier}BCCForms_Fields] UDF INNER JOIN
+                         {databaseOwner}[{objectQualifier}BCCForms_FieldSettings] UDFS ON UDF.UserDefinedFieldId = UDFS.FieldId
+WHERE        (UDF.ModuleId = @ModuleId)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetFields]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFields]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetFields]
+@ModuleId  INT
+AS
+SELECT UserDefinedFieldId,
+        ModuleID,
+        FieldTitle,
+        HelpText,
+        Required,
+        FieldOrder,
+        FieldType,
+        [default],
+        Visible,
+        ShowOnEdit,
+        Searchable,
+        PrivateField,
+		MultipleValues,
+        InputSettings,
+        OutputSettings, 
+        NormalizeFlag,
+        ValidationRule,
+        ValidationMessage,
+        EditStyle
+FROM {databaseOwner}[{objectQualifier}BCCForms_Fields]
+WHERE  ModuleId = @ModuleId
+ORDER BY FieldOrder
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRow]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRow]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRow]
+@UserDefinedRowId   int,
+@ModuleId           int
+AS
+SELECT 
+	D.UserDefinedRowId,
+	F.FieldTitle,
+	D.FieldValue
+FROM {databaseOwner}[{objectQualifier}BCCForms_Data] D
+INNER JOIN {databaseOwner}[{objectQualifier}BCCForms_Fields] F on D.UserDefinedFieldId = F.UserDefinedFieldId
+WHERE  D.UserDefinedRowId = @UserDefinedRowId
+AND    F.ModuleId = @ModuleId
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRows]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRows]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}BCCForms_GetRows
+@ModuleId    int 
+AS
+SELECT R.UserDefinedRowId,
+       F.FieldTitle,
+       D.FieldValue
+FROM {databaseOwner}{objectQualifier}BCCForms_Rows R
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}BCCForms_Data D on R.UserDefinedRowId = D.UserDefinedRowId
+INNER JOIN {databaseOwner}{objectQualifier}BCCForms_Fields F on D.UserDefinedFieldId = F.UserDefinedFieldId 
+WHERE  R.ModuleId = @ModuleId
+ORDER by R.UserDefinedRowID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRowsWithDates]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRowsWithDates]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRowsWithDates]
+	@ModuleId INT,
+	@From DATETIME,
+	@To DATETIME
+AS
+SELECT R.UserDefinedRowId,
+       F.FieldTitle,
+       D.FieldValue
+FROM {databaseOwner}{objectQualifier}BCCForms_Rows R
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}BCCForms_Data D on R.UserDefinedRowId = D.UserDefinedRowId
+INNER JOIN {databaseOwner}{objectQualifier}BCCForms_Fields F on D.UserDefinedFieldId = F.UserDefinedFieldId 
+WHERE  R.ModuleId = @ModuleId
+AND R.CreatedAt BETWEEN @From AND @To
+ORDER by R.UserDefinedRowID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_Reset]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_Reset]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_Reset]
+@ModuleId  INT
+AS
+DELETE FROM {databaseOwner}[{objectQualifier}BCCForms_Rows]   WHERE (ModuleId = @ModuleId)
+DELETE FROM {databaseOwner}[{objectQualifier}BCCForms_Fields] WHERE (ModuleId = @ModuleId)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_SetFieldOrder]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_SetFieldOrder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_SetFieldOrder]
+	  @UserDefinedFieldId   INT,
+      @FieldOrder   INT
+    as 
+	DECLARE @id INT
+    DECLARE @Pos INT
+    SET @id =  (SELECT        UDF.UserDefinedFieldId
+                FROM          {databaseOwner}[{objectQualifier}BCCForms_Fields] AS UDF INNER JOIN
+                                          {databaseOwner}[{objectQualifier}BCCForms_Fields] AS ModuleFields ON UDF.ModuleId = ModuleFields.ModuleId
+                WHERE        (UDF.FieldOrder = @FieldOrder) AND (ModuleFields.UserDefinedFieldId = @UserDefinedFieldId))
+    SET @Pos = (SELECT FieldOrder FROM {databaseOwner}[{objectQualifier}BCCForms_Fields] WHERE UserDefinedFieldId = @UserDefinedFieldId)
+
+    UPDATE {databaseOwner}[{objectQualifier}BCCForms_Fields] SET FieldOrder = -1    WHERE UserDefinedFieldId = @id
+    UPDATE {databaseOwner}[{objectQualifier}BCCForms_Fields] SET FieldOrder = @FieldOrder    WHERE UserDefinedFieldId = @UserDefinedFieldId
+    UPDATE {databaseOwner}[{objectQualifier}BCCForms_Fields] SET FieldOrder = @Pos WHERE UserDefinedFieldId = @Id
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_SwapFieldOrder]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_SwapFieldOrder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_SwapFieldOrder]
+@FirstUserDefinedFieldId   INT,
+@SecndUserDefinedFieldId   INT
+AS
+DECLARE @Pos1 INT
+DECLARE @Pos2 INT
+SET @Pos1 = (SELECT FieldOrder FROM {databaseOwner}{objectQualifier}BCCForms_Fields WHERE UserDefinedFieldId = @FirstUserDefinedFieldId)
+SET @Pos2 = (SELECT FieldOrder FROM {databaseOwner}{objectQualifier}BCCForms_Fields WHERE UserDefinedFieldId = @SecndUserDefinedFieldId)
+
+UPDATE {objectQualifier}BCCForms_Fields SET FieldOrder = -1    WHERE UserDefinedFieldId = @SecndUserDefinedFieldId
+UPDATE {objectQualifier}BCCForms_Fields SET FieldOrder = @Pos2 WHERE UserDefinedFieldId = @FirstUserDefinedFieldId
+UPDATE {objectQualifier}BCCForms_Fields SET FieldOrder = @Pos1 WHERE UserDefinedFieldId = @SecndUserDefinedFieldId
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_UpdateData]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_UpdateData]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_UpdateData]
+@UserDefinedRowId    int,
+@UserDefinedFieldId  int,
+@FieldValue           NVarChar(max)
+AS
+	DELETE FROM {databaseOwner}[{objectQualifier}BCCForms_Data] 
+	WHERE UserDefinedFieldId = @UserDefinedFieldId
+	AND UserDefinedRowId = @UserDefinedRowId
+
+	IF @FieldValue NOT LIKE ''
+		INSERT INTO {databaseOwner}[{objectQualifier}BCCForms_Data] 
+			   ( UserDefinedFieldId,  UserDefinedRowId, FieldValue)
+		VALUES (@UserDefinedFieldId, @UserDefinedRowId,@FieldValue)
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_UpdateField]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_UpdateField]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_UpdateField]
+@UserDefinedFieldId   INT,
+@FieldTitle           NVARCHAR(2000),
+@HelpText             NVARCHAR(512),
+@Required             BIT,
+@FieldType            VARCHAR(20),
+@default			  NVARCHAR(2000), 
+@Visible              BIT,
+@ShowOnEdit           BIT,
+@Searchable			  BIT,
+@Private              BIT,
+@MultipleValues		  BIT,
+@InputSettings        NVARCHAR(2000),
+@OutputSettings       NVARCHAR(2000),
+@NormalizeFlag        BIT,
+@ValidationRule       NVARCHAR(512),
+@ValidationMessage    NVARCHAR(512),
+@EditStyle NVarChar(512)
+
+AS
+UPDATE {databaseOwner}[{objectQualifier}BCCForms_Fields]
+SET    FieldTitle = @FieldTitle,
+        HelpText = @HelpText,
+        Required = @Required,
+        FieldType = @FieldType,
+        [default] = @default,
+        Visible = @Visible,
+        ShowOnEdit = @ShowOnEdit,
+        Searchable = @Searchable,
+        PrivateField = @Private,
+		MultipleValues = @MultipleValues,
+        InputSettings = @InputSettings, 
+        OutputSettings = @OutputSettings, 
+        NormalizeFlag = @NormalizeFlag,
+        ValidationRule = @ValidationRule,
+        ValidationMessage = @ValidationMessage,
+        EditStyle=@EditStyle
+WHERE UserDefinedFieldId = @UserDefinedFieldId
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_UpdateFieldSetting]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_UpdateFieldSetting]
+GO
+
+Create PROCEDURE  {databaseOwner}[{objectQualifier}BCCForms_UpdateFieldSetting]
+@fieldId int, 
+@SettingName nvarchar(50), 
+@SettingValue nvarchar(max)
+AS
+DELETE FROM {databaseOwner}[{objectQualifier}BCCForms_FieldSettings]
+WHERE        (FieldId = @fieldId) AND (SettingName = @SettingName)
+INSERT INTO {databaseOwner}[{objectQualifier}BCCForms_FieldSettings]
+                         (FieldId, SettingName, SettingValue)
+           VALUES        (@fieldId,@SettingName,@SettingValue)
+GO
+
+/** Allow CSV uploads (used by Import CSV) **/
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET    SettingValue = SettingValue + N',csv'
+WHERE  SettingName = N'FileExtensions'
+  AND  SettingValue NOT LIKE N'csv,%'
+  AND  SettingValue NOT LIKE N'%,csv,%'
+  AND  SettingValue NOT LIKE N'%,csv'
+  AND  SettingValue <> N'csv'
+GO

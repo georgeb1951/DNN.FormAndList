@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Control Language="C#" Inherits="DotNetNuke.Modules.UserDefinedTable.Token2Xsl"
+<%@ Control Language="C#" Inherits="BCC.Modules.BCCForms.Token2Xsl"
     TargetSchema="http://schemas.microsoft.com/intellisense/ie5" Codebehind="Token2Xsl.ascx.cs" AutoEventWireup="false" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <%-- Custom JavaScript Registration --%>

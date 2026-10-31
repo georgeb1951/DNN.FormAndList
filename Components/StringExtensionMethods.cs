@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public static class StringExtensionMethods
     {

@@ -12,12 +12,12 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Interfaces;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.EventQueue;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Serialization
+namespace BCC.Modules.BCCForms.Serialization
 {
     public class ModuleSerializationController
     {

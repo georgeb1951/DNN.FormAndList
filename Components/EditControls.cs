@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Interfaces;
 using DotNetNuke.UI.Modules;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

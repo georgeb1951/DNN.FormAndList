@@ -9,8 +9,8 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Modules.UserDefinedTable.Components;
-using DotNetNuke.Modules.UserDefinedTable.Interfaces;
+using BCC.Modules.BCCForms.Components;
+using BCC.Modules.BCCForms.Interfaces;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -24,7 +24,7 @@ using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Abstractions.Portals;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     public partial class EditForm : PortalModuleBase, IActionable, IFormEvents
     {
@@ -577,7 +577,7 @@ namespace DotNetNuke.Modules.UserDefinedTable
                     else
                     {
                         var moduleControl = (PortalModuleBase)(((Parent.Parent) is PortalModuleBase) ? Parent.Parent : this);
-                        UI.Skins.Skin.AddModuleMessage(moduleControl, string.Format("<ul style=\"padding-left:1.6em;padding-bottom:0;\">{0}</ul>", warningMessage),
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(moduleControl, string.Format("<ul style=\"padding-left:1.6em;padding-bottom:0;\">{0}</ul>", warningMessage),
                                                        ModuleMessage.ModuleMessageType.RedError);
                     }
                 }

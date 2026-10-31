@@ -3,14 +3,14 @@ using System.IO;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Modules.UserDefinedTable.Components;
+using BCC.Modules.BCCForms.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     public partial class Default : PortalModuleBase, IActionable
     {

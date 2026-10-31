@@ -1,4 +1,4 @@
-<%@ Control Language="C#"  Inherits="DotNetNuke.Modules.UserDefinedTable.EditForm" CodeBehind="Form.ascx.cs" AutoEventWireup="false" %>
+<%@ Control Language="C#"  Inherits="BCC.Modules.BCCForms.EditForm" CodeBehind="Form.ascx.cs" AutoEventWireup="false" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/TimePicker/Themes/jquery-ui.css"/>
 <dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/TimePicker/Themes/jquery.ui.theme.css"/>

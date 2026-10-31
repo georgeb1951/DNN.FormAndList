@@ -148,7 +148,7 @@
     <value>Help Text</value>
   </data>
   <data name="ControlTitle_manage.Text" xml:space="preserve">
-    <value>Form and List Configuration</value>
+    <value>BCC Forms Configuration</value>
   </data>
   <data name="DataGrid.Text" xml:space="preserve">
     <value>Default Grid Table</value>
@@ -160,8 +160,8 @@
     <value>Descending</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;Form and List Configuration&lt;/h1&gt;
-&lt;p&gt;The &lt;strong&gt;Form and List &lt;/strong&gt; module stores its data inside a table. The table and its columns are defined by the user, which is the origin of the former name for this module: "User Defined Table".  The following data types are available for defining columns:&lt;/p&gt;
+    <value>&lt;h1&gt;BCC Forms Configuration&lt;/h1&gt;
+&lt;p&gt;The &lt;strong&gt;BCC Forms &lt;/strong&gt; module stores its data inside a table. The table and its columns are defined by the user, which is the origin of the former name for this module: "BCC Forms".  The following data types are available for defining columns:&lt;/p&gt;
 &lt;ul&gt;
     &lt;li&gt;Text&lt;/li&gt;
     &lt;li&gt;Rich Text (HTML)&lt;/li&gt;
@@ -182,10 +182,10 @@
 &lt;/ul&gt;
 &lt;p&gt;Individual columns can be configured&amp;#160;visible only&amp;#160;for site Administrator accounts&amp;#160;or&amp;#160;visible by specific&amp;#160;Roles&amp;#160;granted&amp;#160;permission to see all columns. You can specify a column default value and designate if a value is required or optional.&lt;/p&gt;
 &lt;p&gt;For the default Grid Table Display Setting, column headings are also links that when clicked, reorder the column&amp;#160;data alphanumerically from&amp;#160;A-Z or Z-A. You can predefine a sorting column,&amp;#160;and by specifying a page size, you may activate the built-in multi-paging controls. For&amp;#160;type URL column, you can specify static link text, and for images, you may preset&amp;#160;the maximum display size so all&amp;#160;images get scaled proportionally to fit.&lt;/p&gt;
-&lt;h1&gt;Quick Start: Setup Form and List&lt;/h1&gt;
+&lt;h1&gt;Quick Start: Setup BCC Forms&lt;/h1&gt;
 &lt;ol&gt;
-    &lt;li&gt;Add a new instance of Form and List to an existing page;&lt;/li&gt;
-    &lt;li&gt;Select &lt;strong&gt;Form and List Configuration &lt;/strong&gt;from the module's Action Menu;&lt;/li&gt;
+    &lt;li&gt;Add a new instance of BCC Forms to an existing page;&lt;/li&gt;
+    &lt;li&gt;Select &lt;strong&gt;BCC Forms Configuration &lt;/strong&gt;from the module's Action Menu;&lt;/li&gt;
     &lt;li&gt;Click &lt;strong&gt;Add New Column&lt;/strong&gt;;&lt;/li&gt;
     &lt;li&gt;Enter a &lt;strong&gt;Title&lt;/strong&gt; for the column that will be displayed as column header. Note&amp;#160;that some special characters are not allowed in Title names;&lt;/li&gt;
     &lt;li&gt;Choose the desired data&lt;strong&gt; Type&lt;/strong&gt; for this column;&lt;/li&gt;
@@ -206,7 +206,7 @@
     &lt;li&gt;Using SQL, you may choose to&amp;#160;&lt;strong&gt;Filter&lt;/strong&gt; which records&amp;#160;will appear in this module instance&lt;/li&gt;
     &lt;li&gt;You may&amp;#160;enable the &lt;strong&gt;Search&lt;/strong&gt; function. Enable &lt;strong&gt;Show Search Box&lt;/strong&gt;, then choose options to &lt;strong&gt;Show no records until Search&lt;/strong&gt; and enable&amp;#160;&lt;strong&gt;Simple Search&lt;/strong&gt; to display only&amp;#160;a Search Box (and help). Disable Simple Search for more detailed search&amp;#160;conditional&amp;#160;options&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;You can display Form and List data in any layout&amp;#160;or format&amp;#160;you choose using XML&amp;#160;and XSL style sheets. The module includes a set of built in XSL Transformation (XSLT) files that you may use as a starting point to creating more advanced and customized XSLT of your own. XSL Transformations offer you maximum&amp;#160;flexibility for presenting &amp;#160;your data.&lt;/p&gt;
+&lt;p&gt;You can display BCC Forms data in any layout&amp;#160;or format&amp;#160;you choose using XML&amp;#160;and XSL style sheets. The module includes a set of built in XSL Transformation (XSLT) files that you may use as a starting point to creating more advanced and customized XSLT of your own. XSL Transformations offer you maximum&amp;#160;flexibility for presenting &amp;#160;your data.&lt;/p&gt;
 &lt;p&gt;Two very powerful options are available for helping you work with XSL transformations. These features are especially useful for debugging and learning more about XSL transformations syntax.&lt;/p&gt;
 &lt;ol&gt;
     &lt;li&gt;Choose &lt;strong&gt;Display Settings&lt;/strong&gt; &amp;gt; Rendering Method: &lt;strong&gt;XSLT using built-in stylesheets&lt;/strong&gt;, then select a &lt;strong&gt;XSL File &lt;/strong&gt;from the dropdown list&lt;/li&gt;
@@ -495,7 +495,7 @@
     <value>Data Table Setup</value>
   </data>
   <data name="UdtTeaser.Text" xml:space="preserve">
-    <value>Specify the "User Defined Table" columns you wish to include in your Form or List.</value>
+    <value>Specify the "BCC Forms" columns you wish to include in your Form or List.</value>
   </data>
   <data name="lblOnSubmissionRedirect.Help" xml:space="preserve">
     <value>Page or URL you want to redirect the user after submission</value>

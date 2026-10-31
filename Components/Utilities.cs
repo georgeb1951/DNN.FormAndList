@@ -12,7 +12,7 @@ using DotNetNuke.Services.FileSystem;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace DotNetNuke.Modules.UserDefinedTable.Components
+namespace BCC.Modules.BCCForms.Components
 {
     public  static class Utilities
     {

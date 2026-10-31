@@ -3,7 +3,7 @@ using System.Diagnostics;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Modules.UserDefinedTable
+namespace BCC.Modules.BCCForms
 {
     public partial class HelpPopup : PageBase
     {

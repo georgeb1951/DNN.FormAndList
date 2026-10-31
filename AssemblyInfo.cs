@@ -1,15 +1,15 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-[assembly: AssemblyTitle("DotNetNuke.Modules.UserDefinedTable")]
-[assembly: AssemblyDescription("DNN Form and List ")]
-[assembly: AssemblyCompany("DNN Community")]
-[assembly: AssemblyCopyright("2021 DNN Community")]
+[assembly: AssemblyTitle("BCC.Modules.BCCForms")]
+[assembly: AssemblyDescription("BCC Forms - forms and lists module for DNN 10 (derived from DNN Form and List, MIT)")]
+[assembly: AssemblyCompany("BCC")]
+[assembly: AssemblyProduct("BCC Forms")]
+[assembly: AssemblyCopyright("Copyright (c) 2026 BCC; portions (c) 2015-2021 DNN Community")]
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
 
 
-[assembly: AssemblyVersion("06.05.09.00")]
+[assembly: AssemblyVersion("1.0.0.0")]
 [assembly: CLSCompliant(true)]
-[assembly: AssemblyFileVersion("06.05.08.00")]
-
+[assembly: AssemblyFileVersion("1.0.0.0")]

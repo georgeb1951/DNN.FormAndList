@@ -255,19 +255,19 @@
 &lt;p&gt;Choose between different layout constructs: Table, Paragraphs and Lists with custom separators.&lt;/p&gt;
 &lt;p&gt;We recommend that you&amp;#160;start with a default view and modify the HTML template to fit your needs. Add additional fields using the column selector.&lt;/p&gt;
 &lt;p&gt;After you create your HTML template, convert it to an XSL template, then add additional&amp;#160;code before you save it as a file.&lt;/p&gt;
-&lt;p&gt;Click &lt;strong&gt;Back&lt;/strong&gt; to return to&amp;#160;&lt;strong&gt;Form and List Configuration&lt;/strong&gt;.&lt;/p&gt;</value>
+&lt;p&gt;Click &lt;strong&gt;Back&lt;/strong&gt; to return to&amp;#160;&lt;strong&gt;BCC Forms Configuration&lt;/strong&gt;.&lt;/p&gt;</value>
   </data>
   <data name="lblEnableSorting.Text" xml:space="preserve">
     <value>Add Sorting Support to the Style Sheet</value>
   </data>
   <data name="lblEnableSorting.Help" xml:space="preserve">
-    <value>Enable this setting to sort displayed records&lt;br&gt;according to the Sort Column and Sort Direction&lt;br&gt;specified in Form and List Configuration.</value>
+    <value>Enable this setting to sort displayed records&lt;br&gt;according to the Sort Column and Sort Direction&lt;br&gt;specified in BCC Forms Configuration.</value>
   </data>
   <data name="lblEnablePaging.Text" xml:space="preserve">
     <value>Add Paging Support to the Style Sheet</value>
   </data>
   <data name="lblEnablePaging.Help" xml:space="preserve">
-    <value>Enable this setting to add a pager for the displayed list.&lt;br&gt;Paging is specified in Form and List Configuration.</value>
+    <value>Enable this setting to add a pager for the displayed list.&lt;br&gt;Paging is specified in BCC Forms Configuration.</value>
   </data>
   <data name="lblEnableSearch.Text" xml:space="preserve">
     <value>Add Search Box to the Style Sheet</value>
