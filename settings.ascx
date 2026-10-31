@@ -28,7 +28,7 @@
         <dnn:Label ID="lblForceCaptcha" runat="server" Suffix=":" ControlName="ddlCaptcha" />
         <asp:DropDownList ID="ddlCaptcha" runat="server" />
     </div>
-    <%-- shown by the script below when reCAPTCHA is selected; inline display:none so they stay
+    <%-- shown by the script below for the provider modes; inline display:none so they stay
          hidden even if the host page doesn't load module.css --%>
     <div class="dnnFormItem siteKeyRow" style="display:none;">
         <dnn:Label ID="lblSiteKey" runat="server" Suffix=":" ControlName="txtSiteKey" />
@@ -38,33 +38,29 @@
         <dnn:Label ID="lblSecretKey" runat="server" Suffix=":" ControlName="txtSecretKey" />
         <asp:TextBox ID="txtSecretKey" runat="server" />
     </div>
+    <div class="dnnFormItem minScoreRow" style="display:none;">
+        <dnn:Label ID="lblMinScore" runat="server" Suffix=":" ControlName="txtMinScore" />
+        <asp:TextBox ID="txtMinScore" runat="server" MaxLength="4" CssClass="bccf-num" />
+        <asp:RegularExpressionValidator ID="valMinScore" runat="server" ControlToValidate="txtMinScore"
+            ValidationExpression="^(0(\.\d+)?|1(\.0+)?)$" Display="Dynamic"
+            CssClass="dnnFormMessage dnnFormError" resourcekey="valMinScore" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="lblHoneypot" runat="server" Suffix=":" ControlName="chkHoneypot" />
+        <asp:CheckBox ID="chkHoneypot" runat="server" />
+    </div>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        FnlReCaptcha.update();
-        $('#<%=ddlCaptcha.ClientID %>').change(function () {
-            FnlReCaptcha.update();
-        });
-    });
-    var FnlReCaptcha = {
-        update: function () {
-            if ($('#<%=ddlCaptcha.ClientID%>').val() == "ReCaptcha")
-            {
-                this.showControls();
-            }
-            else {
-                this.hideControls();
-            }
-        },
-        showControls: function () {
-            $('.siteKeyRow').show('slow');
-            $('.secretKeyRow').show('slow');
-        },
-        hideControls: function () {
-            $('.siteKeyRow').hide('slow');
-            $('.secretKeyRow').hide('slow');
+        var $mode = $('#<%=ddlCaptcha.ClientID %>');
+        function update(speed) {
+            var mode = $mode.val();
+            var usesKeys = mode === 'ReCaptchaV2' || mode === 'ReCaptchaV3' || mode === 'Turnstile';
+            $('.siteKeyRow, .secretKeyRow')[usesKeys ? 'show' : 'hide'](speed);
+            $('.minScoreRow')[mode === 'ReCaptchaV3' ? 'show' : 'hide'](speed);
         }
-
-    };
+        update(0);
+        $mode.change(function () { update('slow'); });
+    });
 </script>

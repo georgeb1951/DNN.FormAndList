@@ -3,7 +3,10 @@
 <div runat="server" id="divForm"  class="dnnForm dnnClear bccForms bccf-form">
 
     <div runat="server" ID="EditFormPlaceholder"  />
-    <asp:Panel ID="gRecaptcha" CssClass="recaptcha-container" runat="server" />
+    <%-- spam protection: provider widget (reCAPTCHA / Turnstile), its token, and the honeypot --%>
+    <asp:Panel ID="gRecaptcha" CssClass="recaptcha-container bccf-captcha" runat="server" Visible="False" />
+    <asp:HiddenField ID="hfCaptchaToken" runat="server" />
+    <asp:PlaceHolder ID="phHoneypot" runat="server" />
     <ul class="dnnActions dnnClear">
         <li>
             <asp:LinkButton ID="cmdUpdate" Text="Update" runat="server" resourcekey="cmdUpdate" cssclass="dnnPrimaryAction reCaptchaSubmit" />

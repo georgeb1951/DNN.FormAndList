@@ -142,7 +142,7 @@
     <Compile Include="Components\GravatarPropertyAccess.cs" />
     <Compile Include="Components\ModuleSecurity.cs" />
     <Compile Include="Components\ModuleServices.cs" />
-    <Compile Include="Components\ReCaptcha.cs" />
+    <Compile Include="Components\CaptchaVerifier.cs" />
     <Compile Include="Components\ReCaptchaReply.cs" />
     <Compile Include="Components\Settings.cs" />
     <Compile Include="Components\StringExtensionMethods.cs" />
@@ -332,6 +332,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="CaptionValueEditor.js" />
+    <Content Include="js\bccforms.captcha.js" />
     <Content Include="Controls\Field.ascx" />
     <Content Include="Controls\Fields.ascx" />
     <Content Include="Controls\FieldSettings.ascx" />

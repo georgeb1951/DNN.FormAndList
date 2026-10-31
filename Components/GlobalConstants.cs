@@ -132,6 +132,12 @@ namespace BCC.Modules.BCCForms.Components
         public const string PreferReCaptcha = "UDT_PreferReCaptcha";
         public const string ReCaptchaSiteKey = "UDT_ReCaptchaSiteKey";
         public const string ReCaptchaSecretKey = "UDT_ReCaptchaPrivateKey";
+        // Spam protection. CaptchaMode supersedes ForceCaptchaForAnonymous + PreferReCaptcha,
+        // which are still written so older builds read a sensible value. The key settings above
+        // hold the reCAPTCHA or Turnstile keys, whichever provider is selected.
+        public const string CaptchaMode = "BCCF_CaptchaMode";
+        public const string ReCaptchaMinScore = "BCCF_ReCaptchaMinScore";
+        public const string UseHoneypot = "BCCF_UseHoneypot";
         public const string ForceInputFiltering = "UDT_ForceFiltering";
         public const string EditOnlyOwnItems = "UDT_EditOnlyOwnItems";
         public const string ExcludeFromSearch = "UDT_ExcludeFromSearch";

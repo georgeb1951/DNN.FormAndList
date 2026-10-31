@@ -403,3 +403,23 @@
 :where(.bccf-xslgen td) > .dnnLabel {
     width: auto;
 }
+
+/* spam protection: provider widget (reCAPTCHA v2 / Turnstile) sits above the buttons,
+   aligned with the field inputs; v3 renders nothing here (Google shows its own badge) */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-captcha {
+    margin: 1em 0 0 var(--bccf-label-offset);
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-captcha:empty {
+    margin: 0;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-captcha-msg {
+    margin: .75em 0 0;
+}
+
+@media (max-width: 575.98px) {
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-captcha {
+        margin-left: 0;
+    }
+}

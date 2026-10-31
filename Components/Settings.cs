@@ -52,6 +52,50 @@ namespace BCC.Modules.BCCForms.Components
             get { return _settings[SettingName.ReCaptchaSecretKey].AsString(); }
         }
 
+        /// <summary>
+        ///   Spam-protection mode for anonymous users. Falls back to the two legacy settings for
+        ///   modules configured before the mode setting existed.
+        /// </summary>
+        public CaptchaMode CaptchaMode
+        {
+            get
+            {
+                CaptchaMode mode;
+                var raw = _settings[SettingName.CaptchaMode].AsString();
+                if (!string.IsNullOrEmpty(raw) && Enum.TryParse(raw, true, out mode) &&
+                    Enum.IsDefined(typeof (CaptchaMode), mode))
+                {
+                    return mode;
+                }
+                if (!ForceCaptchaForAnonymous) return CaptchaMode.None;
+                return PreferReCaptcha ? CaptchaMode.ReCaptchaV2 : CaptchaMode.DnnCaptcha;
+            }
+        }
+
+        /// <summary>reCAPTCHA v3 score (0.0 bot .. 1.0 human) a submission needs. Default 0.5.</summary>
+        public double ReCaptchaMinScore
+        {
+            get { return ParseScore(_settings[SettingName.ReCaptchaMinScore].AsString()); }
+        }
+
+        public static double ParseScore(string raw)
+        {
+            double score;
+            if (!double.TryParse(raw, System.Globalization.NumberStyles.Float,
+                                 System.Globalization.CultureInfo.InvariantCulture, out score) ||
+                double.IsNaN(score))
+            {
+                return 0.5;
+            }
+            return Math.Max(0.0, Math.Min(1.0, score));
+        }
+
+        /// <summary>Adds a hidden field that only bots fill in. On by default.</summary>
+        public bool UseHoneypot
+        {
+            get { return _settings[SettingName.UseHoneypot].AsBoolean(true); }
+        }
+
         public string ListOrForm
         {
             get { return _settings[SettingName.ListOrForm].AsString("List"); }

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using DotNetNuke.Entities.Modules;
 using BCC.Modules.BCCForms.Components;
 using System.Web.UI.WebControls;
@@ -22,24 +23,14 @@ namespace BCC.Modules.BCCForms
             chkPrivateColumns.Checked =
                 Convert.ToBoolean(!Settings[SettingName.EditPrivateColumnsForAdmins].AsBoolean(true));
             chkHideSystemColumns.Checked = Convert.ToBoolean(!Settings[SettingName.ShowSystemColumns].AsBoolean());
-            ddlCaptcha.Items.Add(new ListItem(LocalizeText("No"), "No"));
-            ddlCaptcha.Items.Add(new ListItem(LocalizeText("DnnCaptcha"), "DnnCaptcha"));
-            ddlCaptcha.Items.Add(new ListItem(LocalizeText("ReCaptcha"), "ReCaptcha"));
-            if (!Convert.ToBoolean(Settings[SettingName.ForceCaptchaForAnonymous]))
+            var current = new Components.Settings(Settings);
+            foreach (CaptchaMode mode in Enum.GetValues(typeof (CaptchaMode)))
             {
-                ddlCaptcha.SelectedIndex = 0;
+                ddlCaptcha.Items.Add(new ListItem(LocalizeText("CaptchaMode_" + mode), mode.ToString()));
             }
-            else
-            {
-                if (Convert.ToBoolean(Settings[SettingName.PreferReCaptcha]))
-                {
-                    ddlCaptcha.SelectedIndex = 2;
-                }
-                else
-                {
-                    ddlCaptcha.SelectedIndex = 1;
-                }
-            }
+            ddlCaptcha.SelectedValue = current.CaptchaMode.ToString();
+            txtMinScore.Text = current.ReCaptchaMinScore.ToString("0.0#", CultureInfo.InvariantCulture);
+            chkHoneypot.Checked = current.UseHoneypot;
             txtSiteKey.Text = Settings[SettingName.ReCaptchaSiteKey].AsString();
             txtSecretKey.Text = Settings[SettingName.ReCaptchaSecretKey].AsString();
         }        
@@ -55,27 +46,20 @@ namespace BCC.Modules.BCCForms
             mc.UpdateModuleSetting(ModuleId, SettingName.EditPrivateColumnsForAdmins,
                                    (!(chkPrivateColumns.Checked)).ToString());
             mc.UpdateModuleSetting(ModuleId, SettingName.ShowSystemColumns, (!(chkHideSystemColumns.Checked)).ToString());
-            switch (ddlCaptcha.SelectedIndex)
-            {
-                case 0:
-                    // No
-                    mc.UpdateModuleSetting(ModuleId, SettingName.ForceCaptchaForAnonymous, false.ToString());
-                    break;
-                case 1:
-                    // DnnCaptcha
-                    mc.UpdateModuleSetting(ModuleId, SettingName.ForceCaptchaForAnonymous, true.ToString());
-                    mc.UpdateModuleSetting(ModuleId, SettingName.PreferReCaptcha, false.ToString());
-                    break;
-                case 2:
-                    // ReCaptcha
-                    mc.UpdateModuleSetting(ModuleId, SettingName.ForceCaptchaForAnonymous, true.ToString());
-                    mc.UpdateModuleSetting(ModuleId, SettingName.PreferReCaptcha, true.ToString());
-                    break;
-                default:
-                    break;
-            }
-            mc.UpdateModuleSetting(ModuleId, SettingName.ReCaptchaSiteKey, txtSiteKey.Text);
-            mc.UpdateModuleSetting(ModuleId, SettingName.ReCaptchaSecretKey, txtSecretKey.Text);
+            CaptchaMode captchaMode;
+            if (!Enum.TryParse(ddlCaptcha.SelectedValue, out captchaMode)) captchaMode = CaptchaMode.None;
+            mc.UpdateModuleSetting(ModuleId, SettingName.CaptchaMode, captchaMode.ToString());
+            // keep the legacy pair in step so an older build of the module still reads a sensible value
+            mc.UpdateModuleSetting(ModuleId, SettingName.ForceCaptchaForAnonymous,
+                                   (captchaMode != CaptchaMode.None).ToString());
+            mc.UpdateModuleSetting(ModuleId, SettingName.PreferReCaptcha,
+                                   (captchaMode == CaptchaMode.ReCaptchaV2).ToString());
+            mc.UpdateModuleSetting(ModuleId, SettingName.ReCaptchaMinScore,
+                                   Components.Settings.ParseScore(txtMinScore.Text.Trim())
+                                       .ToString("0.0#", CultureInfo.InvariantCulture));
+            mc.UpdateModuleSetting(ModuleId, SettingName.UseHoneypot, chkHoneypot.Checked.ToString());
+            mc.UpdateModuleSetting(ModuleId, SettingName.ReCaptchaSiteKey, txtSiteKey.Text.Trim());
+            mc.UpdateModuleSetting(ModuleId, SettingName.ReCaptchaSecretKey, txtSecretKey.Text.Trim());
         }        
     }
 }
