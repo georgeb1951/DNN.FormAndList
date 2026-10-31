@@ -6,7 +6,7 @@
 <%@ Import Namespace="BCC.Modules.BCCForms.Components" %>
 <%@ Register src="Field.ascx" tagname="Field" tagprefix="fnl" %>
 <asp:HiddenField ID="FieldOrder" runat="server" />
-<asp:DataGrid ID="grdFields" DataKeyField="UserDefinedFieldId" BorderWidth="0px"
+<asp:DataGrid ID="grdFields" DataKeyField="UserDefinedFieldId"
 			    CellPadding="2" AutoGenerateColumns="False" GridLines="None" 
 			    runat="server" Width="100%" CssClass="Sortable" >
     

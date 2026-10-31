@@ -1,49 +1,43 @@
 <%@ Control Language="C#"  Inherits="BCC.Modules.BCCForms.Settings" AutoEventWireup="True" CodeBehind="Settings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<div style="margin-top: 14px;">
-    <p>
-        <asp:CheckBox ID="chkEditOwnData" runat="server" CssClass="Normal" resourcekey="EditOwnData"
-            Text="User is only allowed to manipulate his own items."></asp:CheckBox></p>   
-    <p>
-        <asp:CheckBox ID="chkInputFiltering" Text="Filter input for markup code or script input. Note: Filtering is always enabled for Anonymous."
-            resourcekey="InputFiltering" CssClass="Normal" runat="server"></asp:CheckBox></p>
-    <p>
-        <asp:CheckBox ID="chkDisplayColumns" Text="Negate permission/feature DisplayColumns for Administators."
-            resourcekey="DisplayColumns" CssClass="Normal" runat="server"></asp:CheckBox></p>
-              <p>
-        <asp:CheckBox ID="chkHideSystemColumns" 
-            resourcekey="DisplaySystemColumns" CssClass="Normal" runat="server"></asp:CheckBox></p>
-    <p>
-        <asp:CheckBox ID="chkPrivateColumns" Text="Negate permission/feature PrivateColumns for Administators."
-            resourcekey="PrivateColumns" CssClass="Normal" runat="server"></asp:CheckBox></p>
-    <table cellspacing="4" cellpadding="0" border="0" class="Normal">
-        <tr>
-            <td>
-                <dnn:Label class="Normal" ID="lblUserRecordQuota" ResourceKey="plUserRecordQuota"
-                    runat="server" Suffix=":" ControlName="txtUserRecordQuota" />
-            </td>
-            <td>
-                <asp:TextBox ID="txtUserRecordQuota" runat="server" CssClass="Normal" MaxLength="4"
-                    Width="40" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <dnn:Label class="Normal" id="lblForceCaptcha" runat="server" Suffix=":" ControlName="ddlCaptcha" />
-            </td>
-            <td>
-                <asp:DropDownList ID="ddlCaptcha" runat="server" CssClass="Normal" />
-            </td>
-        </tr>
-        <tr class="siteKeyRow" style="display:none;">
-            <td><dnn:Label class="Normal" id="lblSiteKey" runat="server" Suffix=":" ControlName="txtSiteKey" /></td>
-            <td><asp:TextBox ID="txtSiteKey" runat="server" /></td>
-        </tr>
-        <tr class="secretKeyRow" style="display:none;">
-            <td><dnn:Label class="Normal" id="lblSecretKey" runat="server" Suffix=":" ControlName="txtSecretKey" /></td>
-            <td><asp:TextBox ID="txtSecretKey" runat="server" /></td>
-        </tr>
-    </table>
+<div class="dnnForm bccForms bccf-settings">
+    <div class="dnnFormItem">
+        <asp:CheckBox ID="chkEditOwnData" runat="server" resourcekey="EditOwnData"
+            Text="User is only allowed to manipulate his own items." />
+    </div>
+    <div class="dnnFormItem">
+        <asp:CheckBox ID="chkInputFiltering" runat="server" resourcekey="InputFiltering"
+            Text="Filter input for markup code or script input. Note: Filtering is always enabled for Anonymous." />
+    </div>
+    <div class="dnnFormItem">
+        <asp:CheckBox ID="chkDisplayColumns" runat="server" resourcekey="DisplayColumns"
+            Text="Negate permission/feature DisplayColumns for Administators." />
+    </div>
+    <div class="dnnFormItem">
+        <asp:CheckBox ID="chkHideSystemColumns" runat="server" resourcekey="DisplaySystemColumns" />
+    </div>
+    <div class="dnnFormItem">
+        <asp:CheckBox ID="chkPrivateColumns" runat="server" resourcekey="PrivateColumns"
+            Text="Negate permission/feature PrivateColumns for Administators." />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="lblUserRecordQuota" runat="server" ResourceKey="plUserRecordQuota" Suffix=":" ControlName="txtUserRecordQuota" />
+        <asp:TextBox ID="txtUserRecordQuota" runat="server" MaxLength="4" CssClass="bccf-num" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="lblForceCaptcha" runat="server" Suffix=":" ControlName="ddlCaptcha" />
+        <asp:DropDownList ID="ddlCaptcha" runat="server" />
+    </div>
+    <%-- shown by the script below when reCAPTCHA is selected; inline display:none so they stay
+         hidden even if the host page doesn't load module.css --%>
+    <div class="dnnFormItem siteKeyRow" style="display:none;">
+        <dnn:Label ID="lblSiteKey" runat="server" Suffix=":" ControlName="txtSiteKey" />
+        <asp:TextBox ID="txtSiteKey" runat="server" />
+    </div>
+    <div class="dnnFormItem secretKeyRow" style="display:none;">
+        <dnn:Label ID="lblSecretKey" runat="server" Suffix=":" ControlName="txtSecretKey" />
+        <asp:TextBox ID="txtSecretKey" runat="server" />
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -65,7 +59,7 @@
         },
         showControls: function () {
             $('.siteKeyRow').show('slow');
-            $('.secretKeyRow').show('slow');            
+            $('.secretKeyRow').show('slow');
         },
         hideControls: function () {
             $('.siteKeyRow').hide('slow');

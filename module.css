@@ -1,79 +1,405 @@
-/* ================================
-    CSS STYLES FOR Module DNN.UserDefinedTable
-   ================================
-*/
+/* =====================================================================
+   BCC Forms - module styles
 
+   How this file plays with your theme
+   DNN loads CSS in this order: default.css -> module.css (this file) ->
+   the theme's skin.css / container.css. Specificity is kept deliberately low
+   so the theme always has the last word:
+   - Everything is scoped with :where(.DnnModule-BCCForms, .bccForms), which
+     adds no specificity. (.DnnModule-BCCForms is the wrapper DNN puts around
+     every BCC Forms module; .bccForms marks module screens that DNN hosts
+     elsewhere, e.g. Module Settings.)
+   - Rules for BCC Forms' own classes (bccf-*) use one class. Themes don't
+     know these classes, and can still override them the same way.
+   - Rules that touch DNN's shared classes (dnnFormItem, dnnLabel, ...) use
+     exactly the specificity of the default.css rule they adjust: they win
+     over default.css by load order, and any theme rule for the same element
+     still wins over them.
+   - No !important, no fixed colours. Colours come from DNN 10's site
+     branding variables (--dnn-color-*), with neutral fallbacks.
 
+   To tune BCC Forms from a theme, override the --bccf-* variables:
+       .DnnModule-BCCForms { --bccf-accent: #0a7d55; --bccf-gap: 1rem; }
+   The date picker is attached to <body>, outside the module, so set its
+   variables on the picker itself:
+       .ui-datepicker { --bccf-accent: #0a7d55; }
+   ===================================================================== */
 
-.UDT_UponSubmit
-{
-	margin-top :1em;
+:where(.DnnModule-BCCForms, .bccForms, .ui-datepicker) {
+    --bccf-accent: var(--dnn-color-primary, #3b73b9);
+    --bccf-accent-contrast: var(--dnn-color-primary-contrast, #fff);
+    --bccf-danger: var(--dnn-color-danger, #b3261e);
+    --bccf-text: var(--dnn-color-foreground, #333);
+    --bccf-muted: var(--dnn-color-foreground-light, #6b6b6b);
+    --bccf-border: var(--dnn-color-foreground-light, #c9c9c9);
+    --bccf-surface: var(--dnn-color-background, #fff);
+    --bccf-surface-alt: var(--dnn-color-background-dark, #f2f2f2);
+    --bccf-radius: var(--dnn-controls-radius, 3px);
+    --bccf-gap: .75rem;
+    /* where DNN's form inputs start: .dnnLabel width (32.075%) + padding (20px) + margin (18px) */
+    --bccf-label-offset: calc(32.075% + 38px);
+    --bccf-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
-.UDT_Caption
-{
-	display:block;
+
+/* ---------- Form ---------- */
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-form {
+    margin: 1em 0;
 }
 
-.fnlSettingsWarning {
-    margin: 4% 0 0 32%;
-    padding: 0;
+/* Labels without help text: line them up exactly like DNN's .dnnLabel (labels with help),
+   so every row of a form has the same label column. */
+:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabelWithoutHelp {
+    float: left;
+    position: relative;
+    width: 32.075%;
+    margin: 0 18px 0 0;
+    padding: 0 20px 0 0;
+    overflow: visible;
+    text-align: right;
 }
 
-.dnnFormItem span.CommandButton {
-    clear: both;
+/* (label row for fields that DNN renders inside a nested form, where there is no label column) */
+:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormMessage) .dnnFormLabelWithoutHelp {
+    float: none;
+    width: auto;
+    text-align: left;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .dnnFormLabelWithoutHelp label span {
     display: block;
-    margin-left: 32%;
-    overflow: hidden;
-}
-.dnnForm .dnnFormItem .dnnFormLabelWithoutHelp label span {
-    line-height: 1.4;
+    position: relative;
     padding-right: 1.8em;
-    display: block;
-    position: relative; 
-} 
-.dnnForm .dnnFormItem .dnnFormLabelWithoutHelp
-{
-    width: 100%;
-    padding: 0px;
-    margin: 0px;
-}
-#dnnFormAndListConfig .Sortable .Draggable
-{
-	cursor: move;
+    line-height: 1.4;
 }
 
-
-.dnnFormAndList .dnnGridHeader th{
-    font-size: 100%;
-     white-space: nowrap;
+/* Required fields: the row carries .dnnFormRequired; DNN draws the asterisk for
+   .dnnLabel rows, this adds the same marker for labels without help text. */
+:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem.dnnFormRequired) > .dnnFormLabelWithoutHelp label span::after {
+    content: "*";
+    display: inline-block;
+    margin-left: .3125rem;
+    color: var(--bccf-danger);
+    font-weight: 700;
 }
 
-
-.fnlForm
-{
-margin: 1em auto 1em;
-}
-/*
-#ssPageSettings .dnnTextEditor
-{
-    margin-left: 32%;
-}*/
-
-.pushRight {
-    margin-left: 32%;
-}
-.dnnForm input.dnnFormRequired{
-    border-left: 5px red solid!important;
-    padding-right: -5px!important;
-}
-.dnnFormItem textarea.dnn2rows {
+/* must out-rank default.css's .dnnFormItem textarea { min-height: 5rem } */
+:where(.DnnModule-BCCForms, .bccForms) .dnnFormItem textarea.dnn2rows {
     min-height: 1em;
 }
 
-.fnl-search{
-    margin-bottom:16px;
+:where(.DnnModule-BCCForms, .bccForms) .validator-error, :where(.DnnModule-BCCForms, .bccForms) .bccf-error {
+    color: var(--bccf-danger);
 }
 
-.dnnForm .dnnFormItem .validator-error{
-    color:red;
+:where(.DnnModule-BCCForms, .bccForms) .UDT_UponSubmit {
+    margin-top: 1em;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .UDT_Caption {
+    display: block;
+}
+
+/* Small command links that sit under a field (e.g. "edit template", "help") */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-commands {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem var(--bccf-gap);
+    margin: 0 0 var(--bccf-gap) var(--bccf-label-offset);
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-command {
+    display: inline-block;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-indent {
+    margin-left: var(--bccf-label-offset);
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-value-muted, :where(.DnnModule-BCCForms, .bccForms) .bccf-expression {
+    color: var(--bccf-muted);
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-expression {
+    font-style: italic;
+}
+
+/* ---------- List ---------- */
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-search {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem var(--bccf-gap);
+    margin-bottom: 1rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-search .bccf-search-message {
+    flex-basis: 100%;
+}
+
+/* Wide lists scroll inside the module instead of pushing past the page */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-grid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-grid th, :where(.DnnModule-BCCForms, .bccForms) .bccf-grid td {
+    padding: .375rem .75rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-grid th {
+    white-space: nowrap;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-grid .bccf-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-grid .bccf-center {
+    text-align: center;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-grid .bccf-edit {
+    width: 1%;
+    white-space: nowrap;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-grid img, :where(.DnnModule-BCCForms, .bccForms) .bccf-sort img {
+    border: 0;
+    vertical-align: middle;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-sort {
+    margin-left: .25em;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-thumb {
+    border: 0;
+    max-width: 100%;
+    height: auto;
+}
+
+/* ---------- Configuration screens ---------- */
+
+/* same specificity as default.css's .dnnFormItem rule it sits on */
+:where(.DnnModule-BCCForms, .bccForms) .fnlSettingsWarning {
+    margin: var(--bccf-gap) 0 0 var(--bccf-label-offset);
+    padding: 0;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) #dnnFormAndListConfig .Sortable .Draggable {
+    cursor: move;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-settings {
+    margin-top: 1rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-settings .bccf-hidden {
+    display: none;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-label {
+    font-weight: 700;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-nowrap {
+    white-space: nowrap;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-mono {
+    font-family: var(--bccf-mono);
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-section {
+    padding: .75rem 0 1.25rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem var(--bccf-gap);
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-layout-table td {
+    padding: .25rem .5rem .25rem 0;
+    vertical-align: top;
+}
+
+/* ---------- Small screens ----------
+   DNN's form pattern puts labels in a 32% left column. Under 576px (the
+   Aperture/Bootstrap "sm" breakpoint) stack label above field instead. */
+/* These rules must beat DNN's default.css, so (unlike the rest of this file) they
+   carry exactly the same specificity as the default.css rule they replace: they
+   win over default.css by load order, and a theme rule still wins over them. */
+@media (max-width: 575.98px) {
+    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnLabel,
+    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabel,
+    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabelWithoutHelp {
+        float: none;
+        width: auto;
+        margin: 0 0 .25rem;
+        padding-right: 0;
+        text-align: left;
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem input[type=text],
+    :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem input[type=email],
+    :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem input[type=date],
+    :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem input[type=password],
+    :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem input[type=search],
+    :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem select,
+    :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem textarea {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-commands, :where(.DnnModule-BCCForms, .bccForms) .bccf-indent {
+        margin-left: 0;
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .fnlSettingsWarning {
+        margin-left: 0;
+    }
+}
+
+/* ---------- Date picker (jQuery UI) ----------
+   A neutral, theme-coloured replacement for the old jQuery UI "smoothness"
+   theme. The picker is appended to <body>, so these rules are not scoped to
+   the module. They use plain class selectors (not :where) so a theme's generic
+   rules such as a { color } don't recolour the calendar; a theme rule that
+   targets .ui-datepicker itself still wins, because the theme loads later. */
+.ui-datepicker {
+    display: none;
+    z-index: 1000;
+    width: 17.5em;
+    padding: .5em;
+    background: var(--bccf-surface);
+    color: var(--bccf-text);
+    border: 1px solid var(--bccf-border);
+    border-radius: var(--bccf-radius);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .12);
+    font-size: .875rem;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    position: relative;
+    padding: .25em 2.2em;
+    text-align: center;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    font-weight: 700;
+    line-height: 1.8em;
+}
+
+.ui-datepicker .ui-datepicker-title select {
+    font-size: 1em;
+    margin: 0 .1em;
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+    position: absolute;
+    top: .25em;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.8em;
+    border-radius: var(--bccf-radius);
+    color: var(--bccf-text);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.ui-datepicker .ui-datepicker-prev { left: 0; }
+.ui-datepicker .ui-datepicker-next { right: 0; }
+.ui-datepicker .ui-datepicker-prev::before { content: "\2039"; font-size: 1.4em; }
+.ui-datepicker .ui-datepicker-next::before { content: "\203A"; font-size: 1.4em; }
+.ui-datepicker .ui-datepicker-prev .ui-icon, .ui-datepicker .ui-datepicker-next .ui-icon { display: none; }
+.ui-datepicker .ui-datepicker-prev:hover, .ui-datepicker .ui-datepicker-next:hover { background: var(--bccf-surface-alt); }
+.ui-datepicker .ui-state-disabled { opacity: .35; cursor: default; }
+
+.ui-datepicker table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .25em 0 0;
+}
+
+.ui-datepicker th {
+    padding: .4em .2em;
+    color: var(--bccf-muted);
+    font-weight: 700;
+    font-size: .85em;
+    text-align: center;
+}
+
+.ui-datepicker td {
+    padding: 1px;
+}
+
+.ui-datepicker td a, .ui-datepicker td span {
+    display: block;
+    padding: .3em;
+    border-radius: var(--bccf-radius);
+    color: var(--bccf-text);
+    text-align: center;
+    text-decoration: none;
+}
+
+.ui-datepicker td a:hover { background: var(--bccf-surface-alt); }
+.ui-datepicker .ui-state-highlight { outline: 1px solid var(--bccf-accent); }
+.ui-datepicker .ui-state-active { background: var(--bccf-accent); color: var(--bccf-accent-contrast); }
+.ui-datepicker .ui-datepicker-other-month a { color: var(--bccf-muted); }
+
+.ui-datepicker .ui-datepicker-buttonpane {
+    display: flex;
+    justify-content: space-between;
+    gap: .5em;
+    margin-top: .5em;
+    padding-top: .5em;
+    border-top: 1px solid var(--bccf-border);
+}
+
+.ui-datepicker .ui-datepicker-buttonpane button {
+    padding: .25em .75em;
+    border: 1px solid var(--bccf-border);
+    border-radius: var(--bccf-radius);
+    background: var(--bccf-surface-alt);
+    color: var(--bccf-text);
+    font: inherit;
+    cursor: pointer;
+}
+
+/* validation summary shown in DNN's module message area */
+:where(.DnnModule-BCCForms, .bccForms) ul.bccf-messages {
+    margin: 0;
+    padding: 0 0 0 1.6em;
+}
+
+/* XSL template generator (Token2Xsl) */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-xslgen {
+    max-width: 60rem;
+    margin: 0 auto;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-align-end {
+    text-align: right;
+}
+
+/* labels inside the generator's layout tables size to their text
+   (same specificity as default.css's .dnnLabel, so it wins by load order) */
+:where(.bccf-xslgen td) > .dnnLabel {
+    width: auto;
 }

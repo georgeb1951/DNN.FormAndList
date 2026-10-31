@@ -279,10 +279,9 @@ namespace BCC.Modules.BCCForms
                             (DropDownList) (_searchPlaceHolder.FindControl("drpSearchableColumns"));
                         if (drpSearchableColumns == null)
                         {
-                            var drp = new DropDownList {ID = "drpSearchableColumns", CssClass = "NormalTextBox"};
+                            var drp = new DropDownList {ID = "drpSearchableColumns"};
                             _searchPlaceHolder.Controls.Add(drp);
-                            var lbl = new Label {ID = "lblSearchableColumn"};
-                            lbl.Font.Bold = true;
+                            var lbl = new Label {ID = "lblSearchableColumn", CssClass = "bccf-label"};
                             lbl.Visible = false;
                             _searchPlaceHolder.Controls.Add(lbl);
                             LoadColumns();
@@ -298,7 +297,7 @@ namespace BCC.Modules.BCCForms
                         var drpSearchMode = (DropDownList) (_searchPlaceHolder.FindControl("drpSearchMode"));
                         if (drpSearchMode == null)
                         {
-                            var drp = new DropDownList {ID = "drpSearchMode", CssClass = "NormalTextBox"};
+                            var drp = new DropDownList {ID = "drpSearchMode"};
                             drp.Items.Add(
                                 new ListItem(Localization.GetString("SearchMode.Contain", _parent.LocalResourceFile),
                                              "contain"));
@@ -663,6 +662,18 @@ namespace BCC.Modules.BCCForms
         ///   set up Fielddefinitions for Datagrid
         /// </summary>
         /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   HTML for the edit-row link in the grid's first column (empty when the row can't be edited).
+        /// </summary>
+        protected string EditLinkHtml(object editLink)
+        {
+            var url = editLink as string;
+            if (string.IsNullOrEmpty(url)) return string.Empty;
+            var text = System.Web.HttpUtility.HtmlAttributeEncode(Localization.GetString("EditRow", LocalResourceFile));
+            return string.Format("<a href=\"{0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" /></a>",
+                                 System.Web.HttpUtility.HtmlAttributeEncode(url), text, DotNetNuke.Entities.Icons.IconController.IconURL("Edit"));
+        }
+
         void PopulateDataGridColumns()
         {
             for (var intColumn = grdData.Columns.Count - 1; intColumn >= 1; intColumn--)
@@ -683,20 +694,12 @@ namespace BCC.Modules.BCCForms
               //Add a sorting indicator to the headertext
               if (    row[FieldsTableColumn.Title].ToString() == SortField && colField.Visible)
                {
-                    if (SortOrder == "ASC")
-                    {
-                        colField.HeaderText +=
-                            string.Format(
-                                "<img src=\"{0}/images/sortascending.gif\" border=\"0\" alt=\"Sorted By {1} In Ascending Order\"/>",
-                                (Request.ApplicationPath == "/" ? string.Empty : Request.ApplicationPath), SortField);
-                    }
-                    else
-                    {
-                        colField.HeaderText +=
-                            string.Format(
-                                "<img src=\"{0}/images/sortdescending.gif\" border=\"0\" alt=\"Sorted By {1} In Descending Order\"/>",
-                                (Request.ApplicationPath == "/" ? string.Empty : Request.ApplicationPath), SortField);
-                    }
+                    var ascending = SortOrder == "ASC";
+                    colField.HeaderText += string.Format(
+                        "<span class=\"bccf-sort\"><img src=\"{0}/images/{1}\" alt=\"{2}\" title=\"{2}\" /></span>",
+                        (Request.ApplicationPath == "/" ? string.Empty : Request.ApplicationPath),
+                        ascending ? "sortascending.gif" : "sortdescending.gif",
+                        System.Web.HttpUtility.HtmlAttributeEncode(Localization.GetString(ascending ? "SortedAscending" : "SortedDescending", LocalResourceFile)));
                 }
                 //Column settings depending on the fieldtype
                 DataType.ByName(row[FieldsTableColumn.Type].ToString()).

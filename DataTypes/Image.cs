@@ -225,7 +225,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                 {
                     strFieldvalue =
                         string.Format(
-                            "<a href=\"{0}\" target=\"_blank\"><img alt=\"{1}\" title=\"{1}\" border=\"0\" src=\"{2}\" /></a>",
+                            "<a href=\"{0}\" target=\"_blank\"><img class=\"bccf-thumb\" alt=\"{1}\" title=\"{1}\" src=\"{2}\" /></a>",
                             imageUrl, "{0}", url);
                 }
                 else

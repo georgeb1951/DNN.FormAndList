@@ -39,6 +39,12 @@ namespace BCC.Modules.BCCForms
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            // the date range pickers need jQuery UI; this control is opened on its own page
+            DotNetNuke.Framework.JavaScriptLibraries.JavaScript.RequestRegistration(
+                this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Application.IApplicationStatusInfo>(),
+                this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Logging.IEventLogger>(),
+                this.PortalSettings,
+                DotNetNuke.Framework.JavaScriptLibraries.CommonJs.jQueryUI);
             cmdCancel.Click += cmdCancel_Click;
             cmdExport.Click += cmdExport_Click;
             Load += Page_Load;

@@ -189,4 +189,7 @@
   <data name="errorDateMessage.Text" xml:space="preserve">
     <value>Initial date must be earlier than final date</value>
   </data>
+  <data name="ClearDate.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
 </root>

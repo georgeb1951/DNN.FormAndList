@@ -65,7 +65,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                     }
                 }
                 CtlValueBox = ctlListControl;
-                CtlValueBox.CssClass = "NormalTextBox";
+                CtlValueBox.CssClass = "bccf-input";
                 CtlValueBox.ID = CleanID(FieldTitle);
                 Controls.Add(CtlValueBox);
             }

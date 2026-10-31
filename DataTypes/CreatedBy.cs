@@ -43,7 +43,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                 {
                     ViewState[Editor] = value;
                     Controls.Add(
-                        new LiteralControl("<span class=\"Normal\">" + ModuleSecurity.BestUserName(value, PortalId) +
+                        new LiteralControl("<span class=\"bccf-value\">" + ModuleSecurity.BestUserName(value, PortalId) +
                                            "</span>"));
                 }
             }
@@ -66,7 +66,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                 if (ViewState[Editor]!=null)
                 {
                     Controls.Add(
-                        new LiteralControl("<span class=\"Normal\">" +
+                        new LiteralControl("<span class=\"bccf-value\">" +
                                            ModuleSecurity.BestUserName(ViewState[Editor].ToString(), PortalId) +
                                            "</span>"));
                 }

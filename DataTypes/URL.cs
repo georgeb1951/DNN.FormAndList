@@ -89,7 +89,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                 }
                 AddListItems(ctlListControl);
                 CtlValueBox = ctlListControl;
-                CtlValueBox.CssClass = "NormalTextBox";
+                CtlValueBox.CssClass = "bccf-input";
                 CtlValueBox.ID = CleanID(FieldTitle);
                 ValueControl = CtlValueBox;
                 var container = new HtmlGenericControl("div");
@@ -323,7 +323,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                                             {
                                                 strPath +=
                                                     string.Format(
-                                                        "<img src=\"{0}/images/breadcrumb.gif\" border=\"0\" alt=\"Spacer\"/>",
+                                                        "<img src=\"{0}/images/breadcrumb.gif\" alt=\"\" />",
                                                         Globals.ApplicationPath);
                                             }
                                             strPath += strLabel;
@@ -331,7 +331,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                                     }
                                     caption = tab.TabPath.Replace("//",
                                                                      string.Format(
-                                                                         "<img src=\"{0}/images/breadcrumb.gif\" border=\"0\" alt=\"Spacer\"/>",
+                                                                         "<img src=\"{0}/images/breadcrumb.gif\" alt=\"\" />",
                                                                          Globals.ApplicationPath));
                                 }
                                 else

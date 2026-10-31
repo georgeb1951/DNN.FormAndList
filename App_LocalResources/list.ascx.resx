@@ -208,4 +208,13 @@
   <data name="DataBindingFailed.ErrorMessage" xml:space="preserve">
     <value>Data Binding Failed. This issue might be caused by an unsupported cast of a data type. </value>
   </data>
+  <data name="EditRow.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="SortedAscending.Text" xml:space="preserve">
+    <value>Sorted ascending</value>
+  </data>
+  <data name="SortedDescending.Text" xml:space="preserve">
+    <value>Sorted descending</value>
+  </data>
 </root>

@@ -192,11 +192,11 @@ namespace BCC.Modules.BCCForms.Components
                     {
                         xw.WriteStartElement("tr");
                         xw.WriteStartElement("td");
-                        xw.WriteAttributeString("class", "normalBold");
+                        xw.WriteAttributeString("class", "bccf-label");
                         xw.WriteString(row[FieldsTableColumn.Title].ToString());
                         xw.WriteEndElement();
                         xw.WriteStartElement("td");
-                        xw.WriteAttributeString("class", "Normal");
+                        xw.WriteAttributeString("class", "bccf-value");
                         xw.WriteString(string.Format("[{0}]",
                                                      XmlConvert.DecodeName(row[FieldsTableColumn.ValueColumn].ToString())));
                         xw.WriteEndElement();

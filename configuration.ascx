@@ -27,13 +27,13 @@
         <h2 class="dnnFormSectionHead"><a href="">
             <asp:Label runat="server" resourcekey="UdtSettings" /></a></h2>
         <fieldset>
-            <div runat="server" id="udtSection" style="margin-top: 10px">
+            <div runat="server" id="udtSection" class="bccf-section">
                 <div>
                     <asp:Label runat="server" resourcekey="UdtTeaser" />
                 </div>
 
                 <fnl:Fields ID="Fields" runat="server" />
-                &nbsp;<div class="dnnFormItem">
+                <div class="dnnFormItem">
                     <dnn:Label ID="plPrivacy" ControlName="chkExcludeFromSearch" runat="server" />
                     <asp:CheckBox ID="chkExcludeFromSearch" runat="server" />
                 </div>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="dnnFormItem" id="rowOnSubmissionRedirect" runat="server">
                     <dnn:Label ID="lblOnSubmissionRedirect" runat="server" Suffix="" resourcekey="lblOnSubmissionRedirect" ControlName="urlOnSubmissionRedirect" />
-                    <div class="pushRight">
+                    <div class="bccf-indent">
                         <Portal:URL ID="urlOnSubmissionRedirect" runat="server" ShowTrack="False" ShowNewWindow="False" ShowLog="False" ShowFiles="false" ShowUrls="true" ShowTabs="true" Width="200" />
                     </div>
                 </div>
@@ -104,9 +104,8 @@
                 <dnn:Label runat="server" ID="lblFormTemplate" ControlName="txtFormTemplate" resourcekey="FormTemplate" />
                 <asp:TextBox runat="server" ID="txtFormTemplate" TextMode="MultiLine" Rows="15" Columns="90"  />
    
-                <br />
-                <span class="CommandButton">
-                    <asp:LinkButton ID="cmdGenerateFormTemplate" runat="server" CssClass="dnnSecondaryAction "
+                <span class="bccf-commands">
+                    <asp:LinkButton ID="cmdGenerateFormTemplate" runat="server" CssClass="dnnSecondaryAction"
                         resourcekey="GenerateFormTemplate" />
                 </span>
             </div>
@@ -126,11 +125,11 @@
             </div>
             <div class="dnnFormItem" id="rowUserDefined" runat="server">
                 <dnn:Label ID="plUserDefinedStyleSheet" runat="server" Suffix=":" ControlName="XslUserDefinedUrlControl" />
-                <div class="pushRight">
+                <div class="bccf-indent">
                     <Portal:URL ID="XslUserDefinedUrlControl" runat="server" FileFilter="xsl,xslt" Required="True" ShowTrack="False"
                         ShowNewWindow="False" ShowLog="False" ShowFiles="True" ShowUrls="False" ShowTabs="False" Width="200" />
-                    <div class="BelowUrlControl">
-                        <asp:LinkButton ID="cmdEditXSL" runat="server" CssClass="dnnSecondaryAction " resourcekey="cmdEditXSL" />
+                    <div class="BelowUrlControl bccf-commands">
+                        <asp:LinkButton ID="cmdEditXSL" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdEditXSL" />
                         <asp:LinkButton CssClass="dnnPrimaryAction" resourcekey="cmdShowXSLGenerator" ID="cmdGenerateXSL" runat="server" />
                     </div>
                 </div>
@@ -140,18 +139,18 @@
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plSort" runat="server" Suffix=":" ControlName="cboSortField" />
-                <asp:DropDownList ID="cboSortField" CssClass="NormalTextBox" runat="server" Width="180px" DataValueField="UserDefinedFieldId" DataTextField="FieldTitle" />
+                <asp:DropDownList ID="cboSortField" runat="server" DataValueField="UserDefinedFieldId" DataTextField="FieldTitle" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plOrder" runat="server" Suffix=":" ControlName="cboSortOrder" />
-                <asp:DropDownList ID="cboSortOrder" CssClass="NormalTextBox" runat="server" Width="180px">
+                <asp:DropDownList ID="cboSortOrder" runat="server">
                     <asp:ListItem resourcekey="Ascending" Value="ASC" />
                     <asp:ListItem resourcekey="Descending" Value="DESC" />
                 </asp:DropDownList>
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plPaging" runat="server" Suffix=":" ControlName="cboPaging" />
-                <asp:DropDownList ID="cboPaging" runat="server" Width="180px" CssClass="NormalTextBox">
+                <asp:DropDownList ID="cboPaging" runat="server">
                     <asp:ListItem resourcekey="NoPaging" Value="" />
                     <asp:ListItem Value="1">1</asp:ListItem>
                     <asp:ListItem Value="5">5</asp:ListItem>
@@ -168,11 +167,10 @@
             <asp:Label ID="lblSearchAndFilter" resourcekey="SearchAndFilter" runat="server" />
             <div class="dnnFormItem">
                 <dnn:Label ID="plFilterDataSet" runat="server" ControlName="txtFilter" Suffix=":" />
-                <asp:TextBox ID="txtFilter" runat="server" Width="400px" />
-                <br />
-                <span class="CommandButton">
-                    <asp:HyperLink CssClass="CommandButton" ID="hlpToken2" runat="server" resourcekey="cmdTokensHelp" NavigateUrl="#" />&nbsp;
-					<asp:HyperLink CssClass="CommandButton" ID="hlpColumns2" runat="server" resourcekey="cmdColumnsHelp" NavigateUrl="#" />
+                <asp:TextBox ID="txtFilter" runat="server" />
+                <span class="bccf-commands">
+                    <asp:HyperLink CssClass="bccf-command" ID="hlpToken2" runat="server" resourcekey="cmdTokensHelp" NavigateUrl="#" />
+					<asp:HyperLink CssClass="bccf-command" ID="hlpColumns2" runat="server" resourcekey="cmdColumnsHelp" NavigateUrl="#" />
                 </span>
             </div>
             <div class="dnnFormItem" id="rowSearchBox" runat="server">
@@ -193,7 +191,7 @@
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plTopCount" runat="server" ControlName="txtTopCount" Suffix=":" />
-                <asp:TextBox ID="txtTopCount" runat="server" Width="50px" Style="text-align: right" />
+                <asp:TextBox ID="txtTopCount" runat="server" CssClass="bccf-num" />
                 <asp:RangeValidator ID="errTopCount" runat="server" ControlToValidate="txtTopCount" Type="Integer" MinimumValue="1" MaximumValue="1000" Display="Static" resourcekey="ErrTopCount" />
             </div>
         </fieldset>
@@ -206,37 +204,37 @@
                 <table class="dnnLeft dnnFormRadioButtons">
                     <tr>
                         <td>
-                            <asp:CheckBox ID="chkTrackingOnNew" runat="server" resourcekey="TrackingOnNew" CssClass="Normal" /></td>
+                            <asp:CheckBox ID="chkTrackingOnNew" runat="server" resourcekey="TrackingOnNew" /></td>
                         <td>
-                            <asp:CheckBox ID="chkTrackingOnUpdate" runat="server" resourcekey="TrackingOnUpdate" CssClass="Normal" /></td>
+                            <asp:CheckBox ID="chkTrackingOnUpdate" runat="server" resourcekey="TrackingOnUpdate" /></td>
                         <td>
-                            <asp:CheckBox ID="chkTrackingOnDelete" runat="server" resourcekey="TrackingOnDelete" CssClass="Normal" /></td>
+                            <asp:CheckBox ID="chkTrackingOnDelete" runat="server" resourcekey="TrackingOnDelete" /></td>
                     </tr>
                 </table>
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plTrackingEmailAddresses" runat="server" Suffix=":" ControlName="txtTrackingEmailAddresses" />
-                <asp:TextBox ID="txtTrackingEmailAddresses" CssClass="NormalTextBox" runat="server" Width="400px" />
+                <asp:TextBox ID="txtTrackingEmailAddresses" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plTrackingEmail_CC" runat="server" Suffix=":" ControlName="txtTrackingEmail_CC" />
-                <asp:TextBox ID="txtTrackingEmail_CC" CssClass="NormalTextBox" runat="server" Width="400px" />
+                <asp:TextBox ID="txtTrackingEmail_CC" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plTrackingEmail_BCC" runat="server" Suffix=":" ControlName="txtTrackingEmail_BCC" />
-                <asp:TextBox ID="txtTrackingEmail_BCC" CssClass="NormalTextBox" runat="server" Width="400px" />
+                <asp:TextBox ID="txtTrackingEmail_BCC" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plTrackingEmail_replyto" runat="server" Suffix=":" ControlName="txtTrackingEmail_replyto" />
-                <asp:TextBox ID="txtTrackingEmail_replyto" CssClass="NormalTextBox" runat="server" Width="400px" />
+                <asp:TextBox ID="txtTrackingEmail_replyto" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plTrackingEmail_from" runat="server" Suffix=":" ControlName="txtTrackingEmail_from" />
-                <asp:TextBox ID="txtTrackingEmail_from" CssClass="NormalTextBox" runat="server" Width="400px" />
+                <asp:TextBox ID="txtTrackingEmail_from" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plEmailSubject" runat="server" Suffix=":" ControlName="txtTrackingSubject" />
-                <asp:TextBox ID="txtTrackingSubject" CssClass="NormalTextBox" runat="server" MaxLength="998" Width="400px" />
+                <asp:TextBox ID="txtTrackingSubject" runat="server" MaxLength="998" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plTrackingMessage" runat="server" Suffix=":" ControlName="txtTrackingMessage" />
@@ -246,15 +244,15 @@
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plOnNew" runat="server" Suffix=":" ControlName="txtOnNew" resourcekey="plOnNew" />
-                <asp:TextBox ID="txtOnNew" CssClass="NormalTextBox" runat="server" Width="400px" />
+                <asp:TextBox ID="txtOnNew" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plOnUpdate" runat="server" Suffix=":" ControlName="txtOnUpdate" resourcekey="plOnUpdate" />
-                <asp:TextBox ID="txtOnUpdate" CssClass="NormalTextBox" runat="server" Width="400px" />
+                <asp:TextBox ID="txtOnUpdate" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plOnDelete" runat="server" Suffix=":" ControlName="txtOnDelete" resourcekey="plOnDelete" />
-                <asp:TextBox ID="txtOnDelete" CssClass="NormalTextBox" runat="server" Width="400px" />
+                <asp:TextBox ID="txtOnDelete" runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label ID="plBody" runat="server" Suffix=":" ControlName="rblBodyType" />
@@ -266,10 +264,9 @@
             <div class="dnnFormItem" id="rowTrackingScript" runat="server">
                 <dnn:Label ID="plTrackingScript" runat="server" Suffix=":" ControlName="XslUserDefinedUrlControl" />
                 <Portal:URL ID="XslTracking" runat="server" FileFilter="xsl,xslt" Required="True" ShowTrack="False" ShowNewWindow="False" ShowLog="False" ShowFiles="True" ShowUrls="False" ShowTabs="False" Width="200" />
-                <div class="BelowUrlControl">
-                    <asp:LinkButton ID="cmdEditEmail" runat="server" CssClass="CommandButton" resourcekey="cmdEditTrackingMessage" OnClick="cmdEditEmail_Click" />
-                    &nbsp;&nbsp;
-				<asp:LinkButton CssClass="CommandButton" resourcekey="cmdGenerateTrackingMessage" ID="cmdGenerateEmail" runat="server" />
+                <div class="BelowUrlControl bccf-commands">
+                    <asp:LinkButton ID="cmdEditEmail" runat="server" CssClass="bccf-command" resourcekey="cmdEditTrackingMessage" OnClick="cmdEditEmail_Click" />
+				<asp:LinkButton CssClass="bccf-command" resourcekey="cmdGenerateTrackingMessage" ID="cmdGenerateEmail" runat="server" />
                 </div>
             </div>
 

@@ -97,11 +97,11 @@ namespace BCC.Modules.BCCForms.DataTypes
                                ValidationRule, ValidationMessage, Style, InputSettings, OutputSettings, NormalizeFlag,
                                MultipleValuesFlag, FilterTags, FilterScript, ListInputType, ModuleContext, FieldSettingsTable, FormEvents );
             Controls.Add(_ctlDate);
-            Controls.Add(new LiteralControl("&nbsp;&nbsp;"));
+            Controls.Add(new LiteralControl(" "));
             var ctlTimeLbl = new Label
                                  {
                                      Text = string.Format("{0}: ", Localization.GetString("Time", LocalResourceFile)),
-                                     CssClass = "SubHead"
+                                     CssClass = "bccf-label"
                                  };
             Controls.Add(ctlTimeLbl);
             _ctlTime = new EditTime();
