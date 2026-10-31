@@ -94,6 +94,16 @@
       <HintPath>packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AngleSharp">
+      <!-- HtmlSanitizer's parser; shipped with DNN 10 -->
+      <HintPath>packages\AngleSharp.1.5.2\lib\net472\AngleSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HtmlSanitizer">
+      <!-- shipped with DNN 10; web.config redirects all versions to the one in bin -->
+      <HintPath>packages\HtmlSanitizer.9.1.878-beta\lib\net461\HtmlSanitizer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
@@ -127,6 +137,7 @@
     <Compile Include="Components\FieldSettingsController.cs" />
     <Compile Include="Components\FilteredNameValueCollectionPropertyAccess.cs" />
     <Compile Include="Components\FormColumnInfo.cs" />
+    <Compile Include="Components\HtmlFilter.cs" />
     <Compile Include="Components\GlobalConstants.cs" />
     <Compile Include="Components\GravatarPropertyAccess.cs" />
     <Compile Include="Components\ModuleSecurity.cs" />
