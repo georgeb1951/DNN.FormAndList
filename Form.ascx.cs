@@ -20,6 +20,8 @@ using DotNetNuke.UI.WebControls;
 using Globals = DotNetNuke.Common.Globals;
 using System.Text;
 using System.Globalization;
+using System.Web;
+using DotNetNuke.Abstractions.ClientResources;
 using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Abstractions.Portals;
@@ -247,9 +249,74 @@ namespace BCC.Modules.BCCForms
                             createdBy != Definition.NameOfAnonymousUser);
         }
 
+        bool IsAnonymous
+        {
+            get { return ModuleContext.PortalSettings.UserId == -1; }
+        }
+
+        /// <summary>DNN's built-in image CAPTCHA is shown to anonymous users.</summary>
         bool CaptchaNeeded()
         {
-            return ModuleContext.PortalSettings.UserId == - 1 && Settings.ForceCaptchaForAnonymous && !Settings.PreferReCaptcha ;
+            return IsAnonymous && Settings.CaptchaMode == CaptchaMode.DnnCaptcha;
+        }
+
+        /// <summary>A reCAPTCHA or Turnstile token is required from anonymous users.</summary>
+        bool ProviderCaptchaNeeded()
+        {
+            return IsAnonymous && CaptchaVerifier.UsesProviderToken(Settings.CaptchaMode);
+        }
+
+        bool HoneypotNeeded()
+        {
+            return IsAnonymous && Settings.UseHoneypot;
+        }
+
+        string HoneypotFieldName
+        {
+            get { return "bccf_hp_" + ModuleId.ToString(CultureInfo.InvariantCulture); }
+        }
+
+        /// <summary>
+        ///   A text box placed off-screen: people never see or reach it (no tab stop, hidden from
+        ///   screen readers), but form-filling bots tend to put something in it.
+        /// </summary>
+        void RenderHoneypot()
+        {
+            var name = HoneypotFieldName;
+            phHoneypot.Controls.Add(new LiteralControl(
+                "<div class=\"bccf-hp\" aria-hidden=\"true\" " +
+                "style=\"position:absolute!important;left:-10000px!important;top:auto!important;width:1px;height:1px;overflow:hidden;\">" +
+                "<label for=\"" + name + "\">" +
+                HttpUtility.HtmlEncode(Localization.GetString("HoneypotLabel", LocalResourceFile)) +
+                "</label><input type=\"text\" id=\"" + name + "\" name=\"" + name +
+                "\" value=\"\" tabindex=\"-1\" autocomplete=\"off\" /></div>"));
+        }
+
+        /// <summary>Shows the reCAPTCHA / Turnstile widget and wires the client script for this module.</summary>
+        void RegisterProviderCaptcha()
+        {
+            gRecaptcha.Visible = true;
+            ModuleServices.Get<IClientResourceController>()
+                          .CreateScript("~/DesktopModules/BCCForms/js/bccforms.captcha.js")
+                          .Register();
+
+            Func<string, string> js = value => HttpUtility.JavaScriptStringEncode(value ?? string.Empty, true);
+            Func<string, string> text = key => js(Localization.GetString(key, LocalResourceFile));
+            var config = new StringBuilder();
+            config.Append("(window.BCCFormsCaptchaQueue = window.BCCFormsCaptchaQueue || []).push({");
+            config.Append("mode:").Append(js(Settings.CaptchaMode.ToString()));
+            config.Append(",siteKey:").Append(js(Settings.ReCaptchaSiteKey));
+            config.Append(",action:").Append(js(CaptchaVerifier.ExpectedAction));
+            config.Append(",language:").Append(js(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName));
+            config.Append(",container:").Append(js(gRecaptcha.ClientID));
+            config.Append(",tokenField:").Append(js(hfCaptchaToken.ClientID));
+            config.Append(",button:").Append(js(cmdUpdate.ClientID));
+            config.Append(",text:{prompt:").Append(text("CaptchaPrompt.Text"));
+            config.Append(",notReady:").Append(text("CaptchaNotReady.Text"));
+            config.Append(",failed:").Append(text("CaptchaFailed.Text")).Append("}");
+            config.Append("});");
+            Page.ClientScript.RegisterStartupScript(typeof (EditForm), "bccf-captcha-" + ModuleId,
+                                                    config.ToString(), true);
         }
 
         void ShowUponSubmit()
@@ -331,26 +398,22 @@ namespace BCC.Modules.BCCForms
 
             if (CaptchaNeeded())
             {
-                if (!Settings.PreferReCaptcha)                
+                _ctlCaptcha = new CaptchaControl
                 {
-                    // use DnnCaptcha
-                    _ctlCaptcha = new CaptchaControl
-                    {
-                        ID = "Captcha",
-                        CaptchaWidth = Unit.Pixel(130),
-                        CaptchaHeight = Unit.Pixel(40),
-                        ToolTip = Localization.GetString("CaptchaToolTip", LocalResourceFile),
-                        ErrorMessage = Localization.GetString("CaptchaError", LocalResourceFile)
-                    };
-                    currentField = new FormColumnInfo
-                    {
-                        Title = Localization.GetString("Captcha", LocalResourceFile),
-                        EditControl = _ctlCaptcha,
-                        Visible = true,
-                        IsUserDefinedField = false
-                    };
-                    editForm.Add(currentField);
-                }
+                    ID = "Captcha",
+                    CaptchaWidth = Unit.Pixel(130),
+                    CaptchaHeight = Unit.Pixel(40),
+                    ToolTip = Localization.GetString("CaptchaToolTip", LocalResourceFile),
+                    ErrorMessage = Localization.GetString("CaptchaError", LocalResourceFile)
+                };
+                currentField = new FormColumnInfo
+                {
+                    Title = Localization.GetString("Captcha", LocalResourceFile),
+                    EditControl = _ctlCaptcha,
+                    Visible = true,
+                    IsUserDefinedField = false
+                };
+                editForm.Add(currentField);
             }
 
             var enableFormTemplate = Settings.EnableFormTemplate;
@@ -409,28 +472,13 @@ namespace BCC.Modules.BCCForms
         {
             try
             {
-                if (ModuleContext.PortalSettings.UserId == -1 && Settings.ForceCaptchaForAnonymous && Settings.PreferReCaptcha)
+                if (ProviderCaptchaNeeded())
                 {
-                    cmdUpdate.Attributes["disabled"] = "disabled";
-                    cmdUpdate.CssClass += " disabled";
-
-                    DotNetNuke.Framework.CDefault page = (DotNetNuke.Framework.CDefault)this.Page;
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendLine(@"<script type=""text/javascript"">");
-                    sb.AppendLine("var onSubmit = function(token) {");
-                    sb.AppendLine("$('#" + cmdUpdate.ClientID + "').removeAttr('disabled');");
-                    sb.AppendLine("$('#" + cmdUpdate.ClientID + "').removeClass('disabled');");
-                    sb.AppendLine("};");
-                    sb.AppendLine("var onloadCallback = function() {");
-                    sb.AppendLine("grecaptcha.render('" + gRecaptcha.ClientID + "', {");
-                    sb.AppendLine("'sitekey' : '" + Settings.ReCaptchaSiteKey + "',");
-                    sb.AppendLine("'callback' : onSubmit");
-                    sb.AppendLine("});");
-                    sb.AppendLine("};");
-                    sb.AppendLine("</script>");
-                    page.Header.Controls.Add(new LiteralControl(sb.ToString()));
-                    string languageCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-                    page.Header.Controls.Add(new LiteralControl(@"<script src=""https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=" + languageCode + @""" async defer ></script>"));
+                    RegisterProviderCaptcha();
+                }
+                if (HoneypotNeeded())
+                {
+                    RenderHoneypot();
                 }
                 if (Page.IsPostBack == false)
                 {
@@ -524,17 +572,28 @@ namespace BCC.Modules.BCCForms
                                                         Localization.GetString("CaptchaError.Text", LocalResourceFile));
                     }
 
-                    if (ModuleContext.PortalSettings.UserId == -1 && Settings.ForceCaptchaForAnonymous && Settings.PreferReCaptcha)
+                    if (ProviderCaptchaNeeded())
                     {
-                        string encodedResponse = Request.Form["g-recaptcha-response"];
-                        if (!ReCaptcha.Validate(encodedResponse, Settings.ReCaptchaSecretKey))
+                        var token = hfCaptchaToken.Value;
+                        hfCaptchaToken.Value = string.Empty; // tokens are single-use
+                        if (!CaptchaVerifier.Verify(Settings.CaptchaMode, token, Settings.ReCaptchaSecretKey,
+                                                    Settings.ReCaptchaMinScore))
                         {
                             warningMessage += string.Format("<li><b>{0}</b><br />{1}</li>",
-                                Localization.GetString("ReCaptcha.Text", LocalResourceFile), Localization.GetString("ReCaptchaError.Text", LocalResourceFile));
+                                Localization.GetString("ReCaptcha.Text", LocalResourceFile),
+                                Localization.GetString("ReCaptchaError.Text", LocalResourceFile));
                         }
                     }
 
-                        if (warningMessage == string.Empty)
+                    if (HoneypotNeeded() && !string.IsNullOrEmpty(Request.Form[HoneypotFieldName]))
+                    {
+                        // Deliberately vague: don't tell a bot which check it failed.
+                        warningMessage += string.Format("<li><b>{0}</b><br />{1}</li>",
+                            Localization.GetString("ReCaptcha.Text", LocalResourceFile),
+                            Localization.GetString("SpamRejected.Text", LocalResourceFile));
+                    }
+
+                    if (warningMessage == string.Empty)
                     {
                         //'Save values for every field separately
                         foreach (var edit in _editControls.Values)

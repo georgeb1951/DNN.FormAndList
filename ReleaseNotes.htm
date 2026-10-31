@@ -9,4 +9,7 @@
   <li>Security: the thumbnail handler now enforces folder view permissions, limits image types to jpg/png/gif/bmp, and caps width/height at 2000&nbsp;px.</li>
   <li>Security: reCAPTCHA tokens are verified with a POST request (secret no longer in the query string), with a 10-second timeout.</li>
   <li>Removed the use of <code>DotNetNuke.Services.SystemDateTime</code>, which no longer exists in DNN 10.</li>
+  <li>Security: user-entered HTML is cleaned by an allowlist sanitizer (the HtmlSanitizer library that ships with DNN 10) in place of the obsolete NoScripting filter. Scripts, event handlers, form controls and page-level tags are removed; plain-text fields round-trip unchanged.</li>
+  <li>Spam protection for anonymous users: one setting with None, DNN image CAPTCHA, Google reCAPTCHA v2, Google reCAPTCHA v3 (invisible, with a minimum score) or Cloudflare Turnstile. Submit stays blocked until the check passes, each form on a page gets its own widget, and every token is verified on the server (fail closed). Existing CAPTCHA settings carry over.</li>
+  <li>Spam protection: optional honeypot field (on by default) that bots fill in and people never see.</li>
 </ul>

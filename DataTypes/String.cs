@@ -59,7 +59,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                 if (CtlValueBox is TextBox)
                 {
                     returnValue = FilterScript
-                                      ? ApplyScriptFilter(((TextBox) CtlValueBox).Text)
+                                      ? ApplyTextScriptFilter(((TextBox) CtlValueBox).Text)
                                       : ((TextBox) CtlValueBox).Text;
                     if (FilterTags)
                     {

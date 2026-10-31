@@ -246,26 +246,16 @@ namespace BCC.Modules.BCCForms
             }
         }
 
+        /// <summary>Cleans HTML input (rich-text fields) when input filtering applies. See <see cref="HtmlFilter"/>.</summary>
         protected static string ApplyScriptFilter(string input)
         {
-            //portalsecurity tries to detect encoding, if the input contains "&[g,l]t;", it decodes the input first
-            //than it cleans up the input and encodes it again
+            return HtmlFilter.SanitizeHtml(input);
+        }
 
-            //workaraound
-            //1) encode helperstring + input (Enforces decoding inside inputfilter!)
-            input = HttpUtility.HtmlEncode(string.Concat("<>", input));
-            //2) apply filter
-            // NoScripting strips script (script tags, on* handlers, javascript: URLs) but keeps other HTML,
-            // which rich-text fields rely on. DNN deprecated it in favour of WebUtility.HtmlEncode, but that
-            // encodes ALL markup and would break those fields. Keep it until BCC Forms has a real HTML
-            // sanitizer (tracked for a later phase); the flag is only removed in DNN 11.
-#pragma warning disable 618 // CS0618: obsolete member (see comment above)
-            input = PortalSecurity.Instance.InputFilter(input, PortalSecurity.FilterFlag.NoScripting);
-#pragma warning restore 618
-            //3) return decoded String minus helperstring
-// ReSharper disable PossibleNullReferenceException
-            return HttpUtility.HtmlDecode(input).Substring(2);
-// ReSharper restore PossibleNullReferenceException
+        /// <summary>Cleans plain-text input when input filtering applies. See <see cref="HtmlFilter.SanitizeText"/>.</summary>
+        protected static string ApplyTextScriptFilter(string input)
+        {
+            return HtmlFilter.SanitizeText(input);
         }
 
         protected static string CleanID(string name)

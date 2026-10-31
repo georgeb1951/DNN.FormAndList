@@ -157,12 +157,27 @@
     <value>0</value>
   </data>
   <data name="MonthNames.Text" xml:space="preserve">
-    <value>'January','Februrary','March','April','May','June','July','August','September','October','November','December'</value>
+    <value>'January','February','March','April','May','June','July','August','September','October','November','December'</value>
   </data>
   <data name="ReCaptcha.Text" xml:space="preserve">
-    <value>ReCaptcha</value>
+    <value>Verification</value>
   </data>
   <data name="ReCaptchaError.Text" xml:space="preserve">
-    <value>An unexpected error has occured, please try again.</value>
+    <value>We couldn't confirm you're not a robot. Please complete the verification and submit again.</value>
+  </data>
+  <data name="CaptchaPrompt.Text" xml:space="preserve">
+    <value>Please complete the verification above before submitting.</value>
+  </data>
+  <data name="CaptchaNotReady.Text" xml:space="preserve">
+    <value>The verification is still loading. Please wait a moment and try again.</value>
+  </data>
+  <data name="CaptchaFailed.Text" xml:space="preserve">
+    <value>The verification could not run. Check your connection, reload the page and try again.</value>
+  </data>
+  <data name="SpamRejected.Text" xml:space="preserve">
+    <value>Your submission could not be accepted. Please reload the page and try again.</value>
+  </data>
+  <data name="HoneypotLabel.Text" xml:space="preserve">
+    <value>Leave this field empty</value>
   </data>
 </root>
