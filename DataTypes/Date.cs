@@ -56,7 +56,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                 {
                     ctlListControl.Items.Add(new ListItem("", ""));
                 }
-                ctlListControl.CssClass = "NormalTextBox";
+                ctlListControl.CssClass = "bccf-input";
                 if (!String.IsNullOrEmpty(Style)) CtlValueBox.Style.Value = Style;
                 ctlListControl.ID = CleanID(string.Format("{0}_date", FieldTitle));
                 Controls.Add(ctlListControl);
@@ -157,8 +157,9 @@ namespace BCC.Modules.BCCForms.DataTypes
         public override void SetStylesAndFormats(BoundField column, string format)
         {
             column.DataFormatString = format != "" ? string.Format("{{0:{0}}}", format) : "{0:d}";
-            column.HeaderStyle.HorizontalAlign = HorizontalAlign.Right;
-            column.ItemStyle.HorizontalAlign = HorizontalAlign.Right;
+            // alignment via CSS classes (module.css) so themes can restyle the grid
+            column.HeaderStyle.CssClass = "bccf-num";
+            column.ItemStyle.CssClass = "bccf-num";
         }
 
         public override string Name

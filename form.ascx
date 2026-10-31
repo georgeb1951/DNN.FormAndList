@@ -1,8 +1,6 @@
 <%@ Control Language="C#"  Inherits="BCC.Modules.BCCForms.EditForm" CodeBehind="Form.ascx.cs" AutoEventWireup="false" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
-<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/TimePicker/Themes/jquery-ui.css"/>
-<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/components/TimePicker/Themes/jquery.ui.theme.css"/>
-<div runat="server" id="divForm"  class="dnnForm fnlForm dnnClear">
+<div runat="server" id="divForm"  class="dnnForm dnnClear bccForms bccf-form">
 
     <div runat="server" ID="EditFormPlaceholder"  />
     <asp:Panel ID="gRecaptcha" CssClass="recaptcha-container" runat="server" />
@@ -14,14 +12,17 @@
             <asp:LinkButton ID="cmdCancel" Text="Cancel" CausesValidation="False" resourcekey="cmdCancel" runat="server" cssclass="dnnSecondaryAction" />
         </li>
         <li>
-            <asp:LinkButton ID="cmdDelete" Text="Delete" CausesValidation="False" resourcekey="cmdDelete" runat="server" class="dnnSecondaryAction"  />
+            <asp:LinkButton ID="cmdDelete" Text="Delete" CausesValidation="False" resourcekey="cmdDelete" runat="server" CssClass="dnnSecondaryAction" />
         </li>
          <li>
                 <asp:HyperLink runat="server" CssClass="dnnSecondaryAction" ID="cmdShowRecords" Visible="False"></asp:HyperLink>
           </li>
     </ul>
 </div>
- <div runat="server" ID="MessagePlaceholder"  />
+<%-- Kept outside divForm: after a successful submit the form is hidden and only this message shows. --%>
+<div class="bccForms bccf-form-message">
+    <div runat="server" ID="MessagePlaceholder" />
+</div>
 <script type="text/javascript">
 /* Wrap your code in a function to avoid global scope and pass in any global objects */
 /* globals jQuery, window, Sys */
@@ -30,7 +31,8 @@
     /* wire up any plugins or other logic here */
 
     function setUpMyModule() {
-        $('#<%=EditFormPlaceholder.ClientID%>').dnnPanels();
+        if ($.fn.dnnPanels) { $('#<%=EditFormPlaceholder.ClientID%>').dnnPanels(); }
+        if (!$.fn.datepicker) { return; }
         $('.fnl-datepicker').datepicker({
             monthNames:  [<%=LocalizeString("MonthNames")%>],
             dayNames:    [<%=LocalizeString("DayNames")%>],
@@ -45,10 +47,12 @@
 
         setUpMyModule();
 
-        /* Wire up the call to your function after an update panel request */
-        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function() {
-            setUpMyModule();
-        });
+        /* Re-run after an UpdatePanel (partial rendering) request, when MS AJAX is on the page */
+        if (Sys && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function() {
+                setUpMyModule();
+            });
+        }
     });
 
 }(jQuery, window.Sys))

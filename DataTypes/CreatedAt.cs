@@ -36,7 +36,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                 {
                     ViewState[TimeStamp] = value;
                     Controls.Add(
-                        new LiteralControl(string.Format("<span class=\"Normal\">{0:g}</span>", ServerTime(value))));
+                        new LiteralControl(string.Format("<span class=\"bccf-value\">{0:g}</span>", ServerTime(value))));
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                 if (ViewState[TimeStamp]!=null)
                 {
                     Controls.Add(
-                        new LiteralControl(string.Format("<span class=\"Normal\">{0}</span>", ServerTime((string)ViewState[TimeStamp]))));
+                        new LiteralControl(string.Format("<span class=\"bccf-value\">{0}</span>", ServerTime((string)ViewState[TimeStamp]))));
                 }
             }
         }

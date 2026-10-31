@@ -53,11 +53,11 @@ namespace BCC.Modules.BCCForms.DataTypes
 
         void EditCurrency_Init(object sender, EventArgs e)
         {
-            CtlValueBox.Attributes.Add("style", "text-align:right");
+            CtlValueBox.CssClass = (CtlValueBox.CssClass + " bccf-num").Trim();
             CtlValueBox.Width = new Unit("10em");
             var ctlSym = new Label
                              {
-                                 CssClass = "Normal",
+                                 CssClass = "bccf-value",
                                  Text =
                                      string.Format("&nbsp;{0}",
                                                    OutputSettings == string.Empty

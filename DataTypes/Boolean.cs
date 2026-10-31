@@ -79,8 +79,9 @@ namespace BCC.Modules.BCCForms.DataTypes
     {
         public override void SetStylesAndFormats(BoundField column, string format)
         {
-            column.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
-            column.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+            // alignment via CSS classes (module.css) so themes can restyle the grid
+            column.HeaderStyle.CssClass = "bccf-center";
+            column.ItemStyle.CssClass = "bccf-center";
         }
 
         public override string Name

@@ -75,8 +75,9 @@ namespace BCC.Modules.BCCForms.DataTypes
         public override void SetStylesAndFormats(BoundField column, string format)
         {
             column.DataFormatString = format == string.Empty ? "{0:#,###,##0.0###}" : string.Format("{{0:{0}}}", format);
-            column.HeaderStyle.HorizontalAlign = HorizontalAlign.Right;
-            column.ItemStyle.HorizontalAlign = HorizontalAlign.Right;
+            // alignment via CSS classes (module.css) so themes can restyle the grid
+            column.HeaderStyle.CssClass = "bccf-num";
+            column.ItemStyle.CssClass = "bccf-num";
         }
 
         public override string Name

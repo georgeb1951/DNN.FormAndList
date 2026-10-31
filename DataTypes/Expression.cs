@@ -61,7 +61,7 @@ namespace BCC.Modules.BCCForms.DataTypes
             {
                 ctl =
                     new LiteralControl(string.Format(
-                        "<span class=\"Normal\" style=\"font-style: italic;\">({0})</span>",
+                        "<span class=\"bccf-expression\">({0})</span>",
                         HttpUtility.HtmlEncode(DefaultValue)));
             }
             Controls.Add(ctl);
@@ -122,9 +122,9 @@ namespace BCC.Modules.BCCForms.DataTypes
             }
             if (tabId > - 1 && new ModuleSecurity(moduleId, tabId).IsAllowedToAdministrateModule())
             {
-                return string.Format("\'<span style=\"COLOR: red\">{0}</span>\'", message);
+                return string.Format("\'<span class=\"bccf-error\">{0}</span>\'", message);
             }
-            return string.Format("\'<span style=\"COLOR: red\">{0}</span>\'", "Expression failed");
+            return string.Format("\'<span class=\"bccf-error\">{0}</span>\'", "Expression failed");
         }
 
         public override void RenderValuesToHtmlInsideDataSet(DataSet ds, int moduleId, bool noScript)

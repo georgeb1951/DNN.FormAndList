@@ -1,15 +1,15 @@
 <%@ Control Language="C#"  Inherits="BCC.Modules.BCCForms.TemplateList"
             CodeBehind="TemplateList.ascx.cs" AutoEventWireup="false" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
-<div style="margin-bottom:1em;">
-    <asp:Label runat="server" ID="lblNewConfig" resourcekey="lblNewConfig">Start with a new </asp:Label>&nbsp; 
+<div class="bccForms bccf-section bccf-toolbar">
+    <asp:Label runat="server" ID="lblNewConfig" resourcekey="lblNewConfig">Start with a new </asp:Label> 
     <asp:HyperLink ID="cmdConfig" runat="server" CssClass="dnnPrimaryAction">
         <asp:Label ID="lblConfig" runat="server" resourcekey="lblConfig">Configuration</asp:Label>
     </asp:HyperLink>
-    &nbsp;<asp:Label runat="server" ID="lblTemplate" resourcekey="lblTemplate">or choose a template:</asp:Label>
+    <asp:Label runat="server" ID="lblTemplate" resourcekey="lblTemplate">or choose a template:</asp:Label>
 </div>
 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="TemplateDataSource"
-              PagerSettings-Visible="false" BorderWidth="0px" GridLines="None" CellPadding="4">
+              PagerSettings-Visible="false" GridLines="None" CssClass="dnnGrid bccf-grid">
     <AlternatingRowStyle CssClass="dnnGridAltItem" />
 
     <RowStyle CssClass="dnnGridItem" />
@@ -33,10 +33,10 @@
     <dnn:CollectionEditorControl runat="server" ID="TemplateCustomValuesEditor" EditorDataField="Editor"
                                  EnableClientValidation="False" GroupByMode="None" NameDataField="Caption" ValueDataField="Value"
                                  LengthDataField="Length" VisibleDataField="TrueColumn" AutoGenerate="true" HelpDisplayMode="Never"
-                                 EditControlStyle-CssClass="NormalTextBox" ErrorStyle-CssClass="NormalRed" GroupHeaderStyle-CssClass="Head"
-                                 EditControlStyle-Width="525px" GroupHeaderIncludeRule="True" HelpStyle-CssClass="Help"
-                                 LabelStyle-CssClass="SubHead" VisibilityStyle-CssClass="Normal" Width="700px" >
+                                 ErrorStyle-CssClass="bccf-error" GroupHeaderStyle-CssClass="dnnFormSectionHead"
+                                 GroupHeaderIncludeRule="True" HelpStyle-CssClass="Help"
+                                 LabelStyle-CssClass="bccf-label">
     </dnn:CollectionEditorControl>
-    <asp:LinkButton CssClass="CommandButton" runat="server" ID="cmdApply" resourcekey="Select"
+    <asp:LinkButton CssClass="dnnPrimaryAction" runat="server" ID="cmdApply" resourcekey="Select"
                     Visible="False"  OnClick="cmdApply_Click"/>
 </div>

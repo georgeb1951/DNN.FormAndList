@@ -86,33 +86,27 @@
         });
     });
 </script>
-<style>
-td > .dnnLabel {
-    width: auto;
-}
-</style>
 
-<div align="center" style="width: 80%">
-    <div align="right">
+<div class="bccForms bccf-xslgen">
+    <div class="bccf-align-end">
         <asp:HyperLink ID="hlpColumns" runat="server" resourcekey="cmdColumnsHelp" NavigateUrl="#"
-            CssClass="CommandButton" />
+            CssClass="bccf-command" />
     </div>
-    <div align="left">
+    <div>
         <dnn:SectionHead ID="dshHtml" IsExpanded="true" Section="tblHtml" IncludeRule="True"
-            ResourceKey="dshHtml" runat="server" CssClass="Head" align="left" />
-        <div id="tblHtml" runat="server" align="left">
+            ResourceKey="dshHtml" runat="server" CssClass="dnnFormSectionHead" />
+        <div id="tblHtml" runat="server">
             <dnn:SectionHead ID="dshListView" IsExpanded="true" Section="dvListView" IncludeRule="false"
-                ResourceKey="dshListView" runat="server" CssClass="SubHead" />
-            <div id="dvListview" runat="server" style="padding-bottom: 20px; padding-top: 10px">
-                <table>
+                ResourceKey="dshListView" runat="server" CssClass="bccf-label" />
+            <div id="dvListview" runat="server" class="bccf-section">
+                <table class="bccf-layout-table">
                     <tr>
-                        <td class="SubHead" valign="top">
+                        <td class="bccf-label">
                             <dnn:Label ID="plListType" runat="server" Text="List type" ControlName="ddlListType"
                                 Suffix=":" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlListTemplateType" runat="server" CssClass="Normal" BorderWidth="1px"
-                                BorderColor="Lightgray" BorderStyle="Solid" AutoPostBack="True" >
+                            <asp:DropDownList ID="ddlListTemplateType" runat="server" AutoPostBack="True" >
                                 <asp:ListItem Value="table" Selected="true" resourcekey="table" />
                                 <asp:ListItem Value="div" resourcekey="div" />
                                 <asp:ListItem Value="p" resourcekey="p" />
@@ -121,122 +115,122 @@ td > .dnnLabel {
                                 <asp:ListItem Value="nothing" resourcekey="nothing" />
                             </asp:DropDownList>
                         </td>
-                        <td style="vertical-align:top" colspan="2">
+                        <td colspan="2">
                             <asp:LinkButton ID="cmdRebuildContent" resourcekey="cmdRebuildContent" runat="server"
-                                CssClass="CommandButton" />
+                                CssClass="bccf-command" />
                         </td>
                     </tr>
                     <tr>
-                        <td class="SubHead">
+                        <td class="bccf-label">
                             <dnn:Label ID="plDelimiter" runat="server" Text="Delimiter symbol" ControlName="txtDelimiter"
                                 Suffix=":" />
                         </td>
                         <td colspan="3">
-                            <asp:TextBox ID="txtListTemplateDelimiter" runat="server" CssClass="Normal" Columns="10">;</asp:TextBox>
+                            <asp:TextBox ID="txtListTemplateDelimiter" runat="server" Columns="10">;</asp:TextBox>
                         </td>
                     </tr>
                     
                 </table>
                 <asp:Label ID="lblTemplateError" runat="server" CssClass="normalred" Visible="False"></asp:Label><br />
-                <asp:Label ID="lblListTemplateHead" runat="server" CssClass="Normal" />
-                <table>
+                <asp:Label ID="lblListTemplateHead" runat="server" />
+                <table class="bccf-layout-table">
                     <tr>
-                        <td class="SubHead" style="white-space: nowrap;">
+                        <td class="bccf-label bccf-nowrap">
                             <dnn:Label ID="plHeaderList" runat="server" ResourceKey="plHeaderList" ControlName="ddlHeaders"
                                 Suffix=":" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlHeaders" runat="server" CssClass="Normal" />
+                            <asp:DropDownList ID="ddlHeaders" runat="server" />
                         </td>
                         <td>
                             <asp:HyperLink ID="addHeader" resourcekey="cmdInsert" runat="server"
-                                CssClass="CommandButton" NavigateUrl="#" />
+                                CssClass="bccf-command" NavigateUrl="#" />
                         </td>
                     </tr>
                 </table>
                 
-                <asp:TextBox ID="txtHeaderTemplate" Style="font-family: consolas, courier" runat="server"
-                    CssClass="Normal" Columns="70" Rows="3" TextMode="MultiLine" Width="100%" />
-                <table>
+                <asp:TextBox ID="txtHeaderTemplate" runat="server"
+                    Columns="70" Rows="3" TextMode="MultiLine" Width="100%" CssClass="bccf-mono" />
+                <table class="bccf-layout-table">
                 <tr>
-                        <td class="SubHead" style="white-space: nowrap;">
+                        <td class="bccf-label bccf-nowrap">
                             <dnn:Label ID="plColumns" runat="server" Text="Available Columns" ControlName="ddlColumns"
                                 Suffix=":" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlColumnsForListView" runat="server" CssClass="Normal" />
+                            <asp:DropDownList ID="ddlColumnsForListView" runat="server" />
                         </td>
                         <td>
                             <asp:HyperLink ID="addColumnToListTemplate" resourcekey="cmdInsert" runat="server"
-                                CssClass="CommandButton" NavigateUrl="#" />
+                                CssClass="bccf-command" NavigateUrl="#" />
                         </td>
                         <td>
                             <asp:HyperLink ID="addColumnWithTagsToListTemplate" resourcekey="cmdAddColumnWithTags"
-                                runat="server" CssClass="CommandButton" NavigateUrl="#" />
+                                runat="server" CssClass="bccf-command" NavigateUrl="#" />
                         </td>
                     </tr></table>
-                <asp:TextBox ID="txtListTemplate" Style="font-family: consolas, courier" runat="server"
-                    CssClass="Normal" Columns="70" Rows="15" TextMode="MultiLine" Width="100%" />
-                <asp:Label ID="lblListTemplateFooter" runat="server" CssClass="Normal" />
+                <asp:TextBox ID="txtListTemplate" runat="server"
+                    Columns="70" Rows="15" TextMode="MultiLine" Width="100%" CssClass="bccf-mono" />
+                <asp:Label ID="lblListTemplateFooter" runat="server" />
             </div>
             <dnn:SectionHead ID="dshDetailView" IsExpanded="false" Section="dvDetailView" IncludeRule="false"
-                ResourceKey="dshDetailView" runat="server" CssClass="SubHead" />
-            <div id="dvDetailView" runat="server" style="padding-bottom: 20px; padding-top: 10px">
-                <table>
+                ResourceKey="dshDetailView" runat="server" CssClass="bccf-label" />
+            <div id="dvDetailView" runat="server" class="bccf-section">
+                <table class="bccf-layout-table">
                     <tr>
-                        <td class="SubHead" style="white-space: nowrap;">
+                        <td class="bccf-label bccf-nowrap">
                             <dnn:Label ID="plColumns2" runat="server" ResourceKey="plColumns" ControlName="ddlColumnsForDetailView"
                                 Suffix=":" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlColumnsForDetailView" runat="server" CssClass="Normal" />
+                            <asp:DropDownList ID="ddlColumnsForDetailView" runat="server" />
                         </td>
                         <td>
                             <asp:HyperLink ID="addColumnToDetailTemplate" resourcekey="cmdInsert" runat="server"
-                                CssClass="CommandButton" NavigateUrl="#" />
+                                CssClass="bccf-command" NavigateUrl="#" />
                         </td>
                         <td>
                             <asp:LinkButton ID="cmdRebuildDetail" resourcekey="cmdRebuildContent" runat="server"
-                                CssClass="CommandButton"  />
+                                CssClass="bccf-command" />
                         </td>
                     </tr>
                 </table>
-                <asp:TextBox ID="txtDetailTemplate" Style="font-family: consolas, courier" runat="server"
-                    CssClass="Normal" Columns="70" Rows="15" TextMode="MultiLine" Width="100%" />
+                <asp:TextBox ID="txtDetailTemplate" runat="server"
+                    Columns="70" Rows="15" TextMode="MultiLine" Width="100%" CssClass="bccf-mono" />
             </div>
             <dnn:SectionHead ID="dshTrackingEmail" IsExpanded="true" Section="dvTrackingEmail"
-                IncludeRule="false" ResourceKey="dshTrackingEmail" runat="server" CssClass="SubHead"
+                IncludeRule="false" ResourceKey="dshTrackingEmail" runat="server" CssClass="bccf-label"
                 Visible="false" />
-            <div id="dvTrackingEmail" runat="server" style="padding-bottom: 20px; padding-top: 10px"
-                visible="false">
-                <table>
+            <div id="dvTrackingEmail" runat="server"
+                visible="false" class="bccf-section">
+                <table class="bccf-layout-table">
                     <tr>
-                        <td class="SubHead" style="white-space: nowrap;">
+                        <td class="bccf-label bccf-nowrap">
                             <dnn:Label ID="plColumns3" runat="server" ResourceKey="plColumns" ControlName="ddlColumnsForTrackingEmail"
                                 Suffix=":" />
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlColumnsForTrackingEmail" runat="server" CssClass="Normal" />
+                            <asp:DropDownList ID="ddlColumnsForTrackingEmail" runat="server" />
                         </td>
                         <td>
                             <asp:HyperLink ID="addColumnToTrackingEmail" resourcekey="cmdInsert" runat="server"
-                                CssClass="CommandButton" NavigateUrl="#" />
+                                CssClass="bccf-command" NavigateUrl="#" />
                         </td>
                         <td>
                             <asp:LinkButton ID="cmdRebuildTrackingEmail" resourcekey="cmdRebuildContent" runat="server"
-                                CssClass="CommandButton"  />
+                                CssClass="bccf-command" />
                         </td>
                     </tr>
                 </table>
-                <asp:TextBox ID="txtTrackingEmailTemplate" Style="font-family: consolas, courier" runat="server"
-                    CssClass="Normal" Columns="70" Rows="15" TextMode="MultiLine" Width="100%" />
+                <asp:TextBox ID="txtTrackingEmailTemplate" runat="server"
+                    Columns="70" Rows="15" TextMode="MultiLine" Width="100%" CssClass="bccf-mono" />
             </div>
             <dnn:SectionHead ID="dshOptions" IsExpanded="false" Section="dvOptions" IncludeRule="false"
-                ResourceKey="dshOptions" runat="server" CssClass="SubHead" />
-            <div id="dvOptions" runat="server" style="padding-bottom: 20px; padding-top: 20px">
-                <table>
+                ResourceKey="dshOptions" runat="server" CssClass="bccf-label" />
+            <div id="dvOptions" runat="server" class="bccf-section">
+                <table class="bccf-layout-table">
                     <tr>
-                        <td class="SubHead" style="white-space: nowrap;">
+                        <td class="bccf-label bccf-nowrap">
                             <dnn:Label ID="lblEnableSorting" runat="server" ControlName="chkEnableSorting" ResourceKey="lblEnableSorting"
                                 Suffix=":" />
                         </td>
@@ -245,7 +239,7 @@ td > .dnnLabel {
                         </td>
                     </tr>
                     <tr>
-                        <td class="SubHead" style="white-space: nowrap;">
+                        <td class="bccf-label bccf-nowrap">
                             <dnn:Label ID="lblEnablePaging" runat="server" ControlName="chkEnablePaging" ResourceKey="lblEnablePaging"
                                 Suffix=":" />
                         </td>
@@ -254,7 +248,7 @@ td > .dnnLabel {
                         </td>
                     </tr>
                     <tr>
-                        <td class="SubHead" style="white-space: nowrap;">
+                        <td class="bccf-label bccf-nowrap">
                             <dnn:Label ID="lblEnableSearch" runat="server" ControlName="chkEnableSearch" ResourceKey="lblEnableSearch"
                                 Suffix=":" />
                         </td>
@@ -263,7 +257,7 @@ td > .dnnLabel {
                         </td>
                     </tr>
                     <tr>
-                        <td class="SubHead" style="white-space: nowrap;">
+                        <td class="bccf-label bccf-nowrap">
                             <dnn:Label ID="lblShowDetailView" runat="server" ControlName="chkShowDetailView"
                                 ResourceKey="lblShowDetailView" Suffix=":" />
                         </td>
@@ -273,60 +267,58 @@ td > .dnnLabel {
                     </tr>
                 </table>
             </div>
-            <asp:Label ID="lblXslScriptError" runat="server" CssClass="normalred" Visible="False"></asp:Label><p
-                align="center">
-                <asp:Button ID="cmdGenerateXslt" resourcekey="btnGenerateXslt" runat="server" CssClass="CommandButton" >
+            <asp:Label ID="lblXslScriptError" runat="server" CssClass="normalred" Visible="False"></asp:Label><p>
+                <asp:Button ID="cmdGenerateXslt" resourcekey="btnGenerateXslt" runat="server" CssClass="bccf-command" >
                 </asp:Button>
             </p>
         </div>
         <dnn:SectionHead ID="dshXslt" IsExpanded="false" Section="tblXslt" IncludeRule="True"
-            ResourceKey="dshXslt" runat="server" CssClass="Head"></dnn:SectionHead>
-        <div id="tblXslt" runat="server" style="padding-bottom: 20px; padding-top: 10px">
-            <asp:TextBox ID="txtXslScript" Style="font-family: consolas, courier" runat="server"
-                CssClass="Normal" Columns="70" Rows="30" TextMode="MultiLine" Width="100%"></asp:TextBox>
+            ResourceKey="dshXslt" runat="server" CssClass="dnnFormSectionHead"></dnn:SectionHead>
+        <div id="tblXslt" runat="server" class="bccf-section">
+            <asp:TextBox ID="txtXslScript" runat="server"
+                Columns="70" Rows="30" TextMode="MultiLine" Width="100%" CssClass="bccf-mono"></asp:TextBox>
         </div>
         <dnn:SectionHead ID="dshSave" IsExpanded="false" Section="tblSave" IncludeRule="True"
-            ResourceKey="dshSave" runat="server" CssClass="Head"></dnn:SectionHead>
-        <table id="tblSave" align="center" runat="server">
+            ResourceKey="dshSave" runat="server" CssClass="dnnFormSectionHead"></dnn:SectionHead>
+        <table id="tblSave" runat="server" class="bccf-layout-table">
             <tr>
                 <td colspan="2">
                     <asp:Label ID="lblSaveXslError" runat="server" CssClass="normalred" Visible="False"></asp:Label>
                 </td>
             </tr>
-            <tr align="center">
-                <td class="SubHead" valign="top">
+            <tr>
+                <td class="bccf-label">
                     <dnn:Label ID="plFolderName" runat="server" ControlName="txtFolderName" Suffix=":">
                     </dnn:Label>
                 </td>
-                <td valign="top" align="left">
+                <td>
                     <asp:TextBox ID="txtFolderName" runat="server" Enabled="False"></asp:TextBox>
                 </td>
             </tr>
-            <tr align="center">
-                <td class="SubHead" valign="top">
+            <tr>
+                <td class="bccf-label">
                     <dnn:Label ID="plFileName" runat="server" ControlName="txtFileName" Suffix=":"></dnn:Label>
                 </td>
-                <td valign="top" align="left">
+                <td>
                     <asp:TextBox ID="txtFileName" runat="server" Enabled="False" BackColor="LightGray"></asp:TextBox>
-                    &nbsp;&nbsp;
-                    <asp:LinkButton ID="cmdSaveFile" resourcekey="cmdSaveFile" runat="server" CssClass="CommandButton"
+                    <asp:LinkButton ID="cmdSaveFile" resourcekey="cmdSaveFile" runat="server" CssClass="bccf-command"
                         Enabled="false" ></asp:LinkButton>
                 </td>
             </tr>
-            <tr align="center">
+            <tr>
                 <td colspan="2">
                     <asp:Panel ID="panConfirm" runat="server" Visible="False">
-                        <asp:Label ID="lblConfirm" CssClass="normalred" resourcekey="lblConfirm" runat="server"></asp:Label>&nbsp;&nbsp;
-                        <asp:LinkButton ID="cmdConfirmOverwriteFile" CssClass="CommandButton" resourcekey="Yes"
-                            runat="server" ></asp:LinkButton>&nbsp;&nbsp;
-                        <asp:LinkButton ID="cmdDenyOverwriteFile" CssClass="CommandButton" resourcekey="No"
+                        <asp:Label ID="lblConfirm" CssClass="normalred" resourcekey="lblConfirm" runat="server"></asp:Label>
+                        <asp:LinkButton ID="cmdConfirmOverwriteFile" CssClass="bccf-command" resourcekey="Yes"
+                            runat="server" ></asp:LinkButton>
+                        <asp:LinkButton ID="cmdDenyOverwriteFile" CssClass="bccf-command" resourcekey="No"
                             runat="server"></asp:LinkButton>
                     </asp:Panel>
                 </td>
             </tr>
         </table>
     </div>
-    <asp:LinkButton ID="cmdBack" resourcekey="cmdBack" runat="server" CssClass="CommandButton"
-        Text="Back" BorderStyle="none" CausesValidation="False" ></asp:LinkButton>
+    <asp:LinkButton ID="cmdBack" resourcekey="cmdBack" runat="server" CssClass="dnnSecondaryAction"
+        Text="Back" CausesValidation="False" ></asp:LinkButton>
 </div>
 

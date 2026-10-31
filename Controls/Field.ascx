@@ -10,14 +10,14 @@
     <div class="dnnFormMessage dnnFormWarning" runat="server" Visible="false" id="divWarning"/>
      <div class="dnnFormItem">
         <dnn:Label runat="server" resourcekey="Type" ControlName="cboFieldType" />
-        <asp:Label ID="lblType" runat="server"  />
-        <asp:Label ID="lblFieldType" runat="server"  />
+        <asp:Label ID="lblType" runat="server" />
+        <asp:Label ID="lblFieldType" runat="server" />
         <asp:DropDownList ID="cboFieldType" runat="server" DataTextField="Key" 
                           DataValueField="Value"  AutoPostBack="true"/>
     </div>
     <div class="dnnFormItem">
         <dnn:Label  runat="server" resourcekey="Title" cboFieldType="txtFieldTitle"/>
-        <asp:TextBox runat="server" ID="txtFieldTitle"  Width="400px" MaxLength="2000" 
+        <asp:TextBox runat="server" ID="txtFieldTitle" MaxLength="2000" 
                      TextMode="MultiLine" CssClass="dnn2rows dnnFormRequired" Rows="2"/>
         <span class="dnnFormMessage dnnFormError" runat="server" Visible="false" id="divError"/>  
         <asp:RequiredFieldValidator  runat="server" ErrorMessage="RequiredFieldValidator" 
@@ -37,12 +37,12 @@
     </div>
     <div class="dnnFormItem" id="panHelpText" runat="server">
         <dnn:Label ID="lblHelpText" runat="server" ResourceKey="ControlHelpText" Suffix=":" />
-        <asp:TextBox ID="txtHelpText" runat="server"  Width="400px" 
+        <asp:TextBox ID="txtHelpText" runat="server" 
                      TextMode="MultiLine " Rows="5" />
     </div>
     <div class="dnnFormItem" id="panDefault" runat="server">
         <dnn:Label ID="DefaultLabel" runat="server" ResourceKey="DefaultValue" />
-        <asp:TextBox ID="txtDefault" runat="server"  Width="400px" />
+        <asp:TextBox ID="txtDefault" runat="server" />
     </div>   
     <div class="dnnFormItem">
         <dnn:Label runat="server" resourcekey="Required" ControlName="chkRequired" />
@@ -67,9 +67,9 @@
     <fieldset>
     <div>
         <div class="dnnFormItem" id="panInputSettings" runat="server">
-            <dnn:Label ID="InputSettingsLabel" runat="server"  />
-            <asp:TextBox ID="txtInputSettings" runat="server" Width="400px" />
-            <asp:DropDownList ID="cboInputSettings" runat="server" CssClass="NormalTextBox" Width="400px" Visible="False" DataTextField="Key" DataValueField="Value" />
+            <dnn:Label ID="InputSettingsLabel" runat="server" />
+            <asp:TextBox ID="txtInputSettings" runat="server" />
+            <asp:DropDownList ID="cboInputSettings" runat="server" Visible="False" DataTextField="Key" DataValueField="Value" />
             <asp:RadioButtonList ID="rblListType" runat="server" RepeatDirection="Horizontal" CssClass="dnnFormRadioButtons pushRight">
                 <asp:ListItem Selected="True" Value="DropDown" resourcekey="DropDown"></asp:ListItem>
                 <asp:ListItem Value="RadioButtons" resourcekey="RadioButtons"></asp:ListItem>
@@ -78,24 +78,24 @@
         </div>
         <div class="dnnFormItem" id="panMultipleValues" runat="server">
             <dnn:Label ID="MultipleValuesLabel" runat="server" ResourceKey="MultipleValues" />
-            <asp:CheckBox ID="chkMultipleValues" runat="server"  />
+            <asp:CheckBox ID="chkMultipleValues" runat="server" />
         </div>
         <div class="dnnFormItem" id="panValidationRule" runat="server">
             <dnn:Label ID="lblValidationRule" runat="server" ResourceKey="ValidationRule" Suffix=":" />
-            <asp:TextBox ID="txtValidationRule" runat="server"  Width="400px" MaxLength="512" />
+            <asp:TextBox ID="txtValidationRule" runat="server" MaxLength="512" />
         </div>
         <div class="dnnFormItem" id="panValidationMessage" runat="server">
             <dnn:Label ID="lblValidationMessage" runat="server" ResourceKey="ValidationMessage" Suffix=":" />
-            <asp:TextBox ID="txtValidationMessage" runat="server"  Width="400px" MaxLength="512" />
+            <asp:TextBox ID="txtValidationMessage" runat="server" MaxLength="512" />
         </div>
     
         <div class="dnnFormItem" id="panEditStyle" runat="server">
             <dnn:Label ID="lblEditStyle" runat="server" ResourceKey="EditCssStyle" Suffix=":" />
-            <asp:TextBox ID="txtEditStyle" runat="server" Width="400px" MaxLength="512" />
+            <asp:TextBox ID="txtEditStyle" runat="server" MaxLength="512" />
         </div>
         <div class="dnnFormItem" id="panShowOnEdit" runat="server">
             <dnn:Label ID="ShowOnEditLabel" runat="server" ResourceKey="ShowOnEdit" Suffix=":" />
-            <asp:CheckBox ID="chkShowOnEdit" runat="server"  />
+            <asp:CheckBox ID="chkShowOnEdit" runat="server" />
         </div> 
         <fnl:FieldSettings ID="FormFieldSettings" runat="server" Section="Form" />   
         </div>
@@ -105,14 +105,14 @@
     <fieldset>
    <div>
         <div class="dnnFormItem" id="panOutputSettings" runat="server"> 
-            <dnn:Label ID="OutputSettingsLabel" runat="server"  />
-            <asp:TextBox ID="txtOutputSettings" runat="server" Width="400px" 
+            <dnn:Label ID="OutputSettingsLabel" runat="server" />
+            <asp:TextBox ID="txtOutputSettings" runat="server" 
                          MaxLength="2000" />
         </div>
    
         <div class="dnnFormItem" id="panNormalizeFlag" runat="server">
             <dnn:Label ID="NormalizeFlagLabel" runat="server" Suffix="?"  />
-            <asp:CheckBox ID="chkNormalizeFlag" runat="server"  />
+            <asp:CheckBox ID="chkNormalizeFlag" runat="server" />
         </div>
         <fnl:FieldSettings ID="ListFieldSettings" runat="server" Section ="List" />
         </div>

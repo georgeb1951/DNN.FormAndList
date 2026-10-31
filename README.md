@@ -39,6 +39,21 @@ does not upgrade or read Form and List data.
 4. A **Release** build also creates `packages\BCCForms_01.00.00_Install.zip` (and a `_Source.zip`)
    via `BuildScripts\ModulePackage.targets`.
 
+## Styling and themes
+
+BCC Forms takes its look from the site's theme. `module.css` keeps its specificity at or below
+DNN's own `default.css`, uses no `!important`, and takes its colours from DNN 10's site branding
+variables (`--dnn-color-primary`, `--dnn-color-danger`, ...), so the theme always wins.
+Forms use DNN's standard form pattern (`dnnForm`, `dnnFormItem`, `dnnLabel`, `dnnPrimaryAction`),
+stack labels above fields under 576 px, and wide lists scroll inside the module.
+
+A theme can tune the module through CSS variables:
+
+```css
+.DnnModule-BCCForms { --bccf-accent: #0a7d55; --bccf-gap: 1rem; }
+.ui-datepicker      { --bccf-accent: #0a7d55; }  /* the date picker sits outside the module */
+```
+
 ## Notes for templates
 
 The XML that XSL templates receive keeps Form and List's contract (namespace

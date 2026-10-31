@@ -146,7 +146,8 @@ namespace BCC.Modules.BCCForms
                 else
                 {
                     var divFormItem = new HtmlGenericControl("div");
-                    divFormItem.Attributes.Add("class", string.Format("dnnFormItem"));
+                    // DNN's form pattern marks required fields on the row (theme-styled asterisk after the label)
+                    divFormItem.Attributes.Add("class", currentField.Required ? "dnnFormItem dnnFormRequired" : "dnnFormItem");
                     divFormItem.Controls.Add(GetLabel(currentField.Title, currentField.Help, currentField.EditControl));
                     if (currentField.EditControl != null)
                     {
@@ -373,6 +374,12 @@ namespace BCC.Modules.BCCForms
 
         protected override void OnInit(EventArgs e)
         {
+            // the form can be opened on its own edit page, where nothing else registers jQuery UI (date pickers)
+            DotNetNuke.Framework.JavaScriptLibraries.JavaScript.RequestRegistration(
+                this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Application.IApplicationStatusInfo>(),
+                this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Logging.IEventLogger>(),
+                this.PortalSettings,
+                DotNetNuke.Framework.JavaScriptLibraries.CommonJs.jQueryUI);
             Page.RegisterRequiresViewStateEncryption();
             BuildEditForm();
             cmdCancel.Click += cmdCancel_Click;
@@ -577,7 +584,7 @@ namespace BCC.Modules.BCCForms
                     else
                     {
                         var moduleControl = (PortalModuleBase)(((Parent.Parent) is PortalModuleBase) ? Parent.Parent : this);
-                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(moduleControl, string.Format("<ul style=\"padding-left:1.6em;padding-bottom:0;\">{0}</ul>", warningMessage),
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(moduleControl, string.Format("<ul class=\"bccf-messages\">{0}</ul>", warningMessage),
                                                        ModuleMessage.ModuleMessageType.RedError);
                     }
                 }
