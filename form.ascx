@@ -34,10 +34,10 @@
         if ($.fn.dnnPanels) { $('#<%=EditFormPlaceholder.ClientID%>').dnnPanels(); }
         if (!$.fn.datepicker) { return; }
         $('.fnl-datepicker').datepicker({
-            monthNames:  [<%=LocalizeString("MonthNames")%>],
-            dayNames:    [<%=LocalizeString("DayNames")%>],
-            dayNamesMin: [<%=LocalizeString("DayNamesMin")%>],
-            firstDay:    <%:LocalizeString("FirstDay")%>,
+            monthNames:  [<%=LocalizeText("MonthNames")%>],
+            dayNames:    [<%=LocalizeText("DayNames")%>],
+            dayNamesMin: [<%=LocalizeText("DayNamesMin")%>],
+            firstDay:    <%:LocalizeText("FirstDay")%>,
             dateFormat:  '<%:JsUiDatePattern %>'
         });
     }

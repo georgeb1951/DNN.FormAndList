@@ -540,7 +540,7 @@ namespace BCC.Modules.BCCForms
                             var oldStyleSheet = (string) ModuleContext.Settings[RenderMethod];
                             var newStyleSheet = CopyScriptToPortal(oldStyleSheet);
 
-                            var mc = new ModuleController();
+                            var mc = ModuleController.Instance;
                             mc.UpdateTabModuleSetting(TabModuleId, SettingName.RenderingMethod, "XslUserDefinedStyleSheet");
                             mc.UpdateTabModuleSetting(TabModuleId,SettingName.XslUserDefinedStyleSheet , newStyleSheet );
                             

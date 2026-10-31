@@ -360,7 +360,7 @@ namespace BCC.Modules.BCCForms
             row["UserName"] = userInfo.GetSafeUsername();
 
             row["BestUserName"] = row["DisplayName"];
-            var portalSettings = Globals.GetPortalSettings();
+            var portalSettings = ModuleServices.PortalSettings;
             row["HomePath"] = portalSettings.HomeDirectory;
             row["ApplicationPath"] = request.ApplicationPath == "/" ? "" : request.ApplicationPath;
             row["UserRoles"] = ModuleSecurity.RoleNames(userInfo);

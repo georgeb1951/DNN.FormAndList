@@ -4,6 +4,7 @@ using DotNetNuke.Common;
 using BCC.Modules.BCCForms.Templates;
 using DotNetNuke.UI.Modules;
 using Microsoft.Extensions.DependencyInjection;
+using BCC.Modules.BCCForms.Components;
 
 namespace BCC.Modules.BCCForms
 {
@@ -14,18 +15,9 @@ namespace BCC.Modules.BCCForms
     /// -----------------------------------------------------------------------------
     public partial class Template : ModuleUserControlBase
     {
-        private readonly INavigationManager navigationManager;
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private INavigationManager navigationManager => ModuleServices.Get<INavigationManager>();
 
-        public Template()
-        {
-            // In DNN 10 we should be able to use constructor injection here instead of this reflection hack.
-            var globalsType = typeof(Globals);
-            var dependencyProviderProperty = globalsType.GetProperty("DependencyProvider",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var serviceProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-
-            this.navigationManager = serviceProvider.GetRequiredService<INavigationManager>();
-        }
 
         protected void cmdSaveFile_Click(object sender, EventArgs e)
         {

@@ -17,19 +17,11 @@ namespace BCC.Modules.BCCForms
     /// </summary>
     public class ShowXml : IHttpHandler
     {
-        private readonly INavigationManager navigationManager;
-        private readonly IPortalAliasService portalAliasService;
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private INavigationManager navigationManager => ModuleServices.Get<INavigationManager>();
+        // resolved from the current request scope on each use (request-scoped service; see ModuleServices)
+        private IPortalAliasService portalAliasService => ModuleServices.Get<IPortalAliasService>();
 
-        public ShowXml()
-        {
-            // We may be able to use construction injection here in DNN 10 instead of this reflection hack.
-            var globalsType = typeof(Globals);
-            var dependencyProviderProperty = globalsType.GetProperty("DependencyProvider", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var dependencyProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-
-            this.navigationManager = dependencyProvider.GetRequiredService<INavigationManager>();
-            this.portalAliasService = dependencyProvider.GetRequiredService<IPortalAliasService>();
-        }
 
         public void ProcessRequest(HttpContext context)
         {
@@ -57,9 +49,9 @@ namespace BCC.Modules.BCCForms
                 }
 
                 var userInfo = UserController.Instance.GetCurrentUserInfo();
-                var mc = new ModuleController();
+                var mc = ModuleController.Instance;
                
-                var moduleInfo = new ModuleController().GetModule(moduleId, tabId);
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 var settings = moduleInfo.ModuleSettings;
 
                 if (ModulePermissionController.CanManageModule(moduleInfo))

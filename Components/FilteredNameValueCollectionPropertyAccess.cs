@@ -33,7 +33,6 @@ namespace BCC.Modules.BCCForms.Components
         
             if (value != null)
             {
-                var security = new PortalSecurity();
                 value = WebUtility.HtmlEncode(value);
                 return WebUtility.HtmlDecode(PropertyAccess.FormatString(value, strFormat));
             }

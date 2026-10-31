@@ -42,8 +42,8 @@ namespace BCC.Modules.BCCForms.Components
                 {
                     if (_moduleSettings == null)
                     {
-                        var mc = new ModuleController();
-                        _configuration = mc.GetModule(ModuleId, TabId);
+                        var mc = ModuleController.Instance;
+                        _configuration = mc.GetModule(ModuleId, TabId, false);
                         _moduleSettings = new Hashtable(_configuration.ModuleSettings);
                         if (TabModuleId != Null.NullInteger)
                         {
@@ -81,7 +81,7 @@ namespace BCC.Modules.BCCForms.Components
 
         public PortalInfo PortalInfo
         {
-            get { return _portalInfo ?? (_portalInfo = new PortalController().GetPortal(PortalId)); }
+            get { return _portalInfo ?? (_portalInfo = PortalController.Instance.GetPortal(PortalId)); }
         }
 
         public int ModuleId { get; set; }

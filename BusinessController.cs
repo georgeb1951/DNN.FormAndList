@@ -1,4 +1,5 @@
 using System;
+using DotNetNuke.Abstractions.Application;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -21,19 +22,38 @@ namespace BCC.Modules.BCCForms
 {
     public class BusinessController : ModuleSearchBase, IPortable, IPortable2
     {
-        private readonly INavigationManager navigationManager;
-        private readonly IPortalAliasService portalAliasService;
+        private readonly INavigationManager injectedNavigationManager;
+        private readonly IPortalAliasService injectedPortalAliasService;
+        private readonly IHostSettings injectedHostSettings;
 
+        /// <summary>
+        ///   Constructor used by DNN 10, which creates business controllers through dependency
+        ///   injection (BusinessControllerProvider / ActivatorUtilities), including from the
+        ///   scheduler (search indexing) where there is no web request.
+        /// </summary>
+        [ActivatorUtilitiesConstructor]
+        public BusinessController(INavigationManager navigationManager, IPortalAliasService portalAliasService, IHostSettings hostSettings)
+        {
+            this.injectedNavigationManager = navigationManager;
+            this.injectedPortalAliasService = portalAliasService;
+            this.injectedHostSettings = hostSettings;
+            ModuleServices.RememberHostSettings(hostSettings);
+        }
+
+        /// <summary>
+        ///   Fallback for code that creates the controller without dependency injection; services are
+        ///   then resolved from the current web request when first needed.
+        /// </summary>
         public BusinessController()
         {
-            // In DNN 10 we should be able to use constructor injection here instead of this reflection hack.
-            var globalsType = typeof(Globals);
-            var dependencyProviderProperty = globalsType.GetProperty("DependencyProvider", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var serviceProvider = dependencyProviderProperty.GetValue(null) as IServiceProvider;
-
-            this.navigationManager = serviceProvider.GetRequiredService<INavigationManager>();
-            this.portalAliasService = serviceProvider.GetRequiredService<IPortalAliasService>();
         }
+
+        private INavigationManager navigationManager => this.injectedNavigationManager ?? ModuleServices.Get<INavigationManager>();
+
+        private IPortalAliasService portalAliasService => this.injectedPortalAliasService ?? ModuleServices.Get<IPortalAliasService>();
+
+        private IHostSettings hostSettings => this.injectedHostSettings ?? ModuleServices.HostSettings;
+
         public enum SettingsType
         {
             ModuleSettings,
@@ -156,7 +176,7 @@ namespace BCC.Modules.BCCForms
                         }
                         if (colnameChangedBy != string.Empty && !Information.IsDBNull(row[colnameChangedBy]))
                         {
-                            changedByUserId = ModuleSecurity.UserId(row[colnameChangedBy].ToString(), modInfo.PortalID);
+                            changedByUserId = ModuleSecurity.UserId(row[colnameChangedBy].ToString(), modInfo.PortalID, this.hostSettings);
                         }
 
                         var desc = string.Empty;
@@ -183,7 +203,8 @@ namespace BCC.Modules.BCCForms
                             Title = modInfo.ModuleTitle,
                             Description = desc,
                             Body = desc,
-                            ModifiedTimeUtc = changedDate
+                            ModifiedTimeUtc = changedDate,
+                            AuthorUserId = changedByUserId
                         };
 
                         searchDocuments.Add(searchDoc);
@@ -243,12 +264,12 @@ namespace BCC.Modules.BCCForms
             {
                 var udtController = new UserDefinedTableController(moduleId, this.navigationManager, this.portalAliasService);
                 ds = udtController.GetDataSet(false);
-                var moduleInfo = new ModuleController().GetModule(moduleId);
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
                 ds.Tables.Add(GetSettingsTable(moduleInfo.ModuleSettings, SettingsType.ModuleSettings));
             }
             else
             {
-                var moduleInfo = new ModuleController().GetModule(moduleId, tabId);
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 var udtController = new UserDefinedTableController(moduleInfo, this.navigationManager, this.portalAliasService);
                 ds = udtController.GetDataSet(false);
                 ds.Tables.Add(GetSettingsTable(moduleInfo.ModuleSettings, SettingsType.ModuleSettings));
@@ -287,11 +308,11 @@ namespace BCC.Modules.BCCForms
                 {
                     var xmlNode = Globals.GetContent(content, string.Empty);
                     ds.ReadXml(new XmlNodeReader(xmlNode));
-                    var modules = new ModuleController();
+                    var modules = ModuleController.Instance;
                     var tabModuleId = Null.NullInteger;
                     if (tabId != Null.NullInteger)
                     {
-                        var moduleInfo = modules.GetModule(moduleId, tabId);
+                        var moduleInfo = modules.GetModule(moduleId, tabId, false);
                         tabModuleId = moduleInfo.TabModuleID;
                     }
                     if (tabModuleId != Null.NullInteger && ds.Tables[DataSetTableName.TabSettings] != null)
@@ -319,7 +340,7 @@ namespace BCC.Modules.BCCForms
             }
         }
 
-        static void AddTabModuleSettings(ModuleController modules, int tabModuleId, DataSet ds)
+        static void AddTabModuleSettings(IModuleController modules, int tabModuleId, DataSet ds)
         {
             foreach (DataRow row in ds.Tables[DataSetTableName.TabSettings].Rows)
             {
@@ -328,7 +349,7 @@ namespace BCC.Modules.BCCForms
             }
         }
 
-        static void AddModuleSettings(int moduleId, ModuleController modules, DataSet ds)
+        static void AddModuleSettings(int moduleId, IModuleController modules, DataSet ds)
         {
             if (ds.Tables[DataSetTableName.Settings] != null)
             {
@@ -340,10 +361,10 @@ namespace BCC.Modules.BCCForms
             }
         }
 
-        static void ImportStyleSheet(int moduleId, bool isInstance, int tabModuleId, ModuleController modules,
+        static void ImportStyleSheet(int moduleId, bool isInstance, int tabModuleId, IModuleController modules,
                                      DataSet ds)
         {
-            var portalSettings = Globals.GetPortalSettings();
+            var portalSettings = ModuleServices.PortalSettings;
             foreach (DataRow row in ds.Tables[DataSetTableName.Stylesheets].Rows)
             {
                 var settingName = row[StylesheetTableColumn.NameOfSetting].ToString();

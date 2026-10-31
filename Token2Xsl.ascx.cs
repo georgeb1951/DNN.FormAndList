@@ -864,7 +864,7 @@ namespace BCC.Modules.BCCForms
 
         void UpdateSettings(string fileWithPath)
         {
-            var moduleController = new ModuleController();
+            var moduleController = ModuleController.Instance;
             if (IsTrackingEmailMode)
             {
                 moduleController.UpdateTabModuleSetting(ModuleContext.TabModuleId, SettingName.TrackingScript, fileWithPath);

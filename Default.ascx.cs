@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
@@ -18,7 +19,11 @@ namespace BCC.Modules.BCCForms
         {
             base.OnInit(e);
             InitViews();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(
+                this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Application.IApplicationStatusInfo>(),
+                this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Logging.IEventLogger>(),
+                this.PortalSettings,
+                CommonJs.DnnPlugins);
             ClientAPI.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn); 
         }
 
@@ -66,7 +71,7 @@ namespace BCC.Modules.BCCForms
         public bool IsNewModuleInstance()
         {
             var settings = ModuleContext.Settings;
-            var mc = new ModuleController();
+            var mc = ModuleController.Instance;
             var minSettings = 0;
             if (settings.ContainsKey(SettingName.ExcludeFromSearch)) minSettings++;
             if (settings.ContainsKey(SettingName.CalculatedColumnsRenderExpressionInForm)) minSettings++;
@@ -81,7 +86,9 @@ namespace BCC.Modules.BCCForms
 
         void LoadControlByKey(string controlKey)
         {
-            var moduleToLoad = ModuleControlController.GetModuleControlByControlKey(controlKey,
+            var moduleToLoad = ModuleControlController.GetModuleControlByControlKey(
+                                                                                    this.DependencyProvider.GetRequiredService<DotNetNuke.Abstractions.Application.IHostSettings>(),
+                                                                                    controlKey,
                                                                                     ModuleContext.Configuration.
                                                                                         ModuleDefID);
             if (moduleToLoad != null)

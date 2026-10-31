@@ -22,9 +22,9 @@ namespace BCC.Modules.BCCForms
             chkPrivateColumns.Checked =
                 Convert.ToBoolean(!Settings[SettingName.EditPrivateColumnsForAdmins].AsBoolean(true));
             chkHideSystemColumns.Checked = Convert.ToBoolean(!Settings[SettingName.ShowSystemColumns].AsBoolean());
-            ddlCaptcha.Items.Add(new ListItem(LocalizeString("No"), "No"));
-            ddlCaptcha.Items.Add(new ListItem(LocalizeString("DnnCaptcha"), "DnnCaptcha"));
-            ddlCaptcha.Items.Add(new ListItem(LocalizeString("ReCaptcha"), "ReCaptcha"));
+            ddlCaptcha.Items.Add(new ListItem(LocalizeText("No"), "No"));
+            ddlCaptcha.Items.Add(new ListItem(LocalizeText("DnnCaptcha"), "DnnCaptcha"));
+            ddlCaptcha.Items.Add(new ListItem(LocalizeText("ReCaptcha"), "ReCaptcha"));
             if (!Convert.ToBoolean(Settings[SettingName.ForceCaptchaForAnonymous]))
             {
                 ddlCaptcha.SelectedIndex = 0;
@@ -46,7 +46,7 @@ namespace BCC.Modules.BCCForms
 
         public override void UpdateSettings()
         {
-            var mc = new ModuleController();
+            var mc = ModuleController.Instance;
             mc.UpdateModuleSetting(ModuleId, SettingName.UserRecordQuota, txtUserRecordQuota.Text);
             mc.UpdateModuleSetting(ModuleId, SettingName.EditOnlyOwnItems, chkEditOwnData.Checked.ToString());
             mc.UpdateModuleSetting(ModuleId, SettingName.ForceInputFiltering, chkInputFiltering.Checked.ToString());

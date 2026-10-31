@@ -145,8 +145,6 @@ namespace BCC.Modules.BCCForms.DataTypes
                 }
                 if (fields.Count > 0)
                 {
-                    var portalSettings = PortalController.Instance.GetCurrentSettings();
-                 
 
                     foreach (DataRow row in tableData.Rows)
                     {

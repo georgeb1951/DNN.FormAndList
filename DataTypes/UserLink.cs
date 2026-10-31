@@ -84,8 +84,8 @@ namespace BCC.Modules.BCCForms.DataTypes
             {
                 if (IsNotAListOfValues)
                 {
-                    var mc = new ModuleController();
-                    var settings = mc.GetModule(ModuleId).ModuleSettings;
+                    var mc = ModuleController.Instance;
+                    var settings = mc.GetModule(ModuleId, Null.NullInteger, true).ModuleSettings;
                     var showInNewWindow = settings[SettingName.URLNewWindow].AsBoolean();
                     //The following code must be executed during load, because the URLcontrol uses the viewstate
                     CtlUrl.UrlType = "M";
@@ -240,8 +240,8 @@ namespace BCC.Modules.BCCForms.DataTypes
                         {
                             portalSettings = PortalController.Instance.GetCurrentSettings();
                         }
-                        var mc = new ModuleController();
-                        var settings = mc.GetModule(moduleId).ModuleSettings;
+                        var mc = ModuleController.Instance;
+                        var settings = mc.GetModule(moduleId, Null.NullInteger, true).ModuleSettings;
              
                         foreach (DataRow row in tableData.Rows)
                         {
@@ -344,7 +344,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                                      : row[fieldName]).AsString();
                 if (strUserid != string.Empty)
                 {
-                    var userInfo = new UserController().GetUser(Globals.GetPortalSettings().PortalId,
+                    var userInfo = new UserController().GetUser(ModuleServices.PortalSettings.PortalId,
                                                                 int.Parse(strUserid.Substring(7)));
                     return userInfo;
                 }

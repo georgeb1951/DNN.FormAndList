@@ -212,7 +212,7 @@ namespace BCC.Modules.BCCForms.DataTypes
                                    : row[fieldName]).AsString();
             if (username != string.Empty)
             {
-                var userInfo = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, username);
+                var userInfo = UserController.GetUserByName(ModuleServices.PortalSettings.PortalId, username);
                 return userInfo;
             }
             return new UserInfo();
