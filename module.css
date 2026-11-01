@@ -47,42 +47,6 @@
     margin: 1em 0;
 }
 
-/* Labels without help text: line them up exactly like DNN's .dnnLabel (labels with help),
-   so every row of a form has the same label column. */
-:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabelWithoutHelp {
-    float: left;
-    position: relative;
-    width: 32.075%;
-    margin: 0 18px 0 0;
-    padding: 0 20px 0 0;
-    overflow: visible;
-    text-align: right;
-}
-
-/* (label row for fields that DNN renders inside a nested form, where there is no label column) */
-:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormMessage) .dnnFormLabelWithoutHelp {
-    float: none;
-    width: auto;
-    text-align: left;
-}
-
-:where(.DnnModule-BCCForms, .bccForms) .dnnFormLabelWithoutHelp label span {
-    display: block;
-    position: relative;
-    padding-right: 1.8em;
-    line-height: 1.4;
-}
-
-/* Required fields: the row carries .dnnFormRequired; DNN draws the asterisk for
-   .dnnLabel rows, this adds the same marker for labels without help text. */
-:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem.dnnFormRequired) > .dnnFormLabelWithoutHelp label span::after {
-    content: "*";
-    display: inline-block;
-    margin-left: .3125rem;
-    color: var(--bccf-danger);
-    font-weight: 700;
-}
-
 /* must out-rank default.css's .dnnFormItem textarea { min-height: 5rem } */
 :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem textarea.dnn2rows {
     min-height: 1em;
@@ -226,12 +190,10 @@
 
 /* ---------- Form templates ----------
    A form template may put [label-for:] / [editor-for:] anywhere, e.g. in a theme's grid
-   columns instead of DNN's dnnFormItem rows. There, DNN's .dnnLabel (fields with help)
-   would float right-aligned at 32% while help-less labels stack, so the two never line
-   up. Outside a dnnFormItem both kinds stack above their field, left-aligned. The
-   selectors keep default.css's specificity (one class) and win by load order. */
-:where(.bccf-template) .dnnLabel:where(:not(.dnnFormItem > *)),
-:where(.bccf-template) .dnnFormLabelWithoutHelp:where(:not(.dnnFormItem > *)) {
+   columns instead of DNN's dnnFormItem rows, where default.css's floated, right-aligned
+   32%-wide .dnnLabel no longer lines up. Outside a dnnFormItem labels stack above their
+   field, left-aligned. The selectors keep default.css's specificity (one class) and win by load order. */
+:where(.bccf-template) .dnnLabel:where(:not(.dnnFormItem > *)) {
     float: none;
     display: block;
     width: fit-content;
@@ -265,8 +227,7 @@
    win over default.css by load order, and a theme rule still wins over them. */
 @media (max-width: 575.98px) {
     :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnLabel,
-    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabel,
-    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabelWithoutHelp {
+    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabel {
         float: none;
         width: auto;
         margin: 0 0 .25rem;

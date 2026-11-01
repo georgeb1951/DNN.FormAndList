@@ -177,7 +177,9 @@ namespace BCC.Modules.BCCForms
                 };
 
                 var d = new HtmlGenericControl("div");
-                d.Attributes.Add("class", "dnnFormLabelWithoutHelp");
+                // same markup and class as DNN's own label (div.dnnLabel > label > span), minus the help
+                // icon, so DNN and the theme lay out every label of the form identically
+                d.Attributes.Add("class", "dnnLabel bccf-label-nohelp");
                 d.Controls.Add(l);
 
                 _labelcontrols.Add(l, editcontrol);
