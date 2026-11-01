@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Data;
 using System.Globalization;
 using System.Web;
@@ -474,6 +475,10 @@ namespace BCC.Modules.BCCForms
             ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
         }
 
+        /// <summary>
+        ///   Writes a starter form template in DNN's own form pattern (dnnFormItem rows), so it lines up
+        ///   like the standard form in any theme, without depending on a CSS grid framework.
+        /// </summary>
         void cmdGenerateFormTemplate_Click(object sender, EventArgs e)
         {
             var fields = FieldController.GetFieldsTable(this.ModuleContext.ModuleId)
@@ -481,35 +486,29 @@ namespace BCC.Modules.BCCForms
                 .Cast<DataRow>()
                 .Select(r => new
                 {
-                    Title = r[FieldsTableColumn.Title],
+                    Title = r[FieldsTableColumn.Title].AsString(),
                     IsVisible = r[FieldsTableColumn.Visible].AsBoolean(),
+                    IsRequired = r[FieldsTableColumn.Required].AsBoolean(),
                     IsSeparator = r[FieldsTableColumn.Type].AsString() == "Separator"
                 })
                 .Where(field => field.IsVisible);
 
-            const string fieldtemplate = "    <div class=\"form-group\">\r\n" +
-                                         "        <div class=\"col-md-2\">[label-for:{0}]</div>\r\n" +
-                                         "        <div class=\"col-md-10\">[editor-for:{0}]</div>\r\n" +
-                                         "    </div>\r\n";
-            const string openFieldset =  "  <fieldset><legend>{0}</legend>\r\n";
-            const string closeFieldset = "   </fieldset>\r\n";
-
-            var trunk = fields.Aggregate(
-                    new
-                    {
-                        html = string.Empty,
-                        hasOpenFieldSet = false
-                    },
-                    (current, field) => new
-                    {
-                        html = current.html
-                            + (current.hasOpenFieldSet && field.IsSeparator ? "   </fieldset>\r\n" : "")
-                            + String.Format(field.IsSeparator ? openFieldset : fieldtemplate, field.Title),
-                        hasOpenFieldSet = field.IsSeparator || current.hasOpenFieldSet
-                    }
-                    );
-            var template = trunk.html + (trunk.hasOpenFieldSet ? closeFieldset : "");
-            txtFormTemplate.Text = $"<div class=\"form-horizontal\">\r\n{template}</div>";
+            var template = new StringBuilder("<div class=\"bccf-form-fields\">\r\n");
+            foreach (var field in fields)
+            {
+                if (field.IsSeparator)
+                {
+                    template.AppendFormat("    <h2 class=\"dnnFormSectionHead\">{0}</h2>\r\n",
+                                          HttpUtility.HtmlEncode(field.Title));
+                    continue;
+                }
+                template.AppendFormat("    <div class=\"{0}\">\r\n", field.IsRequired ? "dnnFormItem dnnFormRequired" : "dnnFormItem");
+                template.AppendFormat("        [label-for:{0}]\r\n", field.Title);
+                template.AppendFormat("        [editor-for:{0}]\r\n", field.Title);
+                template.Append("    </div>\r\n");
+            }
+            template.Append("</div>");
+            txtFormTemplate.Text = template.ToString();
         }
 
         void Page_Load(object sender, EventArgs e)

@@ -224,6 +224,39 @@
     gap: .5rem var(--bccf-gap);
 }
 
+/* ---------- Form templates ----------
+   A form template may put [label-for:] / [editor-for:] anywhere, e.g. in a theme's grid
+   columns instead of DNN's dnnFormItem rows. There, DNN's .dnnLabel (fields with help)
+   would float right-aligned at 32% while help-less labels stack, so the two never line
+   up. Outside a dnnFormItem both kinds stack above their field, left-aligned. The
+   selectors keep default.css's specificity (one class) and win by load order. */
+:where(.bccf-template) .dnnLabel:where(:not(.dnnFormItem > *)),
+:where(.bccf-template) .dnnFormLabelWithoutHelp:where(:not(.dnnFormItem > *)) {
+    float: none;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 .25rem;
+    padding: 0 20px 0 0;
+    text-align: left;
+}
+
+/* inputs outside a dnnFormItem get DNN's field look (inside one, default.css styles them) */
+:where(.bccf-template) :where(input[type=text], input[type=email], input[type=date],
+    input[type=datetime-local], input[type=number], input[type=tel], input[type=url],
+    select, textarea):where(:not(.dnnFormItem *)) {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 445px;
+    margin-bottom: 1.125rem;
+    padding: .5rem;
+    border: 1px solid var(--bccf-border);
+    border-radius: var(--bccf-radius);
+    background: var(--bccf-surface);
+    color: var(--bccf-text);
+    font: inherit;
+}
+
 /* ---------- Small screens ----------
    DNN's form pattern puts labels in a 32% left column. Under 576px (the
    Aperture/Bootstrap "sm" breakpoint) stack label above field instead. */

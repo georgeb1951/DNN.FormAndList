@@ -8,6 +8,7 @@
   <li>Spam protection: optional honeypot field (on by default) that bots fill in and people never see.</li>
   <li>Security: list, XSL and token output now sanitize text and rich-text values that contain markup (covers imported and older data); the stored value is unchanged and still used for editing and CSV export. URL fields no longer render <code>javascript:</code>/<code>data:</code> links, and URL, file and e-mail captions are HTML-encoded.</li>
   <li>XSL template generator rebuilt without layout tables; works on small screens.</li>
+  <li>Form templates: "Generate template" now writes DNN form rows that line up in any theme (the old one assumed a Bootstrap 3 grid). Labels and fields in hand-written templates line up whether or not a field has help text.</li>
   <li>Module settings use their own <code>BCCF_</code> names. The upgrade renames existing settings, and templates or exports made with the old names still import.</li>
   <li>Internal Form and List names removed from code, CSS hooks and resources.</li>
 </ul>

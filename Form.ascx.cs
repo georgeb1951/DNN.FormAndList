@@ -107,6 +107,8 @@ namespace BCC.Modules.BCCForms
 
             }
             EditFormPlaceholder.Visible = true;
+            // hook for module.css: labels and inputs placed outside DNN's dnnFormItem rows
+            EditFormPlaceholder.Attributes["class"] = "bccf-template";
             EditFormPlaceholder.Controls.Add(control);
 
         }
