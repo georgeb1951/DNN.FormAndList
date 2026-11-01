@@ -188,6 +188,69 @@
     gap: .5rem var(--bccf-gap);
 }
 
+/* ---------- Cards layout (and the starter HTML template, which uses the same classes) ---------- */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: var(--bccf-gap);
+    margin: 0 0 var(--bccf-gap);
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card {
+    position: relative;
+    padding: .875rem 1rem;
+    border: 1px solid var(--bccf-border);
+    border-radius: var(--bccf-radius);
+    background: var(--bccf-surface);
+    color: var(--bccf-text);
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card-edit {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card-edit:empty {
+    display: none;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card-title {
+    margin: 0 1.5rem .5rem 0;
+    font-size: 1.125rem;
+    line-height: 1.3;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card-fields {
+    margin: 0;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card-field + .bccf-card-field {
+    margin-top: .5rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card-field dt {
+    color: var(--bccf-muted);
+    font-size: .8125rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card-field dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* the HTML template editors in Configuration use the full width */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-list-template textarea {
+    width: 100%;
+    max-width: none;
+    font-family: var(--bccf-mono);
+}
+
 /* Yes/no marks in the field grid (Configuration). Drawn with currentColor, i.e. the row's
    text colour, so they stay visible on whatever row and alternating-row colours the theme
    uses. "No" is a lighter empty box; the words "Yes"/"No" are there for screen readers. */
@@ -265,6 +328,53 @@
 /* These rules must beat DNN's default.css, so (unlike the rest of this file) they
    carry exactly the same specificity as the default.css rule they replace: they
    win over default.css by load order, and a theme rule still wins over them. */
+/* Table on phones: each record becomes a block of "title  value" lines (labels come from the
+   cells' data-label attribute, set when the grid is bound). */
+@media (max-width: 575.98px) {
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid thead,
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid tr:has(> th) {
+        display: none;
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid,
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid tbody,
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid tr,
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid tr {
+        padding: .5rem 0;
+        border-bottom: 1px solid var(--bccf-border);
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid td {
+        display: flex;
+        gap: .75rem;
+        padding: .125rem .75rem;
+        text-align: left;
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid td[data-label]::before {
+        content: attr(data-label);
+        flex: 0 0 40%;
+        color: var(--bccf-muted);
+        font-weight: 700;
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid td.bccf-num,
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid td.bccf-center {
+        text-align: left;
+    }
+
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-grid td.bccf-edit {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
 @media (max-width: 575.98px) {
     :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnLabel,
     :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabel {

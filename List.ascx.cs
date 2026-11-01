@@ -208,7 +208,7 @@ namespace BCC.Modules.BCCForms
 
             public bool DataBindingNeeded()
             {
-                var isSearchable = _parent.DataSet.Tables[DataSetTableName.Fields].Rows
+                var isSearchable = _parent.FieldsTable.Rows
                     .Cast<DataRow>()
                     .Any(row => row[FieldsTableColumn.Searchable].AsBoolean());
 
@@ -370,7 +370,7 @@ namespace BCC.Modules.BCCForms
 
             void cmdSearch_Click(object sender, EventArgs e)
             {
-                if (! _parent.RenderMethod.StartsWith("UDT_Xsl"))
+                if (! _parent.RenderMethod.StartsWith(SettingName.ForRenderingMethod("Xsl")))
                 {
                     _parent.CurrentPage = 1;
                     IsSearching = true;
@@ -401,7 +401,7 @@ namespace BCC.Modules.BCCForms
 
             void cmdResetSearch_Click(object sender, EventArgs e)
             {
-                if (! _parent.RenderMethod.StartsWith("UDT_Xsl"))
+                if (! _parent.RenderMethod.StartsWith(SettingName.ForRenderingMethod("Xsl")))
                 {
                     Reset();
                     _parent.CurrentPage = 1;
@@ -442,9 +442,24 @@ namespace BCC.Modules.BCCForms
             get { return _dataSet ?? (_dataSet = DataController.GetDataSet()); }
         }
 
+        DataTable _fieldsTable;
+
+        /// <summary>
+        ///   The field definitions alone. Use this when only titles, types or flags are needed, so the
+        ///   page does not load and render every row just to look up a field (that is DataSet's job).
+        /// </summary>
+        DataTable FieldsTable
+        {
+            get
+            {
+                if (_dataSet != null) return _dataSet.Tables[DataSetTableName.Fields];
+                return _fieldsTable ?? (_fieldsTable = FieldController.GetFieldsTable(ModuleContext.ModuleId, false, false));
+            }
+        }
+
           string RenderMethod
         {
-            get { return string.Format("UDT_{0}", Settings.RenderingMethod ); }
+            get { return SettingName.ForRenderingMethod(Settings.RenderingMethod); }
         }
 
         #region properties Only Needed in Grid Mode
@@ -522,7 +537,12 @@ namespace BCC.Modules.BCCForms
                     panSearch.Visible = false;
                 }
 
-                if (mustBind)
+                if (mustBind && (Settings.RenderingMethod == RenderingMethod.Cards ||
+                                 Settings.RenderingMethod == RenderingMethod.HtmlTemplate))
+                {
+                    BindDataToLayout(Settings.RenderingMethod == RenderingMethod.HtmlTemplate);
+                }
+                else if (mustBind)
                 {
                     switch (RenderMethod)
                     {
@@ -597,25 +617,9 @@ namespace BCC.Modules.BCCForms
         /// -----------------------------------------------------------------------------
         void BindDataToDataGrid()
         {
+            var paging = LoadCurrentPage();
             PopulateDataGridColumns();
-
             var dataTable = DataSet.Tables[DataSetTableName.Data];
-
-            dataTable
-                .FilterAndSort( GetRowFilter(Settings.Filter, _search.Filter()), SortField, SortOrder)
-                .Top(Settings.TopCount);
-            
-            //Paging
-            var paging = new
-                {
-                    PageSize = Settings.Paging,
-                    AllowPaging = Settings.Paging != Null.NullInteger,
-                    PageIndex = Convert.ToInt32(
-                                Math.Min(CurrentPage, Math.Ceiling(((double)dataTable.Rows.Count / Settings.Paging))) - 1),
-                    TotalRecords = dataTable.Rows.Count 
-                };
-
-            dataTable.Page( paging.PageIndex, paging.PageSize);
 
 
             using (var data = new DataView(dataTable))
@@ -628,6 +632,11 @@ namespace BCC.Modules.BCCForms
                     {
                         grdData.DataSource = data;
                         grdData.DataBind();
+                        if (grdData.HeaderRow != null)
+                        {
+                            // a real <thead>: better for screen readers, and lets module.css hide it on phones
+                            grdData.HeaderRow.TableSection = TableRowSection.TableHeader;
+                        }
                     }
                     catch (FormatException e)
                     {
@@ -651,6 +660,139 @@ namespace BCC.Modules.BCCForms
             }
         }
 
+
+        /// <summary>
+        ///   Cards or HTML template layout for the current page (paging, sort, filter and search as for
+        ///   the grid). An HTML template without an item template falls back to cards.
+        /// </summary>
+        void BindDataToLayout(bool asTemplate)
+        {
+            var paging = LoadCurrentPage();
+            var renderer = new ListLayoutRenderer(DataSet, url => EditLinkHtml(url), ListLayoutRenderer.GridFormatFor);
+            var rows = DataSet.Tables[DataSetTableName.Data].Rows.Count;
+
+            if (rows > 0)
+            {
+                lblNoRecordsFound.Visible = false;
+                var html = asTemplate && !string.IsNullOrWhiteSpace(Settings.ListTemplateItem)
+                               ? renderer.RenderTemplate(Settings.ListTemplateHeader, Settings.ListTemplateItem,
+                                                         Settings.ListTemplateFooter, paging.TotalRecords)
+                               : renderer.RenderCards();
+                LayoutOutput.Controls.Add(new LiteralControl(html));
+                LayoutOutput.Visible = true;
+                ctlPagingControl.Visible = paging.AllowPaging;
+                ctlPagingControl.PageSize = paging.PageSize;
+                ctlPagingControl.CurrentPage = paging.PageIndex + 1;
+                ctlPagingControl.TotalRecords = paging.TotalRecords;
+            }
+            else
+            {
+                if (_search.IsSearching) lblNoRecordsFound.Visible = true;
+                ctlPagingControl.TotalRecords = 0;
+                ctlPagingControl.Visible = false;
+            }
+        }
+
+        /// <summary>Paging state of the rows now in <see cref="DataSet"/>.</summary>
+        sealed class PageInfo
+        {
+            public bool AllowPaging;
+            public int PageSize;
+            public int PageIndex;
+            public int TotalRecords;
+        }
+
+        /// <summary>
+        ///   Leaves only the current page's rows in <see cref="DataSet"/>, filtered and sorted. Uses SQL
+        ///   paging when the list can be sorted in the database (see <see cref="CanPageInDatabase"/>), so
+        ///   only one page of rows is read and rendered; otherwise filters, sorts and pages in memory.
+        /// </summary>
+        PageInfo LoadCurrentPage()
+        {
+            var allowPaging = Settings.Paging > 0;
+            var pageSize = Settings.Paging;
+            var searchFilter = _search.Filter();
+
+            int sortFieldId;
+            DatabaseSortType sortType;
+            if (allowPaging && CanPageInDatabase(searchFilter, out sortFieldId, out sortType))
+            {
+                try
+                {
+                    var descending = string.Equals(SortOrder, "DESC", StringComparison.OrdinalIgnoreCase);
+                    var pageIndex = Math.Max(0, CurrentPage - 1);
+                    int total;
+                    var page = DataController.GetDataSetPage(sortFieldId, sortType, descending,
+                                                             pageIndex * pageSize, pageSize, Settings.TopCount, out total);
+                    var lastPageIndex = Math.Max(0, (int) Math.Ceiling(total / (double) pageSize) - 1);
+                    if (pageIndex > lastPageIndex)
+                    {
+                        // the list shrank since the pager was drawn: show its last page
+                        pageIndex = lastPageIndex;
+                        page = DataController.GetDataSetPage(sortFieldId, sortType, descending,
+                                                             pageIndex * pageSize, pageSize, Settings.TopCount, out total);
+                    }
+                    _dataSet = page;
+                    return new PageInfo { AllowPaging = true, PageSize = pageSize, PageIndex = pageIndex, TotalRecords = total };
+                }
+                catch (Exception exc)
+                {
+                    // e.g. the 01.02.00 upgrade script has not run; the in-memory path still works
+                    Exceptions.LogException(exc);
+                    _dataSet = null;
+                }
+            }
+
+            var dataTable = DataSet.Tables[DataSetTableName.Data];
+            dataTable
+                .FilterAndSort(GetRowFilter(Settings.Filter, searchFilter), SortField, SortOrder)
+                .Top(Settings.TopCount);
+
+            var info = new PageInfo { AllowPaging = allowPaging, PageSize = pageSize, TotalRecords = dataTable.Rows.Count };
+            if (allowPaging)
+            {
+                var pageCount = (int) Math.Ceiling(dataTable.Rows.Count / (double) pageSize);
+                info.PageIndex = Math.Max(0, Math.Min(CurrentPage, pageCount) - 1);
+                dataTable.Page(info.PageIndex, pageSize);
+            }
+            return info;
+        }
+
+        /// <summary>
+        ///   True when SQL can produce exactly the page the in-memory path would: no row filter, no
+        ///   search, no calculated (expression) fields, and a sort field whose stored value is what the
+        ///   list sorts on (or no sort field at all).
+        /// </summary>
+        bool CanPageInDatabase(string searchFilter, out int sortFieldId, out DatabaseSortType sortType)
+        {
+            sortFieldId = -1;
+            sortType = DatabaseSortType.RowOrder;
+            if (_dataSet != null) return false;  // rows already loaded (e.g. by a search)
+            if (!string.IsNullOrWhiteSpace(Settings.Filter) || !string.IsNullOrEmpty(searchFilter)) return false;
+
+            DataRow sortRow = null;
+            var sortField = SortField;
+            foreach (DataRow field in FieldsTable.Rows)
+            {
+                if (DataType.ByName(field[FieldsTableColumn.Type].AsString()) is DataTypes.DataTypeExpression)
+                {
+                    return false; // expressions may aggregate over all rows
+                }
+                if (sortField != string.Empty &&
+                    string.Equals(field[FieldsTableColumn.Title].AsString(), sortField, StringComparison.OrdinalIgnoreCase))
+                {
+                    sortRow = field;
+                }
+            }
+            if (sortField == string.Empty) return true;
+            if (sortRow == null) return false;
+
+            var databaseSort = DataType.ByName(sortRow[FieldsTableColumn.Type].AsString()).DatabaseSort;
+            if (!databaseSort.HasValue) return false;
+            sortFieldId = Convert.ToInt32(sortRow[FieldsTableColumn.Id]);
+            sortType = databaseSort.Value;
+            return true;
+        }
 
         PortalModuleBase GetModuleControl()
         {
@@ -814,7 +956,7 @@ namespace BCC.Modules.BCCForms
         string GetFieldTitle(int fieldId)
         {
             using (
-                var dv = new DataView(DataSet.Tables[DataSetTableName.Fields])
+                var dv = new DataView(FieldsTable)
                              {RowFilter = string.Format("{0}={1}", FieldsTableColumn.Id, fieldId)})
             {
                 if (dv.Count > 0)
@@ -828,7 +970,7 @@ namespace BCC.Modules.BCCForms
 
         bool IsKnownField(string fieldName)
         {
-            var fieldstable = DataSet.Tables[DataSetTableName.Fields];
+            var fieldstable = FieldsTable;
             fieldName = fieldName.Replace("\'", "\'\'");
             return fieldstable.Select(string.Format("{0}=\'{1}\'", FieldsTableColumn.Title, fieldName)).Length >= 0;
         }
@@ -846,6 +988,7 @@ namespace BCC.Modules.BCCForms
             PreRender += Page_PreRender;
             ctlPagingControl.PageChanged += ctlPagingControl_CurrentPageChanged;
             grdData.Sorting += grdData_Sorting;
+            grdData.RowDataBound += grdData_RowDataBound;
 
             try
             {
@@ -877,6 +1020,20 @@ namespace BCC.Modules.BCCForms
         protected void ctlPagingControl_CurrentPageChanged(object sender, EventArgs e)
         {
             CurrentPage = ctlPagingControl.CurrentPage;
+        }
+
+        /// <summary>
+        ///   Labels each cell with its column title (data-label), so on small screens module.css can
+        ///   show every row as a stacked block of "title: value" lines instead of a wide table.
+        /// </summary>
+        void grdData_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType != DataControlRowType.DataRow) return;
+            for (var index = 0; index < e.Row.Cells.Count && index < grdData.Columns.Count; index++)
+            {
+                var column = grdData.Columns[index] as BoundField;
+                if (column != null) e.Row.Cells[index].Attributes["data-label"] = column.DataField;
+            }
         }
 
         protected void grdData_Sorting(object sender, GridViewSortEventArgs e)
@@ -1034,11 +1191,12 @@ namespace BCC.Modules.BCCForms
 
         bool SchemaIsDefined()
         {
-            return DataSet.Tables[DataSetTableName.Fields].Rows.Count > 4;
+            return FieldsTable.Rows.Count > 4;
         }
 
         bool HasAddPermissonByQuota()
         {
+            if (Settings.UserRecordQuota <= 0) return true; // no quota: no need to count the user's rows
             return ModuleSecurity.HasAddPermissonByQuota(DataSet.Tables[DataSetTableName.Fields],
                                                          DataSet.Tables[DataSetTableName.Data],
                                                          Settings.UserRecordQuota ,

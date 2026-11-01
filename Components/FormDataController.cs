@@ -234,6 +234,36 @@ namespace BCC.Modules.BCCForms
         /// <param name = "withPreRenderedValues">specifies, whether links, dates etc. shall be prerendered for XML output</param>
         /// <returns>All field values as DataSet</returns>
         /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   One page of the list, read, sorted and paged by SQL, then pre-rendered (links, dates, user
+        ///   names) for those rows only. Only valid without row filter or search; see List's fast path.
+        /// </summary>
+        /// <param name="sortFieldId">Field to sort by, or -1 for row order.</param>
+        /// <param name="sortType">How SQL compares the field's stored values.</param>
+        /// <param name="descending">Sort direction.</param>
+        /// <param name="skip">Rows before the page.</param>
+        /// <param name="take">Page size.</param>
+        /// <param name="top">Only the first <paramref name="top"/> rows count (0 = all).</param>
+        /// <param name="totalRecords">Rows in the whole list (after <paramref name="top"/>).</param>
+        public DataSet GetDataSetPage(int sortFieldId, DatabaseSortType sortType, bool descending,
+                                      int skip, int take, int top, out int totalRecords)
+        {
+            var fieldsTable = FieldController.GetFieldsTable(ModuleId, addNewColumn: false, addAuditColumns: false);
+            DataSet ds;
+            using (var dr = DataProvider.Instance().GetRowsPage(ModuleId, sortFieldId, (byte) sortType, descending,
+                                                                 Math.Max(0, skip), Math.Max(1, take), Math.Max(0, top)))
+            {
+                totalRecords = dr.Read() ? Convert.ToInt32(dr["TotalRecords"]) : 0;
+                dr.NextResult();
+                ds = BuildMainDataSet(fieldsTable, dr, false);
+            }
+            ds.Tables.Add(FieldSettingsController.GetFieldSettingsTable(ModuleId));
+            SetEditLinksAndVisibilityBasedOnPermissions(ds);
+            RenderValuesToHtmlInsideDataSet(ds);
+            ds.Namespace = "DotNetNuke/UserDefinedTable";
+            return ds;
+        }
+
         public DataSet GetDataSet(bool withPreRenderedValues)
         {
             var fieldsTable = FieldController.GetFieldsTable(ModuleId, addNewColumn: false, addAuditColumns: false);

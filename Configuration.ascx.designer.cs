@@ -238,6 +238,78 @@ namespace BCC.Modules.BCCForms {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rowUserDefined;
         
         /// <summary>
+        /// rowListTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl rowListTemplate;
+        
+        /// <summary>
+        /// plListTemplateHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plListTemplateHeader;
+        
+        /// <summary>
+        /// txtListTemplateHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtListTemplateHeader;
+        
+        /// <summary>
+        /// plListTemplateItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plListTemplateItem;
+        
+        /// <summary>
+        /// txtListTemplateItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtListTemplateItem;
+        
+        /// <summary>
+        /// plListTemplateFooter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plListTemplateFooter;
+        
+        /// <summary>
+        /// txtListTemplateFooter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtListTemplateFooter;
+        
+        /// <summary>
+        /// cmdGenerateListTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdGenerateListTemplate;
+        
+        /// <summary>
         /// plUserDefinedStyleSheet control.
         /// </summary>
         /// <remarks>

@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace BCC.Modules.BCCForms.Components
 {
@@ -6,13 +8,9 @@ namespace BCC.Modules.BCCForms.Components
     {
       static public DataTable Top(this DataTable dataTable, int topCount)
         {
-            var topFilter = topCount;
-            if (topFilter > 0)
+            if (topCount > 0 && dataTable.Rows.Count > topCount)
             {
-                for (var index = dataTable.Rows.Count - 1; index >= topFilter; index--)
-                {
-                    dataTable.Rows.RemoveAt(index);
-                }
+                KeepRange(dataTable, 0, topCount);
             }
             return dataTable;
         }
@@ -36,22 +34,48 @@ namespace BCC.Modules.BCCForms.Components
         {
             if (pageSize > 0)
             {
-                var indexOfFirstItem = pageIndex * pageSize;
-                var rows = dataTable.Rows;
-                if (indexOfFirstItem < rows.Count)
+                var first = Math.Max(0, pageIndex) * pageSize;
+                if (first >= dataTable.Rows.Count)
                 {
-                    for (var index = indexOfFirstItem - 1; index >= 0; index--)
-                    {
-                        rows.RemoveAt(index);
-                    }
+                    first = 0; // as before: an index past the end leaves the first rows
                 }
-
-                for (var index = rows.Count - 1; index >= pageSize; index--)
-                {
-                    rows.RemoveAt(index);
-                }
+                KeepRange(dataTable, first, pageSize);
             }
             return dataTable;
+        }
+
+        /// <summary>
+        ///   Keeps rows [first, first + count) in one pass. (Removing rows one by one from the front
+        ///   shifts the whole collection each time, which made late pages of big lists slow.)
+        /// </summary>
+        static void KeepRange(DataTable dataTable, int first, int count)
+        {
+            var rows = dataTable.Rows;
+            var last = Math.Min(rows.Count, first + count);
+            if (first == 0 && last == rows.Count) return;
+            var keep = new List<object[]>(Math.Max(0, last - first));
+            for (var index = first; index < last; index++)
+            {
+                var values = rows[index].ItemArray;
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    if (column.Expression != string.Empty) values[column.Ordinal] = null; // computed again
+                }
+                keep.Add(values);
+            }
+            var readOnly = new List<DataColumn>();
+            foreach (DataColumn column in dataTable.Columns)
+            {
+                if (column.ReadOnly && column.Expression == string.Empty) { readOnly.Add(column); column.ReadOnly = false; }
+            }
+            dataTable.BeginLoadData();
+            rows.Clear();
+            foreach (var values in keep)
+            {
+                dataTable.LoadDataRow(values, true);
+            }
+            dataTable.EndLoadData();
+            foreach (var column in readOnly) column.ReadOnly = true;
         }
     }
 }

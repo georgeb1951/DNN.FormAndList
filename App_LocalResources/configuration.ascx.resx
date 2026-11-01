@@ -151,7 +151,7 @@
     <value>BCC Forms Configuration</value>
   </data>
   <data name="DataGrid.Text" xml:space="preserve">
-    <value>Default Grid Table</value>
+    <value>Table (sortable; stacks on phones)</value>
   </data>
   <data name="DeleteField.Text" xml:space="preserve">
     <value>Are you sure you wish to delete this column?</value>
@@ -246,10 +246,10 @@
     <value>Paging</value>
   </data>
   <data name="plRenderMethod.Help" xml:space="preserve">
-    <value>Choose to display data using a Default Grid Table or by applying a self made or built-in XSL script.</value>
+    <value>Table: a sortable table; on phones each record shows as a stacked block. Cards: each record as a card in a responsive grid. HTML template: your own header, item and footer HTML with [Field] tokens. XSL stylesheet: a stylesheet you made with the XSL generator or by hand. Paging, sorting, the filter and search apply to every layout.</value>
   </data>
   <data name="plRenderMethod.Text" xml:space="preserve">
-    <value>Rendering Method</value>
+    <value>List Layout</value>
   </data>
   <data name="plShowSearchTextBox.Text" xml:space="preserve">
     <value>Show Search Box</value>
@@ -330,7 +330,7 @@
     <value>Display&lt;br/&gt;on List</value>
   </data>
   <data name="XslTrans.Text" xml:space="preserve">
-    <value>XSLT</value>
+    <value>XSL stylesheet</value>
   </data>
   <data name="GenerateXsl.Action" xml:space="preserve">
     <value>Generate XSL Stylesheet using a Token language</value>
@@ -643,5 +643,32 @@
   </data>
   <data name="No.Text" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="LayoutCards.Text" xml:space="preserve">
+    <value>Cards</value>
+  </data>
+  <data name="LayoutTemplate.Text" xml:space="preserve">
+    <value>HTML template</value>
+  </data>
+  <data name="plListTemplateHeader.Text" xml:space="preserve">
+    <value>Header HTML</value>
+  </data>
+  <data name="plListTemplateHeader.Help" xml:space="preserve">
+    <value>Written once before the records, e.g. an opening &amp;lt;div&amp;gt; or &amp;lt;table&amp;gt;. Tokens: [UDT:TotalRecords] (records in the list), [UDT:PageRecords] (records on this page).</value>
+  </data>
+  <data name="plListTemplateItem.Text" xml:space="preserve">
+    <value>Item HTML</value>
+  </data>
+  <data name="plListTemplateItem.Help" xml:space="preserve">
+    <value>Written once per record. [Field Title] inserts the value as the table shows it (links, formatted dates and numbers); [Field Title:Text] inserts the stored value as plain text. Also [UDT:EditLink] (edit icon, only when the user may edit the record), [UDT:EditUrl], [UDT:RowId] and [UDT:Index].</value>
+  </data>
+  <data name="plListTemplateFooter.Text" xml:space="preserve">
+    <value>Footer HTML</value>
+  </data>
+  <data name="plListTemplateFooter.Help" xml:space="preserve">
+    <value>Written once after the records, e.g. the closing &amp;lt;/div&amp;gt;. Same tokens as the header.</value>
+  </data>
+  <data name="cmdGenerateListTemplate.Text" xml:space="preserve">
+    <value>Generate starter template</value>
   </data>
 </root>

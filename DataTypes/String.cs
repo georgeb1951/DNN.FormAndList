@@ -121,6 +121,11 @@ namespace BCC.Modules.BCCForms.DataTypes
     /// -----------------------------------------------------------------------------
     public class DataTypeString : DataType
     {
+        public override Components.DatabaseSortType? DatabaseSort
+        {
+            get { return Components.DatabaseSortType.Text; }
+        }
+
         /// <summary>Stored text may contain markup (editors may enter it on purpose, imports and older
         ///   data were never filtered), so it is sanitized before it is shown.</summary>
         public override void RenderValuesToHtmlInsideDataSet(DataSet ds, int moduleId, bool noScript)

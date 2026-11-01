@@ -94,6 +94,15 @@ namespace BCC.Modules.BCCForms {
         protected global::System.Web.UI.WebControls.PlaceHolder XslOutput;
         
         /// <summary>
+        /// LayoutOutput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder LayoutOutput;
+        
+        /// <summary>
         /// placeholderActions-Steuerelement
         /// </summary>
         /// <remarks>
