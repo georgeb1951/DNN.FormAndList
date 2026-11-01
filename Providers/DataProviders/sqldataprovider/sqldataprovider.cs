@@ -14,7 +14,7 @@ namespace BCC.Modules.BCCForms
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The SqlDataProvider Class is an SQL Server implementation of the DataProvider Abstract
-    ///   class that provides the DataLayer for the UserDefinedTables Module.
+    ///   SQL Server data layer for BCC Forms.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class SqlDataProvider : DataProvider

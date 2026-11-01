@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using DotNetNuke.Services.Localization;
 
 namespace BCC.Modules.BCCForms.Components
@@ -107,72 +109,143 @@ namespace BCC.Modules.BCCForms.Components
         public const string Stylesheet = "Stylesheet";
     }
 
-    public class SettingName
+    /// <summary>
+    ///   Module / tab-module setting keys. All use the BCCF_ prefix since 01.01.00; the Form and List
+    ///   names they replaced are in <see cref="Legacy"/>, which the 01.01.00 upgrade script and the
+    ///   template / import code use to carry old settings over.
+    /// </summary>
+    public static class SettingName
     {
-    //    public const string UsedCssClasses = "UDT_UsedCssClasses";
-        public const string ImageWidth = "UDT_ImageWidth";
-        public const string ImageHeight = "UDT_ImageHeight";
-        public const string Paging = "UDT_Paging";
-        public const string RenderingMethod = "UDT_RenderingMethod";
-        public const string SortField = "UDT_SortField";
-        public const string SortOrder = "UDT_SortOrder";
-        public const string CalculatedColumnsRenderExpressionInForm = "CalculatedColumnsRenderExpressionInForm";
-        public const string URLNewWindow = "UDT_URLNewWindow";
-        public const string UserLinkNewWindow = "UDT_UserLinkNewWindow";
-        public const string UserLinkCaption = "UDT_UserLinkUserName";
-        public const string CnCLink = "UDT_CnCLink";
-        public const string XslPreDefinedStyleSheet = "UDT_XslPreDefinedStyleSheet";
-        public const string XslUserDefinedStyleSheet = "UDT_XslUserDefinedStyleSheet";
-        public const string ShowSearchTextBox = "UDT_ShowSearchTextBox";
-        public const string ShowNoRecordsUntilSearch = "UDT_ShowNoRecordsUntilSearch";
-        public const string SimpleSearch = "UDT_SimpleSearch";
-        public const string URLSearch = "UDT_URLSearch";
- //       public const string UseButtons = "UDT_UseButtons";
-        public const string ForceCaptchaForAnonymous = "UDT_ForceCaptchaForAnonymous";
-        public const string PreferReCaptcha = "UDT_PreferReCaptcha";
-        public const string ReCaptchaSiteKey = "UDT_ReCaptchaSiteKey";
-        public const string ReCaptchaSecretKey = "UDT_ReCaptchaPrivateKey";
-        // Spam protection. CaptchaMode supersedes ForceCaptchaForAnonymous + PreferReCaptcha,
-        // which are still written so older builds read a sensible value. The key settings above
-        // hold the reCAPTCHA or Turnstile keys, whichever provider is selected.
+        // List display
+        public const string RenderingMethod = "BCCF_RenderingMethod";
+        public const string Paging = "BCCF_Paging";
+        public const string SortField = "BCCF_SortField";
+        public const string SortOrder = "BCCF_SortOrder";
+        public const string TopCount = "BCCF_TopCount";
+        public const string Filter = "BCCF_Filter";
+        public const string Search = "BCCF_Search";
+        public const string ShowSearchTextBox = "BCCF_ShowSearchTextBox";
+        public const string ShowNoRecordsUntilSearch = "BCCF_ShowNoRecordsUntilSearch";
+        public const string SimpleSearch = "BCCF_SimpleSearch";
+        public const string URLSearch = "BCCF_URLSearch";
+        public const string XslPreDefinedStyleSheet = "BCCF_XslPreDefinedStyleSheet";
+        public const string XslUserDefinedStyleSheet = "BCCF_XslUserDefinedStyleSheet";
+        public const string ImageWidth = "BCCF_ImageWidth";
+        public const string ImageHeight = "BCCF_ImageHeight";
+        public const string URLNewWindow = "BCCF_URLNewWindow";
+        public const string UserLinkNewWindow = "BCCF_UserLinkNewWindow";
+        public const string UserLinkCaption = "BCCF_UserLinkCaption";
+        public const string CnCLink = "BCCF_CnCLink";
+        public const string ForceDownload = "BCCF_ForceDownload";
+        public const string ShowSystemColumns = "BCCF_ShowSystemColumns";
+        public const string ShowAllColumnsForAdmins = "BCCF_ShowAllColumnsForAdmins";
+        public const string EditPrivateColumnsForAdmins = "BCCF_EditPrivateColumnsForAdmins";
+        public const string ExcludeFromSearch = "BCCF_ExcludeFromSearch";
+
+        // Form
+        public const string ListOrForm = "BCCF_ListOrForm";
+        public const string UseButtonsInForm = "BCCF_UseButtonsInForm";
+        public const string FormTemplate = "BCCF_FormTemplate";
+        public const string EnableFormTemplate = "BCCF_EnableFormTemplate";
+        public const string CalculatedColumnsRenderExpressionInForm = "BCCF_CalculatedColumnsRenderExpressionInForm";
+        public const string SubmissionText = "BCCF_SubmissionText";
+        public const string UponSubmitAction = "BCCF_UponSubmitAction";
+        public const string UponSubmitRedirect = "BCCF_UponSubmitRedirect";
+        public const string EditOnlyOwnItems = "BCCF_EditOnlyOwnItems";
+        public const string UserRecordQuota = "BCCF_UserRecordQuota";
+        public const string ForceInputFiltering = "BCCF_ForceInputFiltering";
+
+        // Spam protection. CaptchaMode supersedes ForceCaptchaForAnonymous + PreferReCaptcha (both still
+        // read for modules saved before it existed). The two key settings hold the reCAPTCHA or
+        // Turnstile keys, whichever provider is selected.
         public const string CaptchaMode = "BCCF_CaptchaMode";
+        public const string ForceCaptchaForAnonymous = "BCCF_ForceCaptchaForAnonymous";
+        public const string PreferReCaptcha = "BCCF_PreferReCaptcha";
+        public const string ReCaptchaSiteKey = "BCCF_ReCaptchaSiteKey";
+        public const string ReCaptchaSecretKey = "BCCF_ReCaptchaSecretKey";
         public const string ReCaptchaMinScore = "BCCF_ReCaptchaMinScore";
         public const string UseHoneypot = "BCCF_UseHoneypot";
-        public const string ForceInputFiltering = "UDT_ForceFiltering";
-        public const string EditOnlyOwnItems = "UDT_EditOnlyOwnItems";
-        public const string ExcludeFromSearch = "UDT_ExcludeFromSearch";
-        public const string UserRecordQuota = "UDT_UserRecordQuota";
-        public const string Filter = "UDT_Filter";
-        public const string Search = "UDT_Search";
-        public const string ListOrForm = "UDT_ListNotFormsMode";
-        //public const string ShowListRequiresPermission = "UDT_ShowListRequiresPermission";
-        public const string SubmissionText = "UDT_Submission_succeeded";
-      //  public const string TrackingEnabled = "UDT_EnableTracking";
-        public const string TrackingEmailFrom = "UDT_TokenTrackingFrom";
-        public const string TrackingEmailReplyTo = "UDT_TokenTrackingReplyTo";
-        public const string TrackingEmailTo = "UDT_TokenTracking";
-        public const string TrackingEmailCc = "UDT_TokenTrackingCC";
-        public const string TrackingEmailBcc = "UDT_TokenTrackingBCC";
-        public const string TrackingScript = "UDT_XslTracking";
-        public const string TrackingSubject = "UDT_TrackingSubject";
-        public const string TrackingTriggerOnNew = "UDT_TriggerOnNew";
-        public const string TrackingTriggerOnUpdate = "UDT_TriggerOnUpdate";
-        public const string TrackingTriggerOnDelete = "UDT_TriggerOnDelete";
-        public const string TrackingTextOnNew = "UDT_TrackingTextOnNew";
-        public const string TrackingTextOnUpdate = "UDT_TrackingTextOnUpdate";
-        public const string TrackingTextOnDelete = "UDT_TrackingTextOnDelete";
-        public const string TrackingMessage = "UDT_TrackingMessage";
-        public const string ShowSystemColumns = "UDT_ShowSystemColumns";
-        public const string EditPrivateColumnsForAdmins = "UDT_EditPrivateColumnsForAdmins";
-        public const string ShowAllColumnsForAdmins = "UDT_ShowAllColumnsForAdmins";
-     //   public const string TableFreeEditForm = "UDT_TableFreeEditForm";
-        public const string TopCount = "UDT_TopCount";
-        //public const string ControlFullWidth = "UDT_ControlFullWidth";
-        public const string ForceDownload = "UDT_ForceDownload";
-        public const string UponSubmitAction = "UDT_UponSubmitAction";
-        public const string UponSubmitRedirect = "UDT_UponSubmitRedirect";
-        public const string UseButtonsInForm = "UseButtonsInForm";
-        public const string FormTemplate = "FormTemplate";
-        public const string EnableFormTemplate = "EnableFormTemplate";
+
+        // Notification e-mail ("tracking")
+        public const string TrackingEmailFrom = "BCCF_TrackingEmailFrom";
+        public const string TrackingEmailReplyTo = "BCCF_TrackingEmailReplyTo";
+        public const string TrackingEmailTo = "BCCF_TrackingEmailTo";
+        public const string TrackingEmailCc = "BCCF_TrackingEmailCc";
+        public const string TrackingEmailBcc = "BCCF_TrackingEmailBcc";
+        public const string TrackingSubject = "BCCF_TrackingSubject";
+        public const string TrackingScript = "BCCF_TrackingScript";
+        public const string TrackingMessage = "BCCF_TrackingMessage";
+        public const string TrackingTriggerOnNew = "BCCF_TrackingTriggerOnNew";
+        public const string TrackingTriggerOnUpdate = "BCCF_TrackingTriggerOnUpdate";
+        public const string TrackingTriggerOnDelete = "BCCF_TrackingTriggerOnDelete";
+        public const string TrackingTextOnNew = "BCCF_TrackingTextOnNew";
+        public const string TrackingTextOnUpdate = "BCCF_TrackingTextOnUpdate";
+        public const string TrackingTextOnDelete = "BCCF_TrackingTextOnDelete";
+
+        /// <summary>Pre-01.01.00 key (Form and List naming) → current key.</summary>
+        public static readonly IReadOnlyDictionary<string, string> Legacy =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "UDT_RenderingMethod", RenderingMethod },
+                { "UDT_Paging", Paging },
+                { "UDT_SortField", SortField },
+                { "UDT_SortOrder", SortOrder },
+                { "UDT_TopCount", TopCount },
+                { "UDT_Filter", Filter },
+                { "UDT_Search", Search },
+                { "UDT_ShowSearchTextBox", ShowSearchTextBox },
+                { "UDT_ShowNoRecordsUntilSearch", ShowNoRecordsUntilSearch },
+                { "UDT_SimpleSearch", SimpleSearch },
+                { "UDT_URLSearch", URLSearch },
+                { "UDT_XslPreDefinedStyleSheet", XslPreDefinedStyleSheet },
+                { "UDT_XslUserDefinedStyleSheet", XslUserDefinedStyleSheet },
+                { "UDT_ImageWidth", ImageWidth },
+                { "UDT_ImageHeight", ImageHeight },
+                { "UDT_URLNewWindow", URLNewWindow },
+                { "UDT_UserLinkNewWindow", UserLinkNewWindow },
+                { "UDT_UserLinkUserName", UserLinkCaption },
+                { "UDT_CnCLink", CnCLink },
+                { "UDT_ForceDownload", ForceDownload },
+                { "UDT_ShowSystemColumns", ShowSystemColumns },
+                { "UDT_ShowAllColumnsForAdmins", ShowAllColumnsForAdmins },
+                { "UDT_EditPrivateColumnsForAdmins", EditPrivateColumnsForAdmins },
+                { "UDT_ExcludeFromSearch", ExcludeFromSearch },
+                { "UDT_ListNotFormsMode", ListOrForm },
+                { "UseButtonsInForm", UseButtonsInForm },
+                { "FormTemplate", FormTemplate },
+                { "EnableFormTemplate", EnableFormTemplate },
+                { "CalculatedColumnsRenderExpressionInForm", CalculatedColumnsRenderExpressionInForm },
+                { "UDT_Submission_succeeded", SubmissionText },
+                { "UDT_UponSubmitAction", UponSubmitAction },
+                { "UDT_UponSubmitRedirect", UponSubmitRedirect },
+                { "UDT_EditOnlyOwnItems", EditOnlyOwnItems },
+                { "UDT_UserRecordQuota", UserRecordQuota },
+                { "UDT_ForceFiltering", ForceInputFiltering },
+                { "UDT_ForceCaptchaForAnonymous", ForceCaptchaForAnonymous },
+                { "UDT_PreferReCaptcha", PreferReCaptcha },
+                { "UDT_ReCaptchaSiteKey", ReCaptchaSiteKey },
+                { "UDT_ReCaptchaPrivateKey", ReCaptchaSecretKey },
+                { "UDT_TokenTrackingFrom", TrackingEmailFrom },
+                { "UDT_TokenTrackingReplyTo", TrackingEmailReplyTo },
+                { "UDT_TokenTracking", TrackingEmailTo },
+                { "UDT_TokenTrackingCC", TrackingEmailCc },
+                { "UDT_TokenTrackingBCC", TrackingEmailBcc },
+                { "UDT_TrackingSubject", TrackingSubject },
+                { "UDT_XslTracking", TrackingScript },
+                { "UDT_TrackingMessage", TrackingMessage },
+                { "UDT_TriggerOnNew", TrackingTriggerOnNew },
+                { "UDT_TriggerOnUpdate", TrackingTriggerOnUpdate },
+                { "UDT_TriggerOnDelete", TrackingTriggerOnDelete },
+                { "UDT_TrackingTextOnNew", TrackingTextOnNew },
+                { "UDT_TrackingTextOnUpdate", TrackingTextOnUpdate },
+                { "UDT_TrackingTextOnDelete", TrackingTextOnDelete },
+            };
+
+        /// <summary>Returns the current key for <paramref name="key"/>, translating Form and List names.</summary>
+        public static string Current(string key)
+        {
+            string current;
+            return key != null && Legacy.TryGetValue(key, out current) ? current : key;
+        }
     }
 }

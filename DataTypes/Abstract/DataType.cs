@@ -19,7 +19,7 @@ namespace BCC.Modules.BCCForms
     /// <summary>
     ///   Abstraced (MustInherit) DataType Class
     ///   Defines the Interface and provides some Default Settings
-    ///   Used for Definition and Rendering of Fields in the UserDefinedTable
+    ///   Used for definition and rendering of BCC Forms field types
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class DataType
@@ -113,7 +113,7 @@ namespace BCC.Modules.BCCForms
         {
             var retval = "";
 
-            // if a file exists in Portals/_Default/ UserDefinedTable then use that one, otherwise use default file
+            // if a file exists in Portals/_Default/BCCForms then use that one, otherwise use default file
             var defaultConfig =
                 HostingEnvironment.MapPath(string.Format("~{0}/DataTypes.config", Definition.PathOfModule));
             var customConfig =

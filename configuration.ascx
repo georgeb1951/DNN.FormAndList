@@ -16,20 +16,20 @@
 <dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/mode/htmlmixed/htmlmixed.js" Priority="103" />
 <dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/components/CodeEditor/addon/display/autorefresh.js" Priority="103" />
 
-<div class="dnnForm dnnFormAndListConfig" id="dnnFormAndListConfig">
+<div class="dnnForm bccf-config" id="bccfConfig">
     <ul class="dnnAdminTabNav dnnClear">
         <li><a href="#ssSchemaSettings">
-            <asp:Label resourcekey="FnlSchema" runat="server" /></a></li>
+            <asp:Label resourcekey="SchemaTab" runat="server" /></a></li>
         <li><a href="#ssPageSettings">
             <asp:Label resourcekey="BehaviorSettings" runat="server" /></a></li>
     </ul>
     <div id="ssSchemaSettings">
         <h2 class="dnnFormSectionHead"><a href="">
-            <asp:Label runat="server" resourcekey="UdtSettings" /></a></h2>
+            <asp:Label runat="server" resourcekey="ModuleSettingsHeading" /></a></h2>
         <fieldset>
             <div runat="server" id="udtSection" class="bccf-section">
                 <div>
-                    <asp:Label runat="server" resourcekey="UdtTeaser" />
+                    <asp:Label runat="server" resourcekey="ModuleSettingsTeaser" />
                 </div>
 
                 <fnl:Fields ID="Fields" runat="server" />
@@ -56,7 +56,7 @@
                         <asp:ListItem Value="ListAndForm" resourcekey="ListAndFormMode"></asp:ListItem>
                     </asp:RadioButtonList>
 
-                    <div class="dnnFormItem fnlSettingsWarning dnnClear" runat="server" id="rememberSettings">
+                    <div class="dnnFormItem bccf-settings-warning dnnClear" runat="server" id="rememberSettings">
                         <div class="dnnFormMessage dnnFormWarning">
                             <asp:Label resourcekey="RememberSettings" runat="server" />
                         </div>

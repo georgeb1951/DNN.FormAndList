@@ -84,7 +84,7 @@
 <script type="text/javascript">
     (function ($) {
         $(document).ready(function () {
-            $('#dnnFormAndListConfig')
+            $('#bccfConfig')
                 .dnnTabs()
                 .dnnPanels();
             $(".Sortable tbody")

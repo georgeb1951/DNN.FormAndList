@@ -192,12 +192,12 @@
 /* ---------- Configuration screens ---------- */
 
 /* same specificity as default.css's .dnnFormItem rule it sits on */
-:where(.DnnModule-BCCForms, .bccForms) .fnlSettingsWarning {
+:where(.DnnModule-BCCForms, .bccForms) .bccf-settings-warning {
     margin: var(--bccf-gap) 0 0 var(--bccf-label-offset);
     padding: 0;
 }
 
-:where(.DnnModule-BCCForms, .bccForms) #dnnFormAndListConfig .Sortable .Draggable {
+:where(.DnnModule-BCCForms, .bccForms) #bccfConfig .Sortable .Draggable {
     cursor: move;
 }
 
@@ -205,16 +205,8 @@
     margin-top: 1rem;
 }
 
-:where(.DnnModule-BCCForms, .bccForms) .bccf-settings .bccf-hidden {
-    display: none;
-}
-
 :where(.DnnModule-BCCForms, .bccForms) .bccf-label {
     font-weight: 700;
-}
-
-:where(.DnnModule-BCCForms, .bccForms) .bccf-nowrap {
-    white-space: nowrap;
 }
 
 :where(.DnnModule-BCCForms, .bccForms) .bccf-mono {
@@ -230,11 +222,6 @@
     flex-wrap: wrap;
     align-items: center;
     gap: .5rem var(--bccf-gap);
-}
-
-:where(.DnnModule-BCCForms, .bccForms) .bccf-layout-table td {
-    padding: .25rem .5rem .25rem 0;
-    vertical-align: top;
 }
 
 /* ---------- Small screens ----------
@@ -270,7 +257,7 @@
         margin-left: 0;
     }
 
-    :where(.DnnModule-BCCForms, .bccForms) .fnlSettingsWarning {
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-settings-warning {
         margin-left: 0;
     }
 }
@@ -398,10 +385,59 @@
     text-align: right;
 }
 
-/* labels inside the generator's layout tables size to their text
-   (same specificity as default.css's .dnnLabel, so it wins by load order) */
-:where(.bccf-xslgen td) > .dnnLabel {
+/* a field's row with buttons after the select / text box: the group takes the space
+   beside the label (a flex box sits next to the float) and wraps on narrow screens */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-field-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: .3125rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-field-group > select,
+:where(.DnnModule-BCCForms, .bccForms) .bccf-field-group > input[type=text] {
+    flex: 1 1 14rem;
+    max-width: 445px;
+    min-width: 10rem;
     width: auto;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-field-group > .bccf-inline-action {
+    margin-left: 0;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-inline-action {
+    margin-left: .3125rem;
+    vertical-align: top;
+}
+
+/* full-width template editors (code needs the width) */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-code {
+    margin: 0 0 1.125rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-code textarea {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 5rem;
+    padding: .5rem;
+    border: 1px solid var(--bccf-border);
+    border-radius: var(--bccf-radius);
+    background: var(--bccf-surface);
+    color: var(--bccf-text);
+    font-family: var(--bccf-mono);
+    font-size: .8125rem;
+}
+
+/* the fixed list markup shown above / below the list template, e.g. <table> */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-code-wrap {
+    display: block;
+    margin: .25rem 0;
+    color: var(--bccf-muted);
+    font-family: var(--bccf-mono);
+    font-size: .8125rem;
+    white-space: pre-wrap;
 }
 
 /* spam protection: provider widget (reCAPTCHA v2 / Turnstile) sits above the buttons,

@@ -196,13 +196,6 @@ namespace BCC.Modules.BCCForms.Components
         public static string IconURL(string iconKey)
         {
             return IconController.IconURL(iconKey);
-            //switch (iconKey.ToLowerInvariant()  )
-            //{
-            //    case "wizard":
-            //        iconKey = "icon_wizard_16px";
-            //        break;
-            //}
-            //return String.Format("~/images/{0}.gif", iconKey);
         }
     }
 }

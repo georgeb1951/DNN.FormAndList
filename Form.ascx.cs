@@ -48,8 +48,8 @@ namespace BCC.Modules.BCCForms
 
         readonly IDictionary<Label, Control> _labelcontrols = new Dictionary<Label, Control>();
         readonly IDictionary<PropertyLabelControl, Control> _propertylabelcontrols = new Dictionary<PropertyLabelControl, Control>();
-        UserDefinedTableController _udtController;
-        UserDefinedTableController UdtController =>  _udtController ?? (_udtController = new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService));
+        FormDataController _dataController;
+        FormDataController DataController =>  _dataController ?? (_dataController = new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService));
 
         public string JsUiDatePattern => Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern
                                      .ToLower()
@@ -66,7 +66,7 @@ namespace BCC.Modules.BCCForms
                     {
                         _userDefinedRowId = Convert.ToInt32(-1);
                     }
-                    _data = UdtController.GetRow(_userDefinedRowId);
+                    _data = DataController.GetRow(_userDefinedRowId);
                 }
                 return _data;
             }
@@ -235,7 +235,7 @@ namespace BCC.Modules.BCCForms
             var userquota = Settings.UserRecordQuota;
             if (userquota > 0 && Request.IsAuthenticated)
             {
-                var ds = UdtController.GetDataSet(false);
+                var ds = DataController.GetDataSet(false);
                 return ModuleSecurity.HasAddPermissonByQuota(ds.Tables[DataSetTableName.Fields],
                                                              ds.Tables[DataSetTableName.Data], userquota,
                                                              UserInfo.GetSafeUsername());
@@ -602,7 +602,7 @@ namespace BCC.Modules.BCCForms
                             CurrentRow[edit.FieldTitle] = value;
                         }
 
-                        UdtController.UpdateRow(Data);
+                        DataController.UpdateRow(Data);
                         RecordUpdated();
 
                         switch (Settings.ListOrForm)
@@ -659,7 +659,7 @@ namespace BCC.Modules.BCCForms
             {
                 try
                 {
-                    UdtController.DeleteRow(_userDefinedRowId);
+                    DataController.DeleteRow(_userDefinedRowId);
                     RecordDeleted();
                     Response.Redirect(this.navigationManager.NavigateURL(ModuleContext.TabId), true);
                 }

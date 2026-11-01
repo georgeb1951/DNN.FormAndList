@@ -259,6 +259,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Providers\DataProviders\sqldataprovider\sqldataprovider.cs" />
     <Content Include="Providers\DataProviders\sqldataprovider\01.00.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\sqldataprovider\01.01.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\sqldataprovider\Uninstall.SqlDataProvider" />
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -301,7 +302,7 @@
       <DependentUpon>List.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\UserDefinedTableController.cs" />
+    <Compile Include="Components\FormDataController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Form.ascx.resx">

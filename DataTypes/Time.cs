@@ -55,7 +55,7 @@ namespace BCC.Modules.BCCForms.DataTypes
             {
                 _ctlTime.Style.Value = Style;
             }
-            _ctlTime.CssClass = "fnl-timepicker";
+            _ctlTime.CssClass = "bccf-timepicker";
             if (Required) _ctlTime.CssClass += " dnnFormRequired";
 
             Controls.Add(_ctlTime);

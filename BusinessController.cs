@@ -148,16 +148,16 @@ namespace BCC.Modules.BCCForms
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDateUtc)
         {
             var searchDocuments = new List<SearchDocument>();
-            var udtController = new UserDefinedTableController(modInfo, this.navigationManager, this.portalAliasService);
+            var dataController = new FormDataController(modInfo, this.navigationManager, this.portalAliasService);
 
             try
             {
-                var dsUserDefinedRows = udtController.GetDataSet(withPreRenderedValues: false);
+                var dsUserDefinedRows = dataController.GetDataSet(withPreRenderedValues: false);
 
                 //Get names of ChangedBy and ChangedAt columns
-                var colnameChangedBy = udtController.ColumnNameByDataType(dsUserDefinedRows,
+                var colnameChangedBy = dataController.ColumnNameByDataType(dsUserDefinedRows,
                                                                           DataTypeNames.UDT_DataType_ChangedBy);
-                var colnameChangedAt = udtController.ColumnNameByDataType(dsUserDefinedRows,
+                var colnameChangedAt = dataController.ColumnNameByDataType(dsUserDefinedRows,
                                                                           DataTypeNames.UDT_DataType_ChangedAt);
 
                 var settings = modInfo.ModuleSettings;
@@ -262,19 +262,19 @@ namespace BCC.Modules.BCCForms
 
             if (tabId == Null.NullInteger)
             {
-                var udtController = new UserDefinedTableController(moduleId, this.navigationManager, this.portalAliasService);
-                ds = udtController.GetDataSet(false);
+                var dataController = new FormDataController(moduleId, this.navigationManager, this.portalAliasService);
+                ds = dataController.GetDataSet(false);
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
                 ds.Tables.Add(GetSettingsTable(moduleInfo.ModuleSettings, SettingsType.ModuleSettings));
             }
             else
             {
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
-                var udtController = new UserDefinedTableController(moduleInfo, this.navigationManager, this.portalAliasService);
-                ds = udtController.GetDataSet(false);
+                var dataController = new FormDataController(moduleInfo, this.navigationManager, this.portalAliasService);
+                ds = dataController.GetDataSet(false);
                 ds.Tables.Add(GetSettingsTable(moduleInfo.ModuleSettings, SettingsType.ModuleSettings));
                 ds.Tables.Add(GetSettingsTable(moduleInfo.TabModuleSettings, SettingsType.TabModuleSettings));
-                ds.Tables.Add(GetStylesheetTable(udtController.Settings, moduleInfo.PortalID));
+                ds.Tables.Add(GetStylesheetTable(dataController.Settings, moduleInfo.PortalID));
             }
             return (ds);
         }
@@ -303,7 +303,7 @@ namespace BCC.Modules.BCCForms
                 // temporarily set script timeout to large value ( this value is only applicable when application is not running in Debug mode )
                 HttpContext.Current.Server.ScriptTimeout = int.MaxValue;
 
-                var udtController = new UserDefinedTableController(moduleId, this.navigationManager, this.portalAliasService);
+                var dataController = new FormDataController(moduleId, this.navigationManager, this.portalAliasService);
                 using (var ds = new DataSet())
                 {
                     var xmlNode = Globals.GetContent(content, string.Empty);
@@ -323,9 +323,9 @@ namespace BCC.Modules.BCCForms
                     {
                         AddModuleSettings(moduleId, modules, ds);
                         //Fields - first delete old Fields
-                        udtController.ResetModule();
+                        dataController.ResetModule();
                         AddFields(moduleId, ds);
-                        AddData(udtController, ds);
+                        AddData(dataController, ds);
                     }
                     if (ds.Tables.Contains(DataSetTableName.Stylesheets))
                     {
@@ -344,7 +344,7 @@ namespace BCC.Modules.BCCForms
         {
             foreach (DataRow row in ds.Tables[DataSetTableName.TabSettings].Rows)
             {
-                modules.UpdateTabModuleSetting(tabModuleId, row[SettingsTableColumn.Setting].ToString(),
+                modules.UpdateTabModuleSetting(tabModuleId, SettingName.Current(row[SettingsTableColumn.Setting].ToString()),
                                                row[SettingsTableColumn.Value].ToString());
             }
         }
@@ -355,7 +355,7 @@ namespace BCC.Modules.BCCForms
             {
                 foreach (DataRow row in ds.Tables[DataSetTableName.Settings].Rows)
                 {
-                    modules.UpdateModuleSetting(moduleId, row[SettingsTableColumn.Setting].ToString(),
+                    modules.UpdateModuleSetting(moduleId, SettingName.Current(row[SettingsTableColumn.Setting].ToString()),
                                                 row[SettingsTableColumn.Value].ToString());
                 }
             }
@@ -367,7 +367,7 @@ namespace BCC.Modules.BCCForms
             var portalSettings = ModuleServices.PortalSettings;
             foreach (DataRow row in ds.Tables[DataSetTableName.Stylesheets].Rows)
             {
-                var settingName = row[StylesheetTableColumn.NameOfSetting].ToString();
+                var settingName = SettingName.Current(row[StylesheetTableColumn.NameOfSetting].ToString());
                 var localFilePath = row[StylesheetTableColumn.LocalFilePath].ToString();
                 var stylesheet = row[StylesheetTableColumn.Stylesheet].ToString();
                 //Check whether file exists
@@ -400,13 +400,13 @@ namespace BCC.Modules.BCCForms
             }
         }
 
-        static void AddData(UserDefinedTableController udtController, DataSet ds)
+        static void AddData(FormDataController dataController, DataSet ds)
         {
             if (ds.Tables[DataSetTableName.Data] != null)
             {
                 for (var rowNr = 0; rowNr <= ds.Tables[DataSetTableName.Data].Rows.Count - 1; rowNr++)
                 {
-                    udtController.UpdateRow(ds, rowNr, isDataToImport: true);
+                    dataController.UpdateRow(ds, rowNr, isDataToImport: true);
                 }
             }
         }
