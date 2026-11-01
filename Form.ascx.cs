@@ -101,10 +101,30 @@ namespace BCC.Modules.BCCForms
             {
                 var controlId = currentField.Title.SafeId();
                 var editcontrolPlaceholder = FindControlRecursive(control, $"editor_for_{ controlId}");
-                if (editcontrolPlaceholder != null && currentField.EditControl != null) editcontrolPlaceholder.Controls.Add(currentField.EditControl);
                 var labelPlaceholder = FindControlRecursive(control, $"label_for_{controlId}");
-                if (labelPlaceholder != null) labelPlaceholder.Controls.Add(GetLabel(currentField.Title, currentField.Help, currentField.EditControl));
 
+                // DNN's image CAPTCHA must be on the form, or no submission could ever pass its check:
+                // add it after the template's fields when the template has no place for it
+                if (currentField.EditControl is CaptchaControl && editcontrolPlaceholder == null)
+                {
+                    var row = new HtmlGenericControl("div");
+                    row.Attributes["class"] = "dnnFormItem dnnFormRequired";
+                    row.Controls.Add(GetLabel(currentField.Title, currentField.Help ?? string.Empty, currentField.EditControl));
+                    row.Controls.Add(currentField.EditControl);
+                    control.Controls.Add(row);
+                    continue;
+                }
+
+                if (editcontrolPlaceholder != null && currentField.EditControl != null) editcontrolPlaceholder.Controls.Add(currentField.EditControl);
+                if (labelPlaceholder != null && currentField.EditControl != null) labelPlaceholder.Controls.Add(GetLabel(currentField.Title, currentField.Help ?? string.Empty, currentField.EditControl));
+
+                // like the standard form: restricted fields (for users who may not edit them) and fields
+                // not shown on edit stay in the page for their values but are not displayed
+                if (!currentField.Visible)
+                {
+                    if (editcontrolPlaceholder != null) editcontrolPlaceholder.Visible = false;
+                    if (labelPlaceholder != null) labelPlaceholder.Visible = false;
+                }
             }
             EditFormPlaceholder.Visible = true;
             // hook for module.css: labels and inputs placed outside DNN's dnnFormItem rows

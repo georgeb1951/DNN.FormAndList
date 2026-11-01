@@ -481,17 +481,28 @@ namespace BCC.Modules.BCCForms
         /// </summary>
         void cmdGenerateFormTemplate_Click(object sender, EventArgs e)
         {
+            // Same rule the form uses: a field is on the form unless its type can be hidden on edit and
+            // "show on edit" is off (system fields). "Display on List" is about the list, not the form.
+            // Restricted (private) fields are included; the form hides them from users who can't edit them.
             var fields = FieldController.GetFieldsTable(this.ModuleContext.ModuleId)
                 .Rows
                 .Cast<DataRow>()
                 .Select(r => new
                 {
                     Title = r[FieldsTableColumn.Title].AsString(),
-                    IsVisible = r[FieldsTableColumn.Visible].AsBoolean(),
-                    IsRequired = r[FieldsTableColumn.Required].AsBoolean(),
-                    IsSeparator = r[FieldsTableColumn.Type].AsString() == "Separator"
+                    Type = DataType.ByName(r[FieldsTableColumn.Type].AsString()),
+                    ShowOnEdit = r[FieldsTableColumn.ShowOnEdit].AsBoolean(),
+                    ShowTitle = r[FieldsTableColumn.Visible].AsBoolean(),
+                    IsRequired = r[FieldsTableColumn.Required].AsBoolean()
                 })
-                .Where(field => field.IsVisible);
+                .Where(field => !field.Type.SupportsHideOnEdit || field.ShowOnEdit)
+                .Select(field => new
+                {
+                    field.Title,
+                    IsSeparator = field.Type.IsSeparator,
+                    field.ShowTitle,
+                    IsRequired = field.IsRequired && field.Type.IsUserDefinedField
+                });
 
             var template = new StringBuilder("<div class=\"bccf-form-fields\">\r\n");
             foreach (var field in fields)
@@ -499,12 +510,22 @@ namespace BCC.Modules.BCCForms
                 if (field.IsSeparator)
                 {
                     template.AppendFormat("    <h2 class=\"dnnFormSectionHead\">{0}</h2>\r\n",
-                                          HttpUtility.HtmlEncode(field.Title));
+                                          field.ShowTitle ? HttpUtility.HtmlEncode(field.Title) : string.Empty);
                     continue;
                 }
                 template.AppendFormat("    <div class=\"{0}\">\r\n", field.IsRequired ? "dnnFormItem dnnFormRequired" : "dnnFormItem");
                 template.AppendFormat("        [label-for:{0}]\r\n", field.Title);
                 template.AppendFormat("        [editor-for:{0}]\r\n", field.Title);
+                template.Append("    </div>\r\n");
+            }
+            // DNN's image CAPTCHA is a form row too (reCAPTCHA / Turnstile render below the form on their own)
+            if (new Components.Settings(ModuleContext.Settings).CaptchaMode == CaptchaMode.DnnCaptcha)
+            {
+                var captchaTitle = Localization.GetString("Captcha.Text",
+                    TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/Form.ascx.resx");
+                template.Append("    <div class=\"dnnFormItem dnnFormRequired\">\r\n");
+                template.AppendFormat("        [label-for:{0}]\r\n", captchaTitle);
+                template.AppendFormat("        [editor-for:{0}]\r\n", captchaTitle);
                 template.Append("    </div>\r\n");
             }
             template.Append("</div>");

@@ -10,7 +10,7 @@
   <li>XSL template generator rebuilt without layout tables; works on small screens.</li>
   <li>Configuration field list: the Required / Display / Restricted / Searchable marks are drawn in the row's text colour, so they stay visible on any theme's alternating rows (DNN's grey tick icons vanished on grey rows); screen readers now hear the right Yes / No for each column.</li>
   <li>Configuration and field editor: Save and Cancel no longer show twice (DNN's CommandButton drew a broken icon button next to the link); Cancel no longer triggers validation.</li>
-  <li>Form templates: "Generate template" now writes DNN form rows that line up in any theme (the old one assumed a Bootstrap 3 grid). Labels without help text now use DNN's own label markup, so every label in a form lines up, in the standard form and in templates.</li>
+  <li>Form templates: "Generate template" now writes DNN form rows that line up in any theme (the old one assumed a Bootstrap 3 grid). Labels without help text now use DNN's own label markup, so every label in a form lines up, in the standard form and in templates. The generated template includes every field the form shows (it used to skip fields not displayed on the list) and the DNN CAPTCHA when that is selected. Template forms now hide restricted fields from users who may not edit them, as the standard form does, and always show the DNN CAPTCHA when it is on, even if the template has no place for it.</li>
   <li>Module settings use their own <code>BCCF_</code> names. The upgrade renames existing settings, and templates or exports made with the old names still import.</li>
   <li>Internal Form and List names removed from code, CSS hooks and resources.</li>
 </ul>
