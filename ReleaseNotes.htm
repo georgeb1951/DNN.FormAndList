@@ -8,6 +8,7 @@
   <li>Spam protection: optional honeypot field (on by default) that bots fill in and people never see.</li>
   <li>Security: list, XSL and token output now sanitize text and rich-text values that contain markup (covers imported and older data); the stored value is unchanged and still used for editing and CSV export. URL fields no longer render <code>javascript:</code>/<code>data:</code> links, and URL, file and e-mail captions are HTML-encoded.</li>
   <li>XSL template generator rebuilt without layout tables; works on small screens.</li>
+  <li>Configuration field list: the Required / Display / Restricted / Searchable marks are drawn in the row's text colour, so they stay visible on any theme's alternating rows (DNN's grey tick icons vanished on grey rows); screen readers now hear the right Yes / No for each column.</li>
   <li>Configuration and field editor: Save and Cancel no longer show twice (DNN's CommandButton drew a broken icon button next to the link); Cancel no longer triggers validation.</li>
   <li>Form templates: "Generate template" now writes DNN form rows that line up in any theme (the old one assumed a Bootstrap 3 grid). Labels without help text now use DNN's own label markup, so every label in a form lines up, in the standard form and in templates.</li>
   <li>Module settings use their own <code>BCCF_</code> names. The upgrade renames existing settings, and templates or exports made with the old names still import.</li>

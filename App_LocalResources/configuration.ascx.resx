@@ -638,4 +638,10 @@
   <data name="FormTemplate.Help" xml:space="preserve">
     <value>The template is set as html. To insert labels, use the [label-for:Fieldname] token, for the input fields [editor-for:Fieldname], for the captcha use [editor-for:Security Code]</value>
   </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
 </root>

@@ -143,6 +143,22 @@ namespace BCC.Modules.BCCForms.Controls
             }
         }
 
+        /// <summary>
+        ///   Yes/no mark for the field grid. Drawn in the row's own text colour (currentColor), so it
+        ///   stays visible on any row background the theme uses; screen readers hear "Yes" / "No".
+        /// </summary>
+        protected string YesNoMark(object value)
+        {
+            var yes = value is bool && (bool) value;
+            var text = WebUtility.HtmlEncode(LocalizeString != null ? LocalizeString(yes ? "Yes" : "No") : null);
+            if (string.IsNullOrEmpty(text)) text = yes ? "Yes" : "No";
+            return yes
+                ? "<span class=\"bccf-mark bccf-mark-yes\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\" focusable=\"false\">" +
+                  "<path d=\"M3 8.5l3.2 3.2L13 4.8\" /></svg><span class=\"bccf-sr\">" + text + "</span></span>"
+                : "<span class=\"bccf-mark bccf-mark-no\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\" focusable=\"false\">" +
+                  "<rect x=\"2.5\" y=\"2.5\" width=\"11\" height=\"11\" rx=\"2\" /></svg><span class=\"bccf-sr\">" + text + "</span></span>";
+        }
+
         protected DataType DataTypeByName(string name)
         {
             return DataType.ByName(name);

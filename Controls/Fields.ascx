@@ -40,36 +40,28 @@
 			<HeaderStyle HorizontalAlign="Center" ></HeaderStyle>
 			<ItemStyle HorizontalAlign="Center" ></ItemStyle>
 			<ItemTemplate>
-			    <asp:Image runat="server" ImageUrl='<%#(bool) Eval(FieldsTableColumn.Required) ? IconController.IconURL("Checked") :IconController.IconURL("Unchecked")%>'
-			                AlternateText='<%#((bool) Eval(FieldsTableColumn.Visible)) ? "1": "0"%>'
-			                ID="Image2" />
+			    <%# YesNoMark(Eval(FieldsTableColumn.Required)) %>
 			</ItemTemplate>
 		</asp:TemplateColumn>
 		<asp:TemplateColumn HeaderText="Visible">
 			<HeaderStyle HorizontalAlign="Center" />
 			<ItemStyle HorizontalAlign="Center"  />
 			<ItemTemplate>
-			    <asp:Image runat="server" AlternateText='<%#(bool) Eval(FieldsTableColumn.Visible) ? "1": "0"%>'
-			                ImageUrl='<%#(bool) Eval(FieldsTableColumn.Visible) ? IconController.IconURL("Checked") :IconController.IconURL("Unchecked")%>'
-			                ID="Image3" />
+			    <%# YesNoMark(Eval(FieldsTableColumn.Visible)) %>
 			</ItemTemplate>
 		</asp:TemplateColumn>
 		<asp:TemplateColumn HeaderText="Private">
 			<HeaderStyle HorizontalAlign="Center"/>
 			<ItemStyle HorizontalAlign="Center"  />
 			<ItemTemplate>
-			    <asp:Image ID="Image1" runat="server" AlternateText='<%#(bool) Eval(FieldsTableColumn.IsPrivate )? "1": "0"%>'
-			                ImageUrl='<%#(bool) Eval(FieldsTableColumn.IsPrivate) ?IconController.IconURL("Checked") :IconController.IconURL("Unchecked")%>' />
+			    <%# YesNoMark(Eval(FieldsTableColumn.IsPrivate)) %>
 			</ItemTemplate>
 		</asp:TemplateColumn>
 		<asp:TemplateColumn HeaderText="Searchable">
 			<HeaderStyle HorizontalAlign="Center"  />
 			<ItemStyle HorizontalAlign="Center"  />
 			<ItemTemplate>
-			    <asp:Image runat="server" AlternateText='<%#(bool) Eval(FieldsTableColumn.Visible)? "1": "0"%>'
-			                ImageUrl='<%#(bool) Eval("Searchable") ?IconController.IconURL("Checked") :IconController.IconURL("Unchecked")%>'
-			                Visible="<%#DataTypeByName((string) Eval(FieldsTableColumn.Type)).SupportsSearch%>"
-			                ID="Image4" />
+			    <asp:PlaceHolder runat="server" Visible="<%#DataTypeByName((string) Eval(FieldsTableColumn.Type)).SupportsSearch%>"><%# YesNoMark(Eval("Searchable")) %></asp:PlaceHolder>
 			</ItemTemplate>
 		</asp:TemplateColumn>
 	</Columns>
