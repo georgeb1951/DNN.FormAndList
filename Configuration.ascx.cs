@@ -141,7 +141,14 @@ namespace BCC.Modules.BCCForms
             {
                 strRenderMethod = RenderingMethod.GridRendering;
             }
+            if (renderMethodRadioButtonList.Items.FindByValue(strRenderMethod) == null)
+            {
+                strRenderMethod = RenderingMethod.GridRendering;
+            }
             renderMethodRadioButtonList.SelectedValue = strRenderMethod;
+            txtListTemplateHeader.Text = ModuleContext.Settings[SettingName.ListTemplateHeader].AsString();
+            txtListTemplateItem.Text = ModuleContext.Settings[SettingName.ListTemplateItem].AsString();
+            txtListTemplateFooter.Text = ModuleContext.Settings[SettingName.ListTemplateFooter].AsString();
 
             try
             {
@@ -279,16 +286,8 @@ namespace BCC.Modules.BCCForms
 
             rowTrackingScript.Visible = Convert.ToBoolean(rblBodyType.SelectedValue == "XslScript");
 
-            switch (renderMethodRadioButtonList.SelectedValue)
-            {
-                case RenderingMethod.GridRendering:
-                    rowUserDefined.Visible = false;
-                    break;
-
-                case RenderingMethod.UserdefinedXSL:
-                    rowUserDefined.Visible = true;
-                    break;
-            }
+            rowUserDefined.Visible = renderMethodRadioButtonList.SelectedValue == RenderingMethod.UserdefinedXSL;
+            rowListTemplate.Visible = renderMethodRadioButtonList.SelectedValue == RenderingMethod.HtmlTemplate;
         }
 
         int GetEditableFileId(string url)
@@ -355,6 +354,9 @@ namespace BCC.Modules.BCCForms
                 }
                 UpdateTabModuleSetting(SettingName.XslUserDefinedStyleSheet, strUserDefinedXsl);
                 UpdateTabModuleSetting(SettingName.RenderingMethod, strRenderingMethod);
+                UpdateTabModuleSetting(SettingName.ListTemplateHeader, txtListTemplateHeader.Text);
+                UpdateTabModuleSetting(SettingName.ListTemplateItem, txtListTemplateItem.Text);
+                UpdateTabModuleSetting(SettingName.ListTemplateFooter, txtListTemplateFooter.Text);
                 //Paging
                 UpdateTabModuleSetting(SettingName.Paging, cboPaging.SelectedValue);
                 //Filter
@@ -460,6 +462,7 @@ namespace BCC.Modules.BCCForms
             cmdUpdate.Click += cmdUpdate_Click;
             chkShowSearchTextBox.CheckedChanged += chkShowSearchTextBox_CheckedChanged;
             cmdGenerateFormTemplate.Click += cmdGenerateFormTemplate_Click;
+            cmdGenerateListTemplate.Click += cmdGenerateListTemplate_Click;
             chkEnableFormTemplate.CheckedChanged += ((sender, args) => divFormTemplate.Visible = chkEnableFormTemplate.Checked);
 
 
@@ -479,6 +482,41 @@ namespace BCC.Modules.BCCForms
         ///   Writes a starter form template in DNN's own form pattern (dnnFormItem rows), so it lines up
         ///   like the standard form in any theme, without depending on a CSS grid framework.
         /// </summary>
+        /// <summary>
+        ///   Starter HTML template for the list: one card per record, the first field shown on the list
+        ///   as the card's heading and the others as label / value pairs. The admin edits it from there.
+        /// </summary>
+        void cmdGenerateListTemplate_Click(object sender, EventArgs e)
+        {
+            var fields = FieldController.GetFieldsTable(this.ModuleContext.ModuleId)
+                .Rows
+                .Cast<DataRow>()
+                .Where(r => r[FieldsTableColumn.Visible].AsBoolean() &&
+                            !DataType.ByName(r[FieldsTableColumn.Type].AsString()).IsSeparator)
+                .Select(r => r[FieldsTableColumn.Title].AsString())
+                .ToList();
+
+            var item = new StringBuilder();
+            item.Append("<article class=\"bccf-card\">\r\n");
+            item.Append("    <div class=\"bccf-card-edit\">[UDT:EditLink]</div>\r\n");
+            if (fields.Count > 0)
+            {
+                item.AppendFormat("    <h3 class=\"bccf-card-title\">[{0}]</h3>\r\n", fields[0]);
+            }
+            item.Append("    <dl class=\"bccf-card-fields\">\r\n");
+            foreach (var title in fields.Skip(1))
+            {
+                item.AppendFormat("        <div class=\"bccf-card-field\"><dt>{0}</dt><dd>[{1}]</dd></div>\r\n",
+                                  HttpUtility.HtmlEncode(title), title);
+            }
+            item.Append("    </dl>\r\n");
+            item.Append("</article>");
+
+            txtListTemplateHeader.Text = "<div class=\"bccf-cards\">";
+            txtListTemplateItem.Text = item.ToString();
+            txtListTemplateFooter.Text = "</div>";
+        }
+
         void cmdGenerateFormTemplate_Click(object sender, EventArgs e)
         {
             // Same rule the form uses: a field is on the form unless its type can be hidden on edit and

@@ -9,6 +9,10 @@ namespace BCC.Modules.BCCForms.Components
         public const string GridRendering = "DataGrid";
         public const string UserdefinedXSL = "XslUserDefinedStyleSheet";
         public const string PredefinedXSL = "XslPreDefinedStyleSheet";
+        /// <summary>Each record as a card (responsive grid of cards).</summary>
+        public const string Cards = "Cards";
+        /// <summary>Header / item / footer HTML with [Field] tokens.</summary>
+        public const string HtmlTemplate = "HtmlTemplate";
     }
 
 
@@ -141,6 +145,9 @@ namespace BCC.Modules.BCCForms.Components
         public const string ShowAllColumnsForAdmins = "BCCF_ShowAllColumnsForAdmins";
         public const string EditPrivateColumnsForAdmins = "BCCF_EditPrivateColumnsForAdmins";
         public const string ExcludeFromSearch = "BCCF_ExcludeFromSearch";
+        public const string ListTemplateHeader = "BCCF_ListTemplateHeader";
+        public const string ListTemplateItem = "BCCF_ListTemplateItem";
+        public const string ListTemplateFooter = "BCCF_ListTemplateFooter";
 
         // Form
         public const string ListOrForm = "BCCF_ListOrForm";

@@ -28,6 +28,8 @@
         </Columns>
     </asp:GridView>
     </div>
+    <%-- Cards and HTML template layouts --%>
+    <asp:PlaceHolder ID="LayoutOutput" runat="server" Visible="False" />
     <dnn:PagingControl ID="ctlPagingControl" runat="server" totalrecord="0" PageSize="1" CurrentPage="1" Visible="False" Mode="PostBack" />
     <asp:PlaceHolder ID="XslOutput" runat="server" Visible="False" />
     <div runat="server" ID="placeholderActions" Visible="false" >

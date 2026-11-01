@@ -120,8 +120,28 @@
                 <asp:RadioButtonList ID="renderMethodRadioButtonList" CssClass="dnnFormRadioButtons" runat="server"
                     AutoPostBack="True">
                     <asp:ListItem resourcekey="DataGrid" Value="DataGrid" Selected="True" />
+                    <asp:ListItem resourcekey="LayoutCards" Value="Cards" />
+                    <asp:ListItem resourcekey="LayoutTemplate" Value="HtmlTemplate" />
                     <asp:ListItem resourcekey="XslTrans" Value="XslUserDefinedStyleSheet" />
                 </asp:RadioButtonList>
+            </div>
+            <div id="rowListTemplate" runat="server" class="bccf-list-template">
+                <div class="dnnFormItem">
+                    <dnn:Label ID="plListTemplateHeader" runat="server" Suffix=":" ControlName="txtListTemplateHeader" />
+                    <asp:TextBox ID="txtListTemplateHeader" runat="server" TextMode="MultiLine" Rows="3" CssClass="bccf-mono" />
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="plListTemplateItem" runat="server" Suffix=":" ControlName="txtListTemplateItem" />
+                    <asp:TextBox ID="txtListTemplateItem" runat="server" TextMode="MultiLine" Rows="10" CssClass="bccf-mono" />
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="plListTemplateFooter" runat="server" Suffix=":" ControlName="txtListTemplateFooter" />
+                    <asp:TextBox ID="txtListTemplateFooter" runat="server" TextMode="MultiLine" Rows="3" CssClass="bccf-mono" />
+                </div>
+                <div class="bccf-commands">
+                    <asp:LinkButton ID="cmdGenerateListTemplate" runat="server" CssClass="dnnSecondaryAction"
+                        resourcekey="cmdGenerateListTemplate" CausesValidation="False" />
+                </div>
             </div>
             <div class="dnnFormItem" id="rowUserDefined" runat="server">
                 <dnn:Label ID="plUserDefinedStyleSheet" runat="server" Suffix=":" ControlName="XslUserDefinedUrlControl" />

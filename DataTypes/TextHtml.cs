@@ -118,6 +118,11 @@ namespace BCC.Modules.BCCForms.DataTypes
     /// -----------------------------------------------------------------------------
     public class DataTypeTextHtml : DataType
     {
+        public override Components.DatabaseSortType? DatabaseSort
+        {
+            get { return Components.DatabaseSortType.Text; }
+        }
+
         readonly FieldSettingType[] _fieldSettingTypes = new[]
                     {
                         new FieldSettingType {Key = "PlainText", Section = "Form", SystemType = "Boolean"}

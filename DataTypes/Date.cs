@@ -154,6 +154,11 @@ namespace BCC.Modules.BCCForms.DataTypes
     /// -----------------------------------------------------------------------------
     public class DataTypeDate : DataType
     {
+        public override Components.DatabaseSortType? DatabaseSort
+        {
+            get { return Components.DatabaseSortType.DateTime; }
+        }
+
         public override void SetStylesAndFormats(BoundField column, string format)
         {
             column.DataFormatString = format != "" ? string.Format("{{0:{0}}}", format) : "{0:d}";

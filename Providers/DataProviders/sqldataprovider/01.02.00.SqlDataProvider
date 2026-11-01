@@ -1,0 +1,65 @@
+/************************************************************/
+/*****  BCCForms 01.02.00 - upgrade                     *****/
+/*****  Server-side paging for the list: one page of    *****/
+/*****  rows, sorted in SQL, plus the total row count.  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRowsPage]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRowsPage]
+GO
+
+/* Result 1: TotalRecords (rows that have data, capped by @Top when @Top > 0).
+   Result 2: UserDefinedRowId, FieldTitle, FieldValue for the rows of the requested page,
+             grouped by row in page order (the shape BCCForms_GetRows returns).
+   @SortType: 0 = text, 1 = whole number, 2 = decimal, 3 = date/time (ISO 8601, as stored),
+              4 = no sort field (row order). Ties are broken by row id. */
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRowsPage]
+    @ModuleId    INT,
+    @SortFieldId INT,
+    @SortType    TINYINT,
+    @Descending  BIT,
+    @Skip        INT,
+    @Take        INT,
+    @Top         INT
+AS
+SET NOCOUNT ON
+
+DECLARE @Total INT
+SELECT @Total = COUNT(*)
+FROM {databaseOwner}[{objectQualifier}BCCForms_Rows] R
+WHERE R.ModuleId = @ModuleId
+  AND EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}BCCForms_Data] D WHERE D.UserDefinedRowId = R.UserDefinedRowId)
+
+IF @Top > 0 AND @Top < @Total SET @Total = @Top
+SELECT @Total AS TotalRecords
+
+;WITH Ordered AS
+(
+    SELECT R.UserDefinedRowId,
+           ROW_NUMBER() OVER (ORDER BY
+               CASE WHEN @SortType = 1 AND @Descending = 0 THEN TRY_CONVERT(BIGINT, S.FieldValue) END ASC,
+               CASE WHEN @SortType = 1 AND @Descending = 1 THEN TRY_CONVERT(BIGINT, S.FieldValue) END DESC,
+               CASE WHEN @SortType = 2 AND @Descending = 0 THEN TRY_CONVERT(DECIMAL(38, 10), S.FieldValue) END ASC,
+               CASE WHEN @SortType = 2 AND @Descending = 1 THEN TRY_CONVERT(DECIMAL(38, 10), S.FieldValue) END DESC,
+               CASE WHEN @SortType = 3 AND @Descending = 0 THEN TRY_CONVERT(DATETIME2, S.FieldValue, 126) END ASC,
+               CASE WHEN @SortType = 3 AND @Descending = 1 THEN TRY_CONVERT(DATETIME2, S.FieldValue, 126) END DESC,
+               CASE WHEN @SortType = 0 AND @Descending = 0 THEN S.FieldValue END ASC,
+               CASE WHEN @SortType = 0 AND @Descending = 1 THEN S.FieldValue END DESC,
+               R.UserDefinedRowId) AS Position
+    FROM {databaseOwner}[{objectQualifier}BCCForms_Rows] R
+        LEFT OUTER JOIN {databaseOwner}[{objectQualifier}BCCForms_Data] S
+            ON S.UserDefinedRowId = R.UserDefinedRowId AND S.UserDefinedFieldId = @SortFieldId
+    WHERE R.ModuleId = @ModuleId
+      AND EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}BCCForms_Data] D WHERE D.UserDefinedRowId = R.UserDefinedRowId)
+)
+SELECT O.UserDefinedRowId,
+       F.FieldTitle,
+       D.FieldValue
+FROM Ordered O
+    INNER JOIN {databaseOwner}[{objectQualifier}BCCForms_Data] D ON D.UserDefinedRowId = O.UserDefinedRowId
+    INNER JOIN {databaseOwner}[{objectQualifier}BCCForms_Fields] F ON F.UserDefinedFieldId = D.UserDefinedFieldId
+WHERE O.Position > @Skip
+  AND O.Position <= @Skip + @Take
+  AND (@Top <= 0 OR O.Position <= @Top)
+ORDER BY O.Position, F.FieldOrder
+GO
