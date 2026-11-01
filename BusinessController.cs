@@ -113,7 +113,7 @@ namespace BCC.Modules.BCCForms
             returnValue.Columns.Add(new DataColumn(StylesheetTableColumn.LocalFilePath, typeof(string)));
             returnValue.Columns.Add(new DataColumn(StylesheetTableColumn.Stylesheet, typeof(string)));
 
-            var renderMethod = string.Format("UDT_{0}", settings.RenderingMethod);
+            var renderMethod = SettingName.ForRenderingMethod(settings.RenderingMethod);
             var listScript = renderMethod == SettingName.XslUserDefinedStyleSheet
                                  ? settings.ScriptByRenderingMethod(renderMethod)
                                  : string.Empty;

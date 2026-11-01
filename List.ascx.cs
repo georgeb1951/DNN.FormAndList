@@ -370,7 +370,7 @@ namespace BCC.Modules.BCCForms
 
             void cmdSearch_Click(object sender, EventArgs e)
             {
-                if (! _parent.RenderMethod.StartsWith("UDT_Xsl"))
+                if (! _parent.RenderMethod.StartsWith(SettingName.ForRenderingMethod("Xsl")))
                 {
                     _parent.CurrentPage = 1;
                     IsSearching = true;
@@ -401,7 +401,7 @@ namespace BCC.Modules.BCCForms
 
             void cmdResetSearch_Click(object sender, EventArgs e)
             {
-                if (! _parent.RenderMethod.StartsWith("UDT_Xsl"))
+                if (! _parent.RenderMethod.StartsWith(SettingName.ForRenderingMethod("Xsl")))
                 {
                     Reset();
                     _parent.CurrentPage = 1;
@@ -444,7 +444,7 @@ namespace BCC.Modules.BCCForms
 
           string RenderMethod
         {
-            get { return string.Format("UDT_{0}", Settings.RenderingMethod ); }
+            get { return SettingName.ForRenderingMethod(Settings.RenderingMethod); }
         }
 
         #region properties Only Needed in Grid Mode

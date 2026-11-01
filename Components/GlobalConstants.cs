@@ -241,6 +241,15 @@ namespace BCC.Modules.BCCForms.Components
                 { "UDT_TrackingTextOnDelete", TrackingTextOnDelete },
             };
 
+        /// <summary>
+        ///   Key of the setting that holds the stylesheet for a rendering method, e.g.
+        ///   "XslUserDefinedStyleSheet" → <see cref="XslUserDefinedStyleSheet"/>.
+        /// </summary>
+        public static string ForRenderingMethod(string renderingMethod)
+        {
+            return "BCCF_" + renderingMethod;
+        }
+
         /// <summary>Returns the current key for <paramref name="key"/>, translating Form and List names.</summary>
         public static string Current(string key)
         {
