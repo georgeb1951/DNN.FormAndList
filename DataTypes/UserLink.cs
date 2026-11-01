@@ -260,7 +260,6 @@ namespace BCC.Modules.BCCForms.DataTypes
                                 link = UrlUtil.StripURL(link);
                                 if (link != string.Empty) //valid link
                                 {
-                                    //var isLink = true;
                                     var intUser = Convert.ToInt32(-1);
                                     if (link.Like( "userid=*") && portalSettings != null)
                                     {

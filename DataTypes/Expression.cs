@@ -31,7 +31,7 @@ namespace BCC.Modules.BCCForms.DataTypes
 
         string CalculateCurrentExpression()
         {
-            var udt = new UserDefinedTableController(ModuleContext, this.NavigationManager, this.PortalAliasService);
+            var udt = new FormDataController(ModuleContext, this.NavigationManager, this.PortalAliasService);
             int rowId;
             int.TryParse(HttpContext.Current.Request.QueryString[DataTableColumn.RowId], out rowId);
             var ds = udt.GetRow(rowId, true);

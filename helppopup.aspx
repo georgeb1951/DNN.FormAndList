@@ -9,7 +9,7 @@
     <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
     <link rel="stylesheet" type="text/css" href="module.css" />
 </head>
-<body class="UDT_Help">
+<body class="bccf-help">
     <form id="Form1" method="post" runat="server">
     <asp:Label ID="lblContent" runat="server" />
     </form>

@@ -27,7 +27,7 @@ namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The UserDefinedTable Class provides the UI for displaying the UserDefinedTable
+    ///   Displays the records of a BCC Forms module (grid, XSL or token template)
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class List : PortalModuleBase, IActionable, IPostBackEventHandler
@@ -430,16 +430,16 @@ namespace BCC.Modules.BCCForms
 
         #region Private Properties
 
-        UserDefinedTableController _udtController;
+        FormDataController _dataController;
 
-        UserDefinedTableController UdtController
+        FormDataController DataController
         {
-            get { return _udtController ?? (_udtController = new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService)); }
+            get { return _dataController ?? (_dataController = new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService)); }
         }
 
         DataSet DataSet
         {
-            get { return _dataSet ?? (_dataSet = UdtController.GetDataSet()); }
+            get { return _dataSet ?? (_dataSet = DataController.GetDataSet()); }
         }
 
           string RenderMethod
@@ -725,7 +725,7 @@ namespace BCC.Modules.BCCForms
         {
             try
             {
-                DataSet.Tables.Add(UdtController.Context("",
+                DataSet.Tables.Add(DataController.Context("",
                     Settings.SortFieldId.ToString(),
                     Settings.SortOrder ,
                     Settings.Paging.ToString()));
@@ -1050,7 +1050,7 @@ namespace BCC.Modules.BCCForms
             var modSecurity = new ModuleSecurity(ModuleContext);
             if (eventArgument == "DeleteAll" && modSecurity.IsAllowedToAdministrateModule())
             {
-                UdtController.DeleteRows();
+                DataController.DeleteRows();
                 Response.Redirect(this.navigationManager.NavigateURL(ModuleContext.TabId), true);
             }
         }

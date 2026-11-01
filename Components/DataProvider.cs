@@ -8,7 +8,7 @@ namespace BCC.Modules.BCCForms.Components
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The DataProvider Class Is an abstract class that provides the DataLayer
-    ///   for the UserDefinedTable Module.
+    ///   for BCC Forms.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class DataProvider

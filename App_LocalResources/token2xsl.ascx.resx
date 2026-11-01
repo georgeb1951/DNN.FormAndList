@@ -297,7 +297,7 @@
     <value>Nothing</value>
   </data>
   <data name="lblSearchIsObsolete.Text" xml:space="preserve">
-    <value>XSL-Search is obsolete, please use the build in Search instead. </value>
+    <value>(obsolete)</value>
   </data>
   <data name="plHeader.Help" xml:space="preserve">
     <value>Shows textbox for header definition</value>

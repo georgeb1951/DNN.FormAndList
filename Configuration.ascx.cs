@@ -31,7 +31,7 @@ namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The ManageUserDefinedTable Class provides the UI for manageing the UserDefinedTable
+    ///   Module configuration: fields, list and form options, e-mail notifications
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class Configuration : ModuleUserControlBase, IActionable, IPostBackEventHandler
@@ -62,7 +62,7 @@ namespace BCC.Modules.BCCForms
         IModuleController _objModules;
         const string StrAuto = "[AUTO]";
         protected int RowCount;
-        UserDefinedTableController _udtController;
+        FormDataController _dataController;
 
         #region Private Properties
 
@@ -71,9 +71,9 @@ namespace BCC.Modules.BCCForms
             get { return _objModules ?? (_objModules = ModuleController.Instance); }
         }
 
-        UserDefinedTableController UdtController
+        FormDataController DataController
         {
-            get { return _udtController ?? (_udtController = new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService)); }
+            get { return _dataController ?? (_dataController = new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService)); }
         }
         #endregion
 
@@ -339,8 +339,7 @@ namespace BCC.Modules.BCCForms
 
                 //save rendering and rendering specific values
                 var strRenderingMethod = renderMethodRadioButtonList.SelectedValue;
-                var strUserDefinedXsl = "";
-                //var strPredefinedXsl = "";
+                var strUserDefinedXsl = "";
                 if (strRenderingMethod == RenderingMethod.UserdefinedXSL && XslUserDefinedUrlControl.Url != string.Empty)
                 {
                     var file = FileManager.Instance.GetFile(int.Parse(XslUserDefinedUrlControl.Url.Substring(7)));
@@ -651,7 +650,7 @@ namespace BCC.Modules.BCCForms
                     }
                     break;
                 case "DeleteAll":
-                    UdtController.DeleteRows();
+                    DataController.DeleteRows();
                     Response.Redirect(this.navigationManager.NavigateURL(ModuleContext.TabId), true);
                     break;
             }

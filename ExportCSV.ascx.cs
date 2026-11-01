@@ -192,12 +192,12 @@ namespace BCC.Modules.BCCForms
                 endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59);
                 endDate = TimeZoneInfo.ConvertTimeToUtc(endDate, timeZone);
 
-                ds = new UserDefinedTableController(_moduleId, TabId, UserInfo, this.navigationManager, this.portalAliasService)
+                ds = new FormDataController(_moduleId, TabId, UserInfo, this.navigationManager, this.portalAliasService)
                     .GetDataSetWithDates(true, startDate, endDate);
             }
             else
             {
-                ds = new UserDefinedTableController(_moduleId, TabId, UserInfo, this.navigationManager, this.portalAliasService)
+                ds = new FormDataController(_moduleId, TabId, UserInfo, this.navigationManager, this.portalAliasService)
                     .GetDataSet(true);
             }
             

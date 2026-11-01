@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -23,7 +22,7 @@ namespace BCC.Modules.BCCForms
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Token2Xsl Class provides an option to create a XSL rendering file derived
-    ///   from a html template for the UserDefinedTable
+    ///   from an HTML template for a BCC Forms module
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class Token2Xsl : ModuleUserControlBase
@@ -53,11 +52,11 @@ namespace BCC.Modules.BCCForms
             Save
         }
 
-        UserDefinedTableController _udtController;
+        FormDataController _dataController;
 
-        UserDefinedTableController UdtController
+        FormDataController DataController
         {
-            get { return _udtController ?? (_udtController = new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService)); }
+            get { return _dataController ?? (_dataController = new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService)); }
         }
 
         string CurrentListType
@@ -394,13 +393,11 @@ namespace BCC.Modules.BCCForms
             if (ddlListTemplateType.SelectedValue == "table")
             {
                 txtListTemplateDelimiter.Enabled = false;
-                txtListTemplateDelimiter.BackColor = Color.LightGray;
                 addColumnWithTagsToListTemplate.Enabled = true;
             }
             else
             {
                 txtListTemplateDelimiter.Enabled = true;
-                txtListTemplateDelimiter.BackColor = Color.White;
                 addColumnWithTagsToListTemplate.Enabled = false;
             }
         }
@@ -437,7 +434,6 @@ namespace BCC.Modules.BCCForms
 
         void ShowXslEditor()
         {
-            txtFileName.BackColor = Color.White;
             txtFileName.Enabled = true;
             cmdSaveFile.Enabled = true;
             dshHtml.IsExpanded = false;
@@ -452,9 +448,10 @@ namespace BCC.Modules.BCCForms
         void SetupClientScripts()
         {
             cmdRebuildContent.Attributes.Add("onclick",
-                                             string.Format("return confirm(\'{0}\')",
-                                                           Localization.GetString("confirmOnRebuild.Text",
-                                                                                  LocalResourceFile)));
+                                             string.Format("return confirm({0});",
+                                                           HttpUtility.JavaScriptStringEncode(
+                                                               Localization.GetString("confirmOnRebuild.Text",
+                                                                                      LocalResourceFile), true)));
             addColumnToListTemplate.Attributes.Add("onclick",
                                                    string.Format(
                                                        "AddCurrentItemIntoTextBox(event, \'{0}\', \'{1}\', \'{2}\', \'False\')",
@@ -480,7 +477,9 @@ namespace BCC.Modules.BCCForms
                                          "AddCurrentItemIntoTextBox(event, \'{0}\', \'{1}\', \'{2}\', \'False\')",
                                          txtHeaderTemplate.ClientID, ddlHeaders.ClientID, txtXslScript.ClientID));
             var url = ResolveUrl("HelpPopup.aspx?resourcekey=Help_HiddenColumns");
-            hlpColumns.NavigateUrl = string.Format("javascript:OpenHelpWindow(\'{0}\');", url);
+            hlpColumns.NavigateUrl = url;
+            hlpColumns.Attributes["onclick"] = string.Format("return OpenHelpWindow({0});",
+                                                             HttpUtility.JavaScriptStringEncode(url, true));
         }
 
         string TokenTemplateSettingsAsXml()
@@ -627,7 +626,7 @@ namespace BCC.Modules.BCCForms
         }
         void Page_Load(object sender, EventArgs e)
         {
-            _schemaDataSet = UdtController.GetSchemaDataset();
+            _schemaDataSet = DataController.GetSchemaDataset();
             SetupClientScripts();
 
             if (! IsPostBack)
@@ -678,7 +677,7 @@ namespace BCC.Modules.BCCForms
                                                               "\r\n", ".normalBold{font-weight: bold;}", "\r\n",
                                                               "</style>", "\r\n",
                                                               XslTemplatingUtilities.GenerateDetailViewTokenText
-                                                                  (UdtController.GetSchemaDataset().Tables[
+                                                                  (DataController.GetSchemaDataset().Tables[
                                                                       DataSetTableName.Fields],
                                                                    includeEditLink: false));
             }
@@ -686,7 +685,6 @@ namespace BCC.Modules.BCCForms
             {
                 txtListTemplate.Text = BuildContent(GetBasicElements());
                 txtListTemplateDelimiter.Enabled = false;
-                txtListTemplateDelimiter.BackColor = Color.LightGray;
                 txtDetailTemplate.Text =
                     XslTemplatingUtilities.GenerateDetailViewTokenText(
                         _schemaDataSet.Tables[DataSetTableName.Fields]);
@@ -711,7 +709,6 @@ namespace BCC.Modules.BCCForms
                 txtListTemplate.Text = txtListTemplate.Text.Replace("UDT:EditLink", "UDT:DetailView");
             }
             txtXslScript.Text = "";
-            txtFileName.BackColor = Color.LightGray;
             txtFileName.Enabled = false;
             cmdSaveFile.Enabled = false;
         }
@@ -730,7 +727,7 @@ namespace BCC.Modules.BCCForms
                 if (isValid(txtTrackingEmailTemplate.Text, ErrorOutput.XslTranformation, addRoot: true))
                 {
                     txtXslScript.Text =
-                        XslTemplatingUtilities.TransformTokenTextToXslScript(UdtController.GetSchemaDataset(),
+                        XslTemplatingUtilities.TransformTokenTextToXslScript(DataController.GetSchemaDataset(),
                                                                              txtTrackingEmailTemplate.Text);
                     txtXslScript.Enabled = true;
                     ShowXslEditor();
@@ -787,7 +784,6 @@ namespace BCC.Modules.BCCForms
             }
             ListTemplateSetHeaderAndFooter();
             txtXslScript.Text = "";
-            txtFileName.BackColor = Color.LightGray;
             txtFileName.Enabled = false;
             cmdSaveFile.Enabled = false;
         }
@@ -885,16 +881,6 @@ namespace BCC.Modules.BCCForms
             panConfirm.Visible = false;
         }
 
-        //void cmdColumnsHelp_Click(object sender, EventArgs e)
-        //{
-        //    var url = ResolveUrl("HelpPopup.aspx?resourcekey=Help_HiddenColumns");
-
-        //    var columnsHelpPopup = "<script language=\'text/javascript\'>" + "   window.open(\'" + url + "\', \'\', " +
-        //                           "               \'width=800, height=400, location=no, menubar=no, resizable=yes, scrollbars=yes, status=no, toolbar=no\')" +
-        //                           "</script>";
-        //    Page.ClientScript.RegisterStartupScript(GetType(), "columnsHelpPopup", columnsHelpPopup);
-        //}
-
         void chkShowDetailView_CheckedChanged(object sender, EventArgs e)
         {
             TemplatesSetVisibility(isViewMode: true);
@@ -915,7 +901,7 @@ namespace BCC.Modules.BCCForms
                                                           "\r\n", ".normalBold{font-weight: bold;}", "\r\n", "</style>",
                                                           "\r\n",
                                                           XslTemplatingUtilities.GenerateDetailViewTokenText(
-                                                              UdtController.GetSchemaDataset().Tables[
+                                                              DataController.GetSchemaDataset().Tables[
                                                                   DataSetTableName.Fields], includeEditLink: false));
         }
 

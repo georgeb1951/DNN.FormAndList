@@ -491,10 +491,10 @@
   <data name="NotEmailSource.Text" xml:space="preserve">
     <value>Tracking/Notification issue: Field {0} is either not a valid source for email adresses or it was not found inside fields definitions.</value>
   </data>
-  <data name="UdtSettings.Text" xml:space="preserve">
+  <data name="ModuleSettingsHeading.Text" xml:space="preserve">
     <value>Data Table Setup</value>
   </data>
-  <data name="UdtTeaser.Text" xml:space="preserve">
+  <data name="ModuleSettingsTeaser.Text" xml:space="preserve">
     <value>Specify the "BCC Forms" columns you wish to include in your Form or List.</value>
   </data>
   <data name="lblOnSubmissionRedirect.Help" xml:space="preserve">
@@ -548,7 +548,7 @@
   <data name="plTrackingEmail_CC.Text" xml:space="preserve">
     <value>CC</value>
   </data>
-  <data name="FnlSchema.Text" xml:space="preserve">
+  <data name="SchemaTab.Text" xml:space="preserve">
     <value>Schema Definition </value>
   </data>
   <data name="BehaviorSettings.Text" xml:space="preserve">
