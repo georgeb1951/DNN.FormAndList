@@ -406,7 +406,7 @@ namespace BCC.Modules.BCCForms.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.WebControls.CommandButton cmdUpdate;
+        protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
         
         /// <summary>
         /// cmdCancel control.
@@ -415,7 +415,7 @@ namespace BCC.Modules.BCCForms.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.WebControls.CommandButton cmdCancel;
+        protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
         
         /// <summary>
         /// hlpToken control.

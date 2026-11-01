@@ -277,10 +277,10 @@
 
     <ul class="dnnActions dnnClear">
         <li>
-            <dnn:CommandButton ID="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdSaveAndBack" />
+            <asp:LinkButton ID="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdSaveAndBack" />
         </li>
         <li>
-            <dnn:CommandButton ID="cmdCancel" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" />
+            <asp:LinkButton ID="cmdCancel" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="False" />
         </li>
     </ul>
 
