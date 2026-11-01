@@ -467,7 +467,16 @@ namespace BCC.Modules.BCCForms
                 this.PortalSettings,
                 DotNetNuke.Framework.JavaScriptLibraries.CommonJs.jQueryUI);
             Page.RegisterRequiresViewStateEncryption();
-            BuildEditForm();
+            try
+            {
+                BuildEditForm();
+            }
+            catch (Exception exc)
+            {
+                // logged, and shown as a module error instead of taking the whole page down
+                Exceptions.ProcessModuleLoadException(this, exc);
+                return;
+            }
             cmdCancel.Click += cmdCancel_Click;
             cmdDelete.Click += cmdDelete_Click;
             cmdUpdate.Click += cmdUpdate_Click;
@@ -478,17 +487,25 @@ namespace BCC.Modules.BCCForms
 
         void EditForm_PreRender(object sender, EventArgs e)
         {
-            foreach (var labelcontrol in _labelcontrols)
+            try
             {
-                var label = labelcontrol.Key;
-                var control = (EditControl)labelcontrol.Value;
-                if (control.ValueControl != null) label.AssociatedControlID = control.ValueControl.ID;
+                foreach (var labelcontrol in _labelcontrols)
+                {
+                    var label = labelcontrol.Key;
+                    // the DNN CAPTCHA is not an EditControl: its label keeps pointing at the control itself
+                    var control = labelcontrol.Value as EditControl;
+                    if (control != null && control.ValueControl != null) label.AssociatedControlID = control.ValueControl.ID;
+                }
+                foreach (var labelcontrol in _propertylabelcontrols)
+                {
+                    var label = labelcontrol.Key;
+                    var control = labelcontrol.Value as EditControl;
+                    if (control != null && control.ValueControl != null) label.EditControl = control.ValueControl;
+                }
             }
-            foreach (var labelcontrol in _propertylabelcontrols)
+            catch (Exception exc)
             {
-                var label = labelcontrol.Key;
-                var control = labelcontrol.Value as EditControl;
-                if (control != null && control.ValueControl != null) label.EditControl = control.ValueControl;
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
