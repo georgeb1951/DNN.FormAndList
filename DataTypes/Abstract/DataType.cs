@@ -331,6 +331,43 @@ namespace BCC.Modules.BCCForms
             //By Default, nothing happens
         }
 
+        /// <summary>
+        ///   Sanitizes this type's free-text columns for display (grid, XSL, tokens). The stored value is
+        ///   kept in the "_UDT_Original" column, which edit, export and import already prefer, so saving
+        ///   or exporting never writes the cleaned copy back.
+        /// </summary>
+        protected void SanitizeColumnsForDisplay(DataSet ds)
+        {
+            if (ds == null || !ds.Tables.Contains(DataSetTableName.Data) || !ds.Tables.Contains(DataSetTableName.Fields))
+            {
+                return;
+            }
+            var tableData = ds.Tables[DataSetTableName.Data];
+            var titles = new List<string>();
+            foreach (DataRow field in ds.Tables[DataSetTableName.Fields].Rows)
+            {
+                if (field[FieldsTableColumn.Type].ToString() != Name) continue;
+                var title = field[FieldsTableColumn.Title].ToString();
+                var original = title + DataTableColumn.Appendix_Original;
+                if (!tableData.Columns.Contains(title) || tableData.Columns.Contains(original)) continue;
+                tableData.Columns.Add(new DataColumn(original, typeof (string)));
+                titles.Add(title);
+            }
+            if (titles.Count == 0) return;
+
+            foreach (DataRow row in tableData.Rows)
+            {
+                foreach (var title in titles)
+                {
+                    var value = row[title] as string;
+                    if (value == null) continue;
+                    row[title + DataTableColumn.Appendix_Original] = value;
+                    var safe = HtmlFilter.SanitizeForDisplay(value);
+                    if (safe != value) row[title] = safe;
+                }
+            }
+        }
+
       
         public abstract string Name { get; }
 

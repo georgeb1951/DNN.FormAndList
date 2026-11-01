@@ -12,4 +12,5 @@
   <li>Security: user-entered HTML is cleaned by an allowlist sanitizer (the HtmlSanitizer library that ships with DNN 10) in place of the obsolete NoScripting filter. Scripts, event handlers, form controls and page-level tags are removed; plain-text fields round-trip unchanged.</li>
   <li>Spam protection for anonymous users: one setting with None, DNN image CAPTCHA, Google reCAPTCHA v2, Google reCAPTCHA v3 (invisible, with a minimum score) or Cloudflare Turnstile. Submit stays blocked until the check passes, each form on a page gets its own widget, and every token is verified on the server (fail closed). Existing CAPTCHA settings carry over.</li>
   <li>Spam protection: optional honeypot field (on by default) that bots fill in and people never see.</li>
+  <li>Security: list, XSL and token output now sanitize text and rich-text values that contain markup (covers imported and older data); the stored value is unchanged and still used for editing and CSV export. URL fields no longer render <code>javascript:</code>/<code>data:</code> links, and URL, file and e-mail captions are HTML-encoded.</li>
 </ul>
