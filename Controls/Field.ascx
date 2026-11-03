@@ -119,8 +119,8 @@
     </fieldset>
 
     <ul class="dnnActions dnnClear">
-        <li><dnn:CommandButton ID="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" ResourceKey="cmdSave" /></li>
-        <li><dnn:CommandButton ID="cmdCancel" runat="server" CssClass="dnnSecondaryAction" ResourceKey="cmdCancel"  ValidationGroup="None"/></li> 
+        <li><asp:LinkButton ID="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdSave" /></li>
+        <li><asp:LinkButton ID="cmdCancel" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="False" /></li> 
         <li><asp:HyperLink ID="hlpToken" CssClass="dnnSecondaryAction" runat="server" resourcekey="cmdTokensHelp"  NavigateUrl="#" /></li>
         <li><asp:HyperLink ID="hlpColumns" CssClass="dnnSecondaryAction" runat="server" resourcekey="cmdColumnsHelp" NavigateUrl="#" /></li>
     </ul>

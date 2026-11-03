@@ -56,7 +56,7 @@ namespace BCC.Modules.BCCForms
 
                 if (ModulePermissionController.CanManageModule(moduleInfo))
                 {
-                    var udt = new UserDefinedTableController(moduleId, tabId, userInfo, this.navigationManager, this.portalAliasService);
+                    var udt = new FormDataController(moduleId, tabId, userInfo, this.navigationManager, this.portalAliasService);
                     var ds = udt.GetDataSet(true);
 
                     ds.Tables.Add(udt.Context(moduleInfo, userInfo,

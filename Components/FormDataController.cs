@@ -20,40 +20,40 @@ using System.Xml;
 namespace BCC.Modules.BCCForms
 {
     /// <summary>
-    ///   The UserDefinedTableController class provides Business Layer methods of
+    ///   The FormDataController class provides Business Layer methods of
     ///   UDT for managing, editing and diplaying User Defined Table
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
-    public class UserDefinedTableController : BaseController
+    public class FormDataController : BaseController
     {
         #region Constructors
 
-        public UserDefinedTableController(int moduleId, int tabId, UserInfo userInfo, INavigationManager navigationManager, IPortalAliasService portalAliasService)
+        public FormDataController(int moduleId, int tabId, UserInfo userInfo, INavigationManager navigationManager, IPortalAliasService portalAliasService)
             :base(navigationManager, portalAliasService)
         {
             Initialise(moduleId, tabId, userInfo);
         }
 
-        public UserDefinedTableController(int moduleid, INavigationManager navigationManager, IPortalAliasService portalAliasService)
+        public FormDataController(int moduleid, INavigationManager navigationManager, IPortalAliasService portalAliasService)
             :base(navigationManager, portalAliasService)
         {
             ModuleId = moduleid;
         }
 
-        public UserDefinedTableController(INavigationManager navigationManager, IPortalAliasService portalAliasService)
+        public FormDataController(INavigationManager navigationManager, IPortalAliasService portalAliasService)
             :base(navigationManager, portalAliasService)
         {
         }
 
-        public UserDefinedTableController(ModuleInstanceContext moduleContext, INavigationManager navigationManager, IPortalAliasService portalAliasService)
+        public FormDataController(ModuleInstanceContext moduleContext, INavigationManager navigationManager, IPortalAliasService portalAliasService)
             : base(navigationManager, portalAliasService)
         {
             Initialise(moduleContext);
         }
 
-        public UserDefinedTableController(ModuleInfo moduleinfo, INavigationManager navigationManager, IPortalAliasService portalAliasService)
+        public FormDataController(ModuleInfo moduleinfo, INavigationManager navigationManager, IPortalAliasService portalAliasService)
             : base(navigationManager, portalAliasService)
         {
             Initialise(moduleinfo);

@@ -36,7 +36,7 @@
     function setUpMyModule() {
         if ($.fn.dnnPanels) { $('#<%=EditFormPlaceholder.ClientID%>').dnnPanels(); }
         if (!$.fn.datepicker) { return; }
-        $('.fnl-datepicker').datepicker({
+        $('.bccf-datepicker').datepicker({
             monthNames:  [<%=LocalizeText("MonthNames")%>],
             dayNames:    [<%=LocalizeText("DayNames")%>],
             dayNamesMin: [<%=LocalizeText("DayNamesMin")%>],

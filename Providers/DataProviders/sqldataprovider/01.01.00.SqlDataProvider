@@ -1,0 +1,87 @@
+/************************************************************/
+/*****  BCCForms 01.01.00 - upgrade                     *****/
+/*****  Module setting keys move from the Form and List *****/
+/*****  names (UDT_...) to BCCF_... . Only modules of   *****/
+/*****  this package are touched; a key that already    *****/
+/*****  exists under its new name is left alone.        *****/
+/************************************************************/
+
+DECLARE @Map TABLE (OldName NVARCHAR(50) NOT NULL PRIMARY KEY, NewName NVARCHAR(50) NOT NULL)
+INSERT INTO @Map (OldName, NewName) VALUES
+        (N'UDT_RenderingMethod', N'BCCF_RenderingMethod'),
+        (N'UDT_Paging', N'BCCF_Paging'),
+        (N'UDT_SortField', N'BCCF_SortField'),
+        (N'UDT_SortOrder', N'BCCF_SortOrder'),
+        (N'UDT_TopCount', N'BCCF_TopCount'),
+        (N'UDT_Filter', N'BCCF_Filter'),
+        (N'UDT_Search', N'BCCF_Search'),
+        (N'UDT_ShowSearchTextBox', N'BCCF_ShowSearchTextBox'),
+        (N'UDT_ShowNoRecordsUntilSearch', N'BCCF_ShowNoRecordsUntilSearch'),
+        (N'UDT_SimpleSearch', N'BCCF_SimpleSearch'),
+        (N'UDT_URLSearch', N'BCCF_URLSearch'),
+        (N'UDT_XslPreDefinedStyleSheet', N'BCCF_XslPreDefinedStyleSheet'),
+        (N'UDT_XslUserDefinedStyleSheet', N'BCCF_XslUserDefinedStyleSheet'),
+        (N'UDT_ImageWidth', N'BCCF_ImageWidth'),
+        (N'UDT_ImageHeight', N'BCCF_ImageHeight'),
+        (N'UDT_URLNewWindow', N'BCCF_URLNewWindow'),
+        (N'UDT_UserLinkNewWindow', N'BCCF_UserLinkNewWindow'),
+        (N'UDT_UserLinkUserName', N'BCCF_UserLinkCaption'),
+        (N'UDT_CnCLink', N'BCCF_CnCLink'),
+        (N'UDT_ForceDownload', N'BCCF_ForceDownload'),
+        (N'UDT_ShowSystemColumns', N'BCCF_ShowSystemColumns'),
+        (N'UDT_ShowAllColumnsForAdmins', N'BCCF_ShowAllColumnsForAdmins'),
+        (N'UDT_EditPrivateColumnsForAdmins', N'BCCF_EditPrivateColumnsForAdmins'),
+        (N'UDT_ExcludeFromSearch', N'BCCF_ExcludeFromSearch'),
+        (N'UDT_ListNotFormsMode', N'BCCF_ListOrForm'),
+        (N'UseButtonsInForm', N'BCCF_UseButtonsInForm'),
+        (N'FormTemplate', N'BCCF_FormTemplate'),
+        (N'EnableFormTemplate', N'BCCF_EnableFormTemplate'),
+        (N'CalculatedColumnsRenderExpressionInForm', N'BCCF_CalculatedColumnsRenderExpressionInForm'),
+        (N'UDT_Submission_succeeded', N'BCCF_SubmissionText'),
+        (N'UDT_UponSubmitAction', N'BCCF_UponSubmitAction'),
+        (N'UDT_UponSubmitRedirect', N'BCCF_UponSubmitRedirect'),
+        (N'UDT_EditOnlyOwnItems', N'BCCF_EditOnlyOwnItems'),
+        (N'UDT_UserRecordQuota', N'BCCF_UserRecordQuota'),
+        (N'UDT_ForceFiltering', N'BCCF_ForceInputFiltering'),
+        (N'UDT_ForceCaptchaForAnonymous', N'BCCF_ForceCaptchaForAnonymous'),
+        (N'UDT_PreferReCaptcha', N'BCCF_PreferReCaptcha'),
+        (N'UDT_ReCaptchaSiteKey', N'BCCF_ReCaptchaSiteKey'),
+        (N'UDT_ReCaptchaPrivateKey', N'BCCF_ReCaptchaSecretKey'),
+        (N'UDT_TokenTrackingFrom', N'BCCF_TrackingEmailFrom'),
+        (N'UDT_TokenTrackingReplyTo', N'BCCF_TrackingEmailReplyTo'),
+        (N'UDT_TokenTracking', N'BCCF_TrackingEmailTo'),
+        (N'UDT_TokenTrackingCC', N'BCCF_TrackingEmailCc'),
+        (N'UDT_TokenTrackingBCC', N'BCCF_TrackingEmailBcc'),
+        (N'UDT_TrackingSubject', N'BCCF_TrackingSubject'),
+        (N'UDT_XslTracking', N'BCCF_TrackingScript'),
+        (N'UDT_TrackingMessage', N'BCCF_TrackingMessage'),
+        (N'UDT_TriggerOnNew', N'BCCF_TrackingTriggerOnNew'),
+        (N'UDT_TriggerOnUpdate', N'BCCF_TrackingTriggerOnUpdate'),
+        (N'UDT_TriggerOnDelete', N'BCCF_TrackingTriggerOnDelete'),
+        (N'UDT_TrackingTextOnNew', N'BCCF_TrackingTextOnNew'),
+        (N'UDT_TrackingTextOnUpdate', N'BCCF_TrackingTextOnUpdate'),
+        (N'UDT_TrackingTextOnDelete', N'BCCF_TrackingTextOnDelete')
+
+DECLARE @Modules TABLE (ModuleID INT NOT NULL PRIMARY KEY)
+INSERT INTO @Modules (ModuleID)
+SELECT m.ModuleID
+FROM {databaseOwner}[{objectQualifier}Modules] m
+    INNER JOIN {databaseOwner}[{objectQualifier}ModuleDefinitions] md ON md.ModuleDefID = m.ModuleDefID
+    INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules] dm ON dm.DesktopModuleID = md.DesktopModuleID
+WHERE dm.ModuleName = N'BCCForms'
+
+UPDATE s SET s.SettingName = map.NewName
+FROM {databaseOwner}[{objectQualifier}ModuleSettings] s
+    INNER JOIN @Map map ON map.OldName = s.SettingName
+    INNER JOIN @Modules mods ON mods.ModuleID = s.ModuleID
+WHERE NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ModuleSettings] x
+                  WHERE x.ModuleID = s.ModuleID AND x.SettingName = map.NewName)
+
+UPDATE s SET s.SettingName = map.NewName
+FROM {databaseOwner}[{objectQualifier}TabModuleSettings] s
+    INNER JOIN @Map map ON map.OldName = s.SettingName
+    INNER JOIN {databaseOwner}[{objectQualifier}TabModules] tm ON tm.TabModuleID = s.TabModuleID
+    INNER JOIN @Modules mods ON mods.ModuleID = tm.ModuleID
+WHERE NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}TabModuleSettings] x
+                  WHERE x.TabModuleID = s.TabModuleID AND x.SettingName = map.NewName)
+GO

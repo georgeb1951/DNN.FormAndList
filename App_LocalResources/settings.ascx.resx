@@ -169,15 +169,6 @@
   <data name="lblForceCaptcha.Help" xml:space="preserve">
     <value>How anonymous visitors prove they are human. Turnstile and reCAPTCHA v3 are invisible or near-invisible; reCAPTCHA v2 shows the 'I'm not a robot' checkbox; DNN CAPTCHA shows an image to retype. Signed-in users are never challenged.</value>
   </data>
-  <data name="DnnCaptcha.Text" xml:space="preserve">
-    <value>DnnCaptcha</value>
-  </data>
-  <data name="No.Text" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="ReCaptcha.Text" xml:space="preserve">
-    <value>ReCaptcha</value>
-  </data>
   <data name="lblSecretKey.Help" xml:space="preserve">
     <value>Private key for the selected provider, from the same page as the site key. It is only used on the server and is never sent to the browser.</value>
   </data>

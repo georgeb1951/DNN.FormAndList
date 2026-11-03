@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Data;
 using System.Globalization;
 using System.Web;
@@ -31,7 +32,7 @@ namespace BCC.Modules.BCCForms
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The ManageUserDefinedTable Class provides the UI for manageing the UserDefinedTable
+    ///   Module configuration: fields, list and form options, e-mail notifications
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class Configuration : ModuleUserControlBase, IActionable, IPostBackEventHandler
@@ -62,7 +63,7 @@ namespace BCC.Modules.BCCForms
         IModuleController _objModules;
         const string StrAuto = "[AUTO]";
         protected int RowCount;
-        UserDefinedTableController _udtController;
+        FormDataController _dataController;
 
         #region Private Properties
 
@@ -71,9 +72,9 @@ namespace BCC.Modules.BCCForms
             get { return _objModules ?? (_objModules = ModuleController.Instance); }
         }
 
-        UserDefinedTableController UdtController
+        FormDataController DataController
         {
-            get { return _udtController ?? (_udtController = new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService)); }
+            get { return _dataController ?? (_dataController = new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService)); }
         }
         #endregion
 
@@ -339,8 +340,7 @@ namespace BCC.Modules.BCCForms
 
                 //save rendering and rendering specific values
                 var strRenderingMethod = renderMethodRadioButtonList.SelectedValue;
-                var strUserDefinedXsl = "";
-                //var strPredefinedXsl = "";
+                var strUserDefinedXsl = "";
                 if (strRenderingMethod == RenderingMethod.UserdefinedXSL && XslUserDefinedUrlControl.Url != string.Empty)
                 {
                     var file = FileManager.Instance.GetFile(int.Parse(XslUserDefinedUrlControl.Url.Substring(7)));
@@ -475,42 +475,61 @@ namespace BCC.Modules.BCCForms
             ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
         }
 
+        /// <summary>
+        ///   Writes a starter form template in DNN's own form pattern (dnnFormItem rows), so it lines up
+        ///   like the standard form in any theme, without depending on a CSS grid framework.
+        /// </summary>
         void cmdGenerateFormTemplate_Click(object sender, EventArgs e)
         {
+            // Same rule the form uses: a field is on the form unless its type can be hidden on edit and
+            // "show on edit" is off (system fields). "Display on List" is about the list, not the form.
+            // Restricted (private) fields are included; the form hides them from users who can't edit them.
             var fields = FieldController.GetFieldsTable(this.ModuleContext.ModuleId)
                 .Rows
                 .Cast<DataRow>()
                 .Select(r => new
                 {
-                    Title = r[FieldsTableColumn.Title],
-                    IsVisible = r[FieldsTableColumn.Visible].AsBoolean(),
-                    IsSeparator = r[FieldsTableColumn.Type].AsString() == "Separator"
+                    Title = r[FieldsTableColumn.Title].AsString(),
+                    Type = DataType.ByName(r[FieldsTableColumn.Type].AsString()),
+                    ShowOnEdit = r[FieldsTableColumn.ShowOnEdit].AsBoolean(),
+                    ShowTitle = r[FieldsTableColumn.Visible].AsBoolean(),
+                    IsRequired = r[FieldsTableColumn.Required].AsBoolean()
                 })
-                .Where(field => field.IsVisible);
+                .Where(field => !field.Type.SupportsHideOnEdit || field.ShowOnEdit)
+                .Select(field => new
+                {
+                    field.Title,
+                    IsSeparator = field.Type.IsSeparator,
+                    field.ShowTitle,
+                    IsRequired = field.IsRequired && field.Type.IsUserDefinedField
+                });
 
-            const string fieldtemplate = "    <div class=\"form-group\">\r\n" +
-                                         "        <div class=\"col-md-2\">[label-for:{0}]</div>\r\n" +
-                                         "        <div class=\"col-md-10\">[editor-for:{0}]</div>\r\n" +
-                                         "    </div>\r\n";
-            const string openFieldset =  "  <fieldset><legend>{0}</legend>\r\n";
-            const string closeFieldset = "   </fieldset>\r\n";
-
-            var trunk = fields.Aggregate(
-                    new
-                    {
-                        html = string.Empty,
-                        hasOpenFieldSet = false
-                    },
-                    (current, field) => new
-                    {
-                        html = current.html
-                            + (current.hasOpenFieldSet && field.IsSeparator ? "   </fieldset>\r\n" : "")
-                            + String.Format(field.IsSeparator ? openFieldset : fieldtemplate, field.Title),
-                        hasOpenFieldSet = field.IsSeparator || current.hasOpenFieldSet
-                    }
-                    );
-            var template = trunk.html + (trunk.hasOpenFieldSet ? closeFieldset : "");
-            txtFormTemplate.Text = $"<div class=\"form-horizontal\">\r\n{template}</div>";
+            var template = new StringBuilder("<div class=\"bccf-form-fields\">\r\n");
+            foreach (var field in fields)
+            {
+                if (field.IsSeparator)
+                {
+                    template.AppendFormat("    <h2 class=\"dnnFormSectionHead\">{0}</h2>\r\n",
+                                          field.ShowTitle ? HttpUtility.HtmlEncode(field.Title) : string.Empty);
+                    continue;
+                }
+                template.AppendFormat("    <div class=\"{0}\">\r\n", field.IsRequired ? "dnnFormItem dnnFormRequired" : "dnnFormItem");
+                template.AppendFormat("        [label-for:{0}]\r\n", field.Title);
+                template.AppendFormat("        [editor-for:{0}]\r\n", field.Title);
+                template.Append("    </div>\r\n");
+            }
+            // DNN's image CAPTCHA is a form row too (reCAPTCHA / Turnstile render below the form on their own)
+            if (new Components.Settings(ModuleContext.Settings).CaptchaMode == CaptchaMode.DnnCaptcha)
+            {
+                var captchaTitle = Localization.GetString("Captcha.Text",
+                    TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/Form.ascx.resx");
+                template.Append("    <div class=\"dnnFormItem dnnFormRequired\">\r\n");
+                template.AppendFormat("        [label-for:{0}]\r\n", captchaTitle);
+                template.AppendFormat("        [editor-for:{0}]\r\n", captchaTitle);
+                template.Append("    </div>\r\n");
+            }
+            template.Append("</div>");
+            txtFormTemplate.Text = template.ToString();
         }
 
         void Page_Load(object sender, EventArgs e)
@@ -651,7 +670,7 @@ namespace BCC.Modules.BCCForms
                     }
                     break;
                 case "DeleteAll":
-                    UdtController.DeleteRows();
+                    DataController.DeleteRows();
                     Response.Redirect(this.navigationManager.NavigateURL(ModuleContext.TabId), true);
                     break;
             }

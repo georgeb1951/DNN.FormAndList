@@ -148,7 +148,7 @@ namespace BCC.Modules.BCCForms.Controls
                                                                txtEditStyle.Text);
                         if (txtDefault.Text != "")
                         {
-                            new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService).FillDefaultData(id, txtDefault.Text);
+                            new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService).FillDefaultData(id, txtDefault.Text);
                         }
                     }
                     else
@@ -253,7 +253,7 @@ namespace BCC.Modules.BCCForms.Controls
                 }
             // Cast is not allowed, now we need to check whether data already exists for that column
             var fieldId = DataSource[FieldsTableColumn.Id].AsInt();
-            if (new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService).FieldHasData(fieldId))
+            if (new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService).FieldHasData(fieldId))
                 {
                     var message = LocalizeString("UnsupportedCast.ErrorMessage")
                             .AsString("You have changed the fieldtype for {2} from {0} to {1}. Note that this may cause an error");

@@ -158,7 +158,7 @@ namespace BCC.Modules.BCCForms
 
             if (Path.GetExtension(fileName).ToUpper() == ".CSV" && moduleInfo != null)
             {
-                var udtController = new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService);
+                var dataController = new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService);
               
                 var file = FileManager.Instance.GetFile(PortalId, Path.Combine(folder, fileName));
                 using (var stream = FileManager.Instance.GetFileContent(file))
@@ -184,12 +184,12 @@ namespace BCC.Modules.BCCForms
                                 var linecsv = reader.ReadFields();
                                 if (dataTable == null)
                                 {
-                                    ds = CreateFields(linecsv, udtController);
+                                    ds = CreateFields(linecsv, dataController);
                                     dataTable = ds.Tables[DataSetTableName.Data];
-                                    colChangedBy = udtController.ColumnNameByDataType(ds, DataTypeNames.UDT_DataType_ChangedBy);
-                                    colChangedAt = udtController.ColumnNameByDataType(ds, DataTypeNames.UDT_DataType_ChangedAt);
-                                    colCreatedBy = udtController.ColumnNameByDataType(ds, DataTypeNames.UDT_DataType_CreatedBy);
-                                    colCreatedAt = udtController.ColumnNameByDataType(ds, DataTypeNames.UDT_DataType_CreatedAt);
+                                    colChangedBy = dataController.ColumnNameByDataType(ds, DataTypeNames.UDT_DataType_ChangedBy);
+                                    colChangedAt = dataController.ColumnNameByDataType(ds, DataTypeNames.UDT_DataType_ChangedAt);
+                                    colCreatedBy = dataController.ColumnNameByDataType(ds, DataTypeNames.UDT_DataType_CreatedBy);
+                                    colCreatedAt = dataController.ColumnNameByDataType(ds, DataTypeNames.UDT_DataType_CreatedAt);
                                 }
                                 else
                                 {
@@ -208,7 +208,7 @@ namespace BCC.Modules.BCCForms
                             {
                                 for (var rowNr = 0; rowNr <= dataTable.Rows.Count - 1; rowNr++)
                                 {
-                                    udtController.UpdateRow(ds, rowNr, isDataToImport: true);
+                                    dataController.UpdateRow(ds, rowNr, isDataToImport: true);
                                 }
                                 mc.UpdateModuleSetting(moduleId, SettingName.ListOrForm, "List");
                             }
@@ -226,15 +226,15 @@ namespace BCC.Modules.BCCForms
             return strMessage;
         }
 
-         DataSet CreateFields(IEnumerable<string> columns, UserDefinedTableController udtController)
+         DataSet CreateFields(IEnumerable<string> columns, FormDataController dataController)
         {
-            udtController.ResetModule();
+            dataController.ResetModule();
             FieldController.GetFieldsTable(ModuleId );
             foreach (var column in columns)
             {
                 FieldController.AddField(ModuleId, column);
             }
-            return udtController.GetRow(- 1, false);
+            return dataController.GetRow(- 1, false);
         }
 
         DataRow FillRow(string[] data, DataRow row, int start)

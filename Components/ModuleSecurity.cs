@@ -27,14 +27,6 @@ namespace BCC.Modules.BCCForms.Components
 
         Components.Settings  Settings { get; set; }
 
-        //public ModuleSecurity(int moduleId, int tabId, Hashtable settings)
-        //{
-        //    var moduleController = ModuleController.Instance;
-        //    var s = settings ?? moduleController.GetModuleSettings(moduleId);
-        //    Settings = new Settings(s);
-        //    return this.ModuleSecurity(moduleId, tabId, Settings);
-        //}
-
         public ModuleSecurity(int moduleId, int tabId, Components.Settings settings)
         {
             var moduleController = ModuleController.Instance;

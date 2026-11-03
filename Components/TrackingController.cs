@@ -26,13 +26,13 @@ namespace BCC.Modules.BCCForms.Components
             Delete
         }
 
-        public static void OnAction(Trigger trigger, int rowId, UserDefinedTableController udtC, string httpAlias)
+        public static void OnAction(Trigger trigger, int rowId, FormDataController dataController, string httpAlias)
         {
-            if (ActionIsTriggered(trigger, udtC.Settings))
+            if (ActionIsTriggered(trigger, dataController.Settings))
             {
-                var ds = udtC.GetRow(rowId,true,true);
-                ds.Tables.Add(udtC.Context());
-                HandleAction(trigger, ds, udtC, httpAlias);
+                var ds = dataController.GetRow(rowId,true,true);
+                ds.Tables.Add(dataController.Context());
+                HandleAction(trigger, ds, dataController, httpAlias);
             }
         }
 
@@ -45,9 +45,9 @@ namespace BCC.Modules.BCCForms.Components
         }
 
 
-        static void HandleAction(Trigger trigger, DataSet data, UserDefinedTableController udtC, string httpAlias)
+        static void HandleAction(Trigger trigger, DataSet data, FormDataController dataController, string httpAlias)
         {
-            var settings = udtC.Settings;
+            var settings = dataController.Settings;
             var subject = settings.TrackingSubject;
             var message = settings.TrackingMessage;
             var from = GetEmailAddressList(settings.TrackingEmailFrom, data);

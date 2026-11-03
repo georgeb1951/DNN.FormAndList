@@ -1,4 +1,21 @@
-﻿<h3>BCC Forms 01.00.00</h3>
+﻿<h3>BCC Forms 01.01.00</h3>
+
+<ul>
+  <li>Display: forms, lists and settings screens follow DNN's form layout and the site theme's colours; responsive on small screens; date picker restyled to match the theme.</li>
+  <li>DNN 10: no obsolete DNN APIs are used any more (dependency injection throughout).</li>
+  <li>Security: user-entered HTML is cleaned by an allowlist sanitizer (the HtmlSanitizer library that ships with DNN 10) in place of the obsolete NoScripting filter. Scripts, event handlers, form controls and page-level tags are removed; plain-text fields round-trip unchanged.</li>
+  <li>Spam protection for anonymous users: one setting with None, DNN image CAPTCHA, Google reCAPTCHA v2, Google reCAPTCHA v3 (invisible, with a minimum score) or Cloudflare Turnstile. Submit stays blocked until the check passes, each form on a page gets its own widget, and every token is verified on the server (fail closed). Existing CAPTCHA settings carry over.</li>
+  <li>Spam protection: optional honeypot field (on by default) that bots fill in and people never see.</li>
+  <li>Security: list, XSL and token output now sanitize text and rich-text values that contain markup (covers imported and older data); the stored value is unchanged and still used for editing and CSV export. URL fields no longer render <code>javascript:</code>/<code>data:</code> links, and URL, file and e-mail captions are HTML-encoded.</li>
+  <li>XSL template generator rebuilt without layout tables; works on small screens.</li>
+  <li>Configuration field list: the Required / Display / Restricted / Searchable marks are drawn in the row's text colour, so they stay visible on any theme's alternating rows (DNN's grey tick icons vanished on grey rows); screen readers now hear the right Yes / No for each column.</li>
+  <li>Configuration and field editor: Save and Cancel no longer show twice (DNN's CommandButton drew a broken icon button next to the link); Cancel no longer triggers validation.</li>
+  <li>Form templates: "Generate template" now writes DNN form rows that line up in any theme (the old one assumed a Bootstrap 3 grid). Labels without help text now use DNN's own label markup, so every label in a form lines up, in the standard form and in templates. The generated template includes every field the form shows (it used to skip fields not displayed on the list) and the DNN CAPTCHA when that is selected. Template forms now hide restricted fields from users who may not edit them, as the standard form does, and always show the DNN CAPTCHA when it is on, even if the template has no place for it.</li>
+  <li>Module settings use their own <code>BCCF_</code> names. The upgrade renames existing settings, and templates or exports made with the old names still import.</li>
+  <li>Internal Form and List names removed from code, CSS hooks and resources.</li>
+</ul>
+
+<h3>BCC Forms 01.00.00</h3>
 
 <p>First release of BCC Forms, a standalone module derived from DNN Form and List 06.05.09 (MIT, DNN Community).</p>
 
@@ -9,8 +26,4 @@
   <li>Security: the thumbnail handler now enforces folder view permissions, limits image types to jpg/png/gif/bmp, and caps width/height at 2000&nbsp;px.</li>
   <li>Security: reCAPTCHA tokens are verified with a POST request (secret no longer in the query string), with a 10-second timeout.</li>
   <li>Removed the use of <code>DotNetNuke.Services.SystemDateTime</code>, which no longer exists in DNN 10.</li>
-  <li>Security: user-entered HTML is cleaned by an allowlist sanitizer (the HtmlSanitizer library that ships with DNN 10) in place of the obsolete NoScripting filter. Scripts, event handlers, form controls and page-level tags are removed; plain-text fields round-trip unchanged.</li>
-  <li>Spam protection for anonymous users: one setting with None, DNN image CAPTCHA, Google reCAPTCHA v2, Google reCAPTCHA v3 (invisible, with a minimum score) or Cloudflare Turnstile. Submit stays blocked until the check passes, each form on a page gets its own widget, and every token is verified on the server (fail closed). Existing CAPTCHA settings carry over.</li>
-  <li>Spam protection: optional honeypot field (on by default) that bots fill in and people never see.</li>
-  <li>Security: list, XSL and token output now sanitize text and rich-text values that contain markup (covers imported and older data); the stored value is unchanged and still used for editing and CSV export. URL fields no longer render <code>javascript:</code>/<code>data:</code> links, and URL, file and e-mail captions are HTML-encoded.</li>
 </ul>

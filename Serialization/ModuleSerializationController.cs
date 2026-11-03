@@ -307,7 +307,7 @@ namespace BCC.Modules.BCCForms.Serialization
 
             foreach (XmlElement nodeSetting in nodeModuleSettings)
             {
-                var name = nodeSetting.GetAttribute("name");
+                var name = SettingName.Current(nodeSetting.GetAttribute("name"));
                 var value = nodeSetting.GetAttribute("value");
                 if (applySettings || nodeSetting.GetAttribute("installmode").ToLowerInvariant() == "force")
                 {
@@ -325,7 +325,7 @@ namespace BCC.Modules.BCCForms.Serialization
             var applySettings = Convert.ToBoolean(module.TabModuleSettings.Count == 0);
             foreach (XmlElement nodeSetting in nodeTabModuleSettings)
             {
-                var name = nodeSetting.Attributes["name"].Value;
+                var name = SettingName.Current(nodeSetting.Attributes["name"].Value);
                 var value = nodeSetting.Attributes["value"].Value;
                 if (applySettings || nodeSetting.GetAttribute("installmode").ToLowerInvariant() == "force")
                 {

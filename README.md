@@ -36,7 +36,7 @@ does not upgrade or read Form and List data.
 3. The project is meant to live in a DNN dev site at `DesktopModules\BCCForms`; the build output
    path is the site's `bin` (`..\..\bin`). DNN and Microsoft assemblies are referenced with
    `Private=False`, so a build never overwrites the site's own copies.
-4. A **Release** build also creates `packages\BCCForms_01.00.00_Install.zip` (and a `_Source.zip`)
+4. A **Release** build also creates `packages\BCCForms_01.01.00_Install.zip` (and a `_Source.zip`)
    via `BuildScripts\ModulePackage.targets`.
 
 ## Styling and themes

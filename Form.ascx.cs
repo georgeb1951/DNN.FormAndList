@@ -48,8 +48,8 @@ namespace BCC.Modules.BCCForms
 
         readonly IDictionary<Label, Control> _labelcontrols = new Dictionary<Label, Control>();
         readonly IDictionary<PropertyLabelControl, Control> _propertylabelcontrols = new Dictionary<PropertyLabelControl, Control>();
-        UserDefinedTableController _udtController;
-        UserDefinedTableController UdtController =>  _udtController ?? (_udtController = new UserDefinedTableController(ModuleContext, this.navigationManager, this.portalAliasService));
+        FormDataController _dataController;
+        FormDataController DataController =>  _dataController ?? (_dataController = new FormDataController(ModuleContext, this.navigationManager, this.portalAliasService));
 
         public string JsUiDatePattern => Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern
                                      .ToLower()
@@ -66,7 +66,7 @@ namespace BCC.Modules.BCCForms
                     {
                         _userDefinedRowId = Convert.ToInt32(-1);
                     }
-                    _data = UdtController.GetRow(_userDefinedRowId);
+                    _data = DataController.GetRow(_userDefinedRowId);
                 }
                 return _data;
             }
@@ -101,12 +101,34 @@ namespace BCC.Modules.BCCForms
             {
                 var controlId = currentField.Title.SafeId();
                 var editcontrolPlaceholder = FindControlRecursive(control, $"editor_for_{ controlId}");
-                if (editcontrolPlaceholder != null && currentField.EditControl != null) editcontrolPlaceholder.Controls.Add(currentField.EditControl);
                 var labelPlaceholder = FindControlRecursive(control, $"label_for_{controlId}");
-                if (labelPlaceholder != null) labelPlaceholder.Controls.Add(GetLabel(currentField.Title, currentField.Help, currentField.EditControl));
 
+                // DNN's image CAPTCHA must be on the form, or no submission could ever pass its check:
+                // add it after the template's fields when the template has no place for it
+                if (currentField.EditControl is CaptchaControl && editcontrolPlaceholder == null)
+                {
+                    var row = new HtmlGenericControl("div");
+                    row.Attributes["class"] = "dnnFormItem dnnFormRequired";
+                    row.Controls.Add(GetLabel(currentField.Title, currentField.Help ?? string.Empty, currentField.EditControl));
+                    row.Controls.Add(currentField.EditControl);
+                    control.Controls.Add(row);
+                    continue;
+                }
+
+                if (editcontrolPlaceholder != null && currentField.EditControl != null) editcontrolPlaceholder.Controls.Add(currentField.EditControl);
+                if (labelPlaceholder != null && currentField.EditControl != null) labelPlaceholder.Controls.Add(GetLabel(currentField.Title, currentField.Help ?? string.Empty, currentField.EditControl));
+
+                // like the standard form: restricted fields (for users who may not edit them) and fields
+                // not shown on edit stay in the page for their values but are not displayed
+                if (!currentField.Visible)
+                {
+                    if (editcontrolPlaceholder != null) editcontrolPlaceholder.Visible = false;
+                    if (labelPlaceholder != null) labelPlaceholder.Visible = false;
+                }
             }
             EditFormPlaceholder.Visible = true;
+            // hook for module.css: labels and inputs placed outside DNN's dnnFormItem rows
+            EditFormPlaceholder.Attributes["class"] = "bccf-template";
             EditFormPlaceholder.Controls.Add(control);
 
         }
@@ -175,7 +197,9 @@ namespace BCC.Modules.BCCForms
                 };
 
                 var d = new HtmlGenericControl("div");
-                d.Attributes.Add("class", "dnnFormLabelWithoutHelp");
+                // same markup and class as DNN's own label (div.dnnLabel > label > span), minus the help
+                // icon, so DNN and the theme lay out every label of the form identically
+                d.Attributes.Add("class", "dnnLabel bccf-label-nohelp");
                 d.Controls.Add(l);
 
                 _labelcontrols.Add(l, editcontrol);
@@ -235,7 +259,7 @@ namespace BCC.Modules.BCCForms
             var userquota = Settings.UserRecordQuota;
             if (userquota > 0 && Request.IsAuthenticated)
             {
-                var ds = UdtController.GetDataSet(false);
+                var ds = DataController.GetDataSet(false);
                 return ModuleSecurity.HasAddPermissonByQuota(ds.Tables[DataSetTableName.Fields],
                                                              ds.Tables[DataSetTableName.Data], userquota,
                                                              UserInfo.GetSafeUsername());
@@ -443,7 +467,16 @@ namespace BCC.Modules.BCCForms
                 this.PortalSettings,
                 DotNetNuke.Framework.JavaScriptLibraries.CommonJs.jQueryUI);
             Page.RegisterRequiresViewStateEncryption();
-            BuildEditForm();
+            try
+            {
+                BuildEditForm();
+            }
+            catch (Exception exc)
+            {
+                // logged, and shown as a module error instead of taking the whole page down
+                Exceptions.ProcessModuleLoadException(this, exc);
+                return;
+            }
             cmdCancel.Click += cmdCancel_Click;
             cmdDelete.Click += cmdDelete_Click;
             cmdUpdate.Click += cmdUpdate_Click;
@@ -454,17 +487,25 @@ namespace BCC.Modules.BCCForms
 
         void EditForm_PreRender(object sender, EventArgs e)
         {
-            foreach (var labelcontrol in _labelcontrols)
+            try
             {
-                var label = labelcontrol.Key;
-                var control = (EditControl)labelcontrol.Value;
-                if (control.ValueControl != null) label.AssociatedControlID = control.ValueControl.ID;
+                foreach (var labelcontrol in _labelcontrols)
+                {
+                    var label = labelcontrol.Key;
+                    // the DNN CAPTCHA is not an EditControl: its label keeps pointing at the control itself
+                    var control = labelcontrol.Value as EditControl;
+                    if (control != null && control.ValueControl != null) label.AssociatedControlID = control.ValueControl.ID;
+                }
+                foreach (var labelcontrol in _propertylabelcontrols)
+                {
+                    var label = labelcontrol.Key;
+                    var control = labelcontrol.Value as EditControl;
+                    if (control != null && control.ValueControl != null) label.EditControl = control.ValueControl;
+                }
             }
-            foreach (var labelcontrol in _propertylabelcontrols)
+            catch (Exception exc)
             {
-                var label = labelcontrol.Key;
-                var control = labelcontrol.Value as EditControl;
-                if (control != null && control.ValueControl != null) label.EditControl = control.ValueControl;
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -602,7 +643,7 @@ namespace BCC.Modules.BCCForms
                             CurrentRow[edit.FieldTitle] = value;
                         }
 
-                        UdtController.UpdateRow(Data);
+                        DataController.UpdateRow(Data);
                         RecordUpdated();
 
                         switch (Settings.ListOrForm)
@@ -659,7 +700,7 @@ namespace BCC.Modules.BCCForms
             {
                 try
                 {
-                    UdtController.DeleteRow(_userDefinedRowId);
+                    DataController.DeleteRow(_userDefinedRowId);
                     RecordDeleted();
                     Response.Redirect(this.navigationManager.NavigateURL(ModuleContext.TabId), true);
                 }

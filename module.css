@@ -47,42 +47,6 @@
     margin: 1em 0;
 }
 
-/* Labels without help text: line them up exactly like DNN's .dnnLabel (labels with help),
-   so every row of a form has the same label column. */
-:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabelWithoutHelp {
-    float: left;
-    position: relative;
-    width: 32.075%;
-    margin: 0 18px 0 0;
-    padding: 0 20px 0 0;
-    overflow: visible;
-    text-align: right;
-}
-
-/* (label row for fields that DNN renders inside a nested form, where there is no label column) */
-:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormMessage) .dnnFormLabelWithoutHelp {
-    float: none;
-    width: auto;
-    text-align: left;
-}
-
-:where(.DnnModule-BCCForms, .bccForms) .dnnFormLabelWithoutHelp label span {
-    display: block;
-    position: relative;
-    padding-right: 1.8em;
-    line-height: 1.4;
-}
-
-/* Required fields: the row carries .dnnFormRequired; DNN draws the asterisk for
-   .dnnLabel rows, this adds the same marker for labels without help text. */
-:where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem.dnnFormRequired) > .dnnFormLabelWithoutHelp label span::after {
-    content: "*";
-    display: inline-block;
-    margin-left: .3125rem;
-    color: var(--bccf-danger);
-    font-weight: 700;
-}
-
 /* must out-rank default.css's .dnnFormItem textarea { min-height: 5rem } */
 :where(.DnnModule-BCCForms, .bccForms) .dnnFormItem textarea.dnn2rows {
     min-height: 1em;
@@ -192,12 +156,12 @@
 /* ---------- Configuration screens ---------- */
 
 /* same specificity as default.css's .dnnFormItem rule it sits on */
-:where(.DnnModule-BCCForms, .bccForms) .fnlSettingsWarning {
+:where(.DnnModule-BCCForms, .bccForms) .bccf-settings-warning {
     margin: var(--bccf-gap) 0 0 var(--bccf-label-offset);
     padding: 0;
 }
 
-:where(.DnnModule-BCCForms, .bccForms) #dnnFormAndListConfig .Sortable .Draggable {
+:where(.DnnModule-BCCForms, .bccForms) #bccfConfig .Sortable .Draggable {
     cursor: move;
 }
 
@@ -205,16 +169,8 @@
     margin-top: 1rem;
 }
 
-:where(.DnnModule-BCCForms, .bccForms) .bccf-settings .bccf-hidden {
-    display: none;
-}
-
 :where(.DnnModule-BCCForms, .bccForms) .bccf-label {
     font-weight: 700;
-}
-
-:where(.DnnModule-BCCForms, .bccForms) .bccf-nowrap {
-    white-space: nowrap;
 }
 
 :where(.DnnModule-BCCForms, .bccForms) .bccf-mono {
@@ -232,9 +188,75 @@
     gap: .5rem var(--bccf-gap);
 }
 
-:where(.DnnModule-BCCForms, .bccForms) .bccf-layout-table td {
-    padding: .25rem .5rem .25rem 0;
-    vertical-align: top;
+/* Yes/no marks in the field grid (Configuration). Drawn with currentColor, i.e. the row's
+   text colour, so they stay visible on whatever row and alternating-row colours the theme
+   uses. "No" is a lighter empty box; the words "Yes"/"No" are there for screen readers. */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-mark {
+    display: inline-block;
+    line-height: 0;
+    vertical-align: middle;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-mark svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-mark-yes svg {
+    stroke-width: 2.25;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-mark-no svg {
+    stroke-width: 1.25;
+    opacity: .45;
+}
+
+/* visually hidden, still read by screen readers */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ---------- Form templates ----------
+   A form template may put [label-for:] / [editor-for:] anywhere, e.g. in a theme's grid
+   columns instead of DNN's dnnFormItem rows, where default.css's floated, right-aligned
+   32%-wide .dnnLabel no longer lines up. Outside a dnnFormItem labels stack above their
+   field, left-aligned. The selectors keep default.css's specificity (one class) and win by load order. */
+:where(.bccf-template) .dnnLabel:where(:not(.dnnFormItem > *)) {
+    float: none;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 .25rem;
+    padding: 0 20px 0 0;
+    text-align: left;
+}
+
+/* inputs outside a dnnFormItem get DNN's field look (inside one, default.css styles them) */
+:where(.bccf-template) :where(input[type=text], input[type=email], input[type=date],
+    input[type=datetime-local], input[type=number], input[type=tel], input[type=url],
+    select, textarea):where(:not(.dnnFormItem *)) {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 445px;
+    margin-bottom: 1.125rem;
+    padding: .5rem;
+    border: 1px solid var(--bccf-border);
+    border-radius: var(--bccf-radius);
+    background: var(--bccf-surface);
+    color: var(--bccf-text);
+    font: inherit;
 }
 
 /* ---------- Small screens ----------
@@ -245,8 +267,7 @@
    win over default.css by load order, and a theme rule still wins over them. */
 @media (max-width: 575.98px) {
     :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnLabel,
-    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabel,
-    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabelWithoutHelp {
+    :where(.DnnModule-BCCForms, .bccForms) :where(.dnnFormItem) > .dnnFormLabel {
         float: none;
         width: auto;
         margin: 0 0 .25rem;
@@ -270,7 +291,7 @@
         margin-left: 0;
     }
 
-    :where(.DnnModule-BCCForms, .bccForms) .fnlSettingsWarning {
+    :where(.DnnModule-BCCForms, .bccForms) .bccf-settings-warning {
         margin-left: 0;
     }
 }
@@ -398,10 +419,59 @@
     text-align: right;
 }
 
-/* labels inside the generator's layout tables size to their text
-   (same specificity as default.css's .dnnLabel, so it wins by load order) */
-:where(.bccf-xslgen td) > .dnnLabel {
+/* a field's row with buttons after the select / text box: the group takes the space
+   beside the label (a flex box sits next to the float) and wraps on narrow screens */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-field-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: .3125rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-field-group > select,
+:where(.DnnModule-BCCForms, .bccForms) .bccf-field-group > input[type=text] {
+    flex: 1 1 14rem;
+    max-width: 445px;
+    min-width: 10rem;
     width: auto;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-field-group > .bccf-inline-action {
+    margin-left: 0;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-inline-action {
+    margin-left: .3125rem;
+    vertical-align: top;
+}
+
+/* full-width template editors (code needs the width) */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-code {
+    margin: 0 0 1.125rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-code textarea {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 5rem;
+    padding: .5rem;
+    border: 1px solid var(--bccf-border);
+    border-radius: var(--bccf-radius);
+    background: var(--bccf-surface);
+    color: var(--bccf-text);
+    font-family: var(--bccf-mono);
+    font-size: .8125rem;
+}
+
+/* the fixed list markup shown above / below the list template, e.g. <table> */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-code-wrap {
+    display: block;
+    margin: .25rem 0;
+    color: var(--bccf-muted);
+    font-family: var(--bccf-mono);
+    font-size: .8125rem;
+    white-space: pre-wrap;
 }
 
 /* spam protection: provider widget (reCAPTCHA v2 / Turnstile) sits above the buttons,
