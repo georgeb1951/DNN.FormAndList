@@ -1,4 +1,12 @@
-﻿<h3>BCC Forms 01.01.00</h3>
+﻿<h3>BCC Forms 01.02.00</h3>
+
+<ul>
+  <li>Server-side paging: with paging on, and no list filter or search active, the list reads, sorts and pages in SQL and renders only the rows on screen, instead of loading every record. Sorting by text, number, date and yes/no fields happens in the database; other cases (filters, search, calculated fields, sorting by links or user names) keep the in-memory path, which is now linear too (late pages of big lists were slow).</li>
+  <li>List layouts: Table (sortable; on phones each record stacks as "title value" lines), Cards (a responsive grid of cards) and HTML template (your own header, item and footer HTML with [Field], [Field:Text], [UDT:EditLink], [UDT:TotalRecords] and other tokens, with a "Generate starter template" button). XSL stylesheets still work as before.</li>
+  <li>Fixed: lists set to an XSL stylesheet showed the plain table after the 01.01.00 setting rename.</li>
+</ul>
+
+<h3>BCC Forms 01.01.00</h3>
 
 <ul>
   <li>Display: forms, lists and settings screens follow DNN's form layout and the site theme's colours; responsive on small screens; date picker restyled to match the theme.</li>

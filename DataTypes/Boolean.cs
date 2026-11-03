@@ -77,6 +77,11 @@ namespace BCC.Modules.BCCForms.DataTypes
     /// -----------------------------------------------------------------------------
     public class DataTypeBoolean : DataType
     {
+        public override Components.DatabaseSortType? DatabaseSort
+        {
+            get { return Components.DatabaseSortType.Text; }
+        }
+
         public override void SetStylesAndFormats(BoundField column, string format)
         {
             // alignment via CSS classes (module.css) so themes can restyle the grid

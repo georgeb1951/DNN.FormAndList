@@ -74,6 +74,10 @@ namespace BCC.Modules.BCCForms.Components
 
         public abstract IDataReader GetRows(int ModuleId);
 
+        /// <summary>One page of rows, sorted in SQL. First result: TotalRecords; second: the rows (as GetRows).</summary>
+        public abstract IDataReader GetRowsPage(int moduleId, int sortFieldId, byte sortType, bool descending,
+                                                int skip, int take, int top);
+
         public abstract IDataReader GetRowsWithDates(int ModuleId, DateTime initialDate, DateTime finalDate);
 
         public abstract IDataReader GetFieldSettings(int moduleId);

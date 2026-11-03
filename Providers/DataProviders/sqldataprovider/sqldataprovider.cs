@@ -170,6 +170,13 @@ namespace BCC.Modules.BCCForms
                                           ModuleId)));
         }
 
+        public override IDataReader GetRowsPage(int moduleId, int sortFieldId, byte sortType, bool descending,
+                                                int skip, int take, int top)
+        {
+            return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + SPPrefix + "GetRowsPage",
+                                           moduleId, sortFieldId, sortType, descending, skip, take, top);
+        }
+
         public override IDataReader GetRowsWithDates(int ModuleId, DateTime initialDate, DateTime finalDate)
         {
             return

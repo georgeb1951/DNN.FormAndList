@@ -60,6 +60,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwne
     DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRow]
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRowsPage]') AND type IN (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRowsPage]
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}BCCForms_GetRows]') AND type IN (N'P', N'PC'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}BCCForms_GetRows]
 GO

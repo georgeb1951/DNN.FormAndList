@@ -121,6 +121,21 @@ namespace BCC.Modules.BCCForms.Components
             get { return _settings[SettingName.RenderingMethod].AsString(); }
         }
 
+        public string ListTemplateHeader
+        {
+            get { return _settings[SettingName.ListTemplateHeader].AsString(); }
+        }
+
+        public string ListTemplateItem
+        {
+            get { return _settings[SettingName.ListTemplateItem].AsString(); }
+        }
+
+        public string ListTemplateFooter
+        {
+            get { return _settings[SettingName.ListTemplateFooter].AsString(); }
+        }
+
         public bool ShowAllColumnsForAdmins
         {
             get { return _settings[SettingName.ShowAllColumnsForAdmins].AsBoolean(); }

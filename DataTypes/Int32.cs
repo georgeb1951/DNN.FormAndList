@@ -70,6 +70,11 @@ namespace BCC.Modules.BCCForms.DataTypes
     /// -----------------------------------------------------------------------------
     public class DataTypeInt32 : DataType
     {
+        public override Components.DatabaseSortType? DatabaseSort
+        {
+            get { return Components.DatabaseSortType.WholeNumber; }
+        }
+
         public override void SetStylesAndFormats(BoundField column, string format)
         {
             column.DataFormatString = format == string.Empty ? "{0:#,###,##0}" : string.Format("{{0:{0}}}", format);

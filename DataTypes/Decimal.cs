@@ -72,6 +72,11 @@ namespace BCC.Modules.BCCForms.DataTypes
     /// -----------------------------------------------------------------------------
     public class DataTypeDecimal : DataType
     {
+        public override Components.DatabaseSortType? DatabaseSort
+        {
+            get { return Components.DatabaseSortType.Decimal; }
+        }
+
         public override void SetStylesAndFormats(BoundField column, string format)
         {
             column.DataFormatString = format == string.Empty ? "{0:#,###,##0.0###}" : string.Format("{{0:{0}}}", format);

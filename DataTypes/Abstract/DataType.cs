@@ -311,6 +311,15 @@ namespace BCC.Modules.BCCForms
             get { return string.Format("String|{0}", Name); }
         }
 
+        /// <summary>
+        ///   How SQL can sort this type's stored values for server-side paging, or null when the list
+        ///   sorts on a rendered value (links, user names, look-ups, expressions) and must sort in memory.
+        /// </summary>
+        public virtual DatabaseSortType? DatabaseSort
+        {
+            get { return null; }
+        }
+
         public virtual string SearchColumnAppendix
         {
             get { return ""; }
