@@ -1,135 +1,175 @@
-﻿(function ($) {
+﻿/*
+ * BCC Forms - "List of values" editor.
+ *
+ * Turns a text box holding "caption|value;caption|value;value" into a pencil
+ * link that opens a caption/value grid in a DNN popup (jQuery UI dialog).
+ *
+ * DNN 10.3 ships jQuery UI 1.14, which ignores the old dialogClass option
+ * (it is only honoured when $.uiBackCompat is set). Without DNN's dnnFormPopup
+ * class the dialog had no background and sat underneath DNN's modal overlay,
+ * so the dialog classes are set through the "classes" option instead.
+ * The dialog is attached to <body>, outside the module, so it also gets the
+ * bccForms class: that brings it into module.css's scope.
+ */
+(function ($) {
+    'use strict';
+
+    var defaults = {
+        editLinkText: 'edit',
+        editImageUrl: '~/images/edit.png',
+        captionHeaderText: 'Caption',
+        valueHeaderText: 'Value',
+        addButtonText: 'add',
+        addImageUrl: '~/images/add.gif',
+        removeButtonText: 'remove',
+        removeImageUrl: '~/images/delete.gif',
+        saveButtonText: 'save',
+        cancelButtonText: 'cancel',
+        title: 'Edit',
+        width: 460
+    };
+
+    var dialogClasses = 'dnnFormPopup dnnClear bccForms bccf-cve-dialog';
+
     $.fn.CaptionValueEditor = function (options) {
+        var settings = $.extend({}, defaults, options);
+        return this.each(function () {
+            var input = $(this);
+            if (!input.data('bccfCve')) {
+                input.data('bccfCve', true);
+                create(input, settings);
+            }
+        });
+    };
 
-        var settings = {
-            editLinkText: 'edit',
-            editImageUrl: '~/images/edit.png',
-            captionHeaderText: 'Caption',
-            valueHeaderText: 'Value',
-            addButtonText: 'add',
-            addImageUrl: '~/images/add.gif',
-            removeButtonText: 'remove',
-            removeImageUrl: '~/images/delete.gif',
-            saveButtonText: 'save',
-            cancelButtonText: 'cancel',
-            title: 'Edit',
-            dialogClass: 'dnnFormPopup dnnClear',
-            modal: true,
-            resizable: true,
-            width: 420,
-            height: 360
-        };
+    function iconButton(cssClass, text, imageUrl) {
+        return $('<a href="#" role="button" class="bccf-cve-icon"></a>')
+            .addClass(cssClass)
+            .attr('title', text)
+            .append($('<img>').attr({ src: imageUrl, alt: text }));
+    }
 
-        if (options) {
-            $.extend(settings, options);
+    function create(input, s) {
+        var tbody = $('<tbody></tbody>');
+        var table = $('<table class="bccf-cve-table"></table>').append(
+            $('<thead></thead>').append(
+                $('<tr></tr>').append(
+                    $('<th scope="col" class="bccf-cve-cmd"></th>').append($('<span class="bccf-sr"></span>').text(s.removeButtonText)),
+                    $('<th scope="col"></th>').text(s.captionHeaderText),
+                    $('<th scope="col"></th>').text(s.valueHeaderText))),
+            tbody);
+
+        var saveLink = $('<a href="#" role="button" class="dnnPrimaryAction"></a>').text(s.saveButtonText);
+        var cancelLink = $('<a href="#" role="button" class="dnnSecondaryAction"></a>').text(s.cancelButtonText);
+
+        var editor = $('<div class="bccf-cve"></div>').append(
+            $('<div class="bccf-cve-scroll"></div>').append(table),
+            $('<ul class="dnnActions dnnClear"></ul>').append(
+                $('<li></li>').append(saveLink),
+                $('<li></li>').append(cancelLink)));
+
+        function textBox(value, label) {
+            return $('<input type="text">').val(value).attr('aria-label', label);
         }
 
-        var input = this;
-        var dialog;
-
-        input.parent().append('<a id="editCaptions" style="cursor: pointer;" title="' + settings.editLinkText + '"><img src="' + settings.editImageUrl + '" style="margin: 5px 0 0 5px;" alt="' + settings.editLinkText + '" /></a>');
-        input.parent().append('<div id="cveditor" class="dnnDialog"><div id="popupCaptions"></div></div>');
-
-        // in tabelle wandeln
-        $("#editCaptions").click(function () {
-            dialog = $("#cveditor").dialog(settings);
-            $("#popupCaptions").text("");
-            $("#popupCaptions").append('<div class="dnnGrid"><table id="inputTbl" width="100%" cellspacing="0" cellpadding="2" style="border-collapse:collapse;"><thead></thead>'
-                + '<tbody></tbody></table></div>'
-                + '<ul class="dnnActions dnnClear"><li><a id="parse" class="dnnPrimaryAction" style="cursor: pointer">' + settings.saveButtonText + '</a></li>'
-                + '<li><a id="cancelEdit" class="dnnSecondaryAction" style="cursor: pointer">' + settings.cancelButtonText + '</a></li></ul>');
-
-            $("#inputTbl > thead").append('<tr class="dnnGridHeader"><th></th><th>' + settings.captionHeaderText + '</th><th>' + settings.valueHeaderText + '</th></tr>');
-            $("#inputTbl > tbody").remove();
-            $("#inputTbl").append("<tbody></tbody>");
-
-            if (input.val().indexOf(';') != -1 || $.trim(input.val()).length > 0) {
-                var splits = input.val().split(";");
-
-                for (var i = 0; i < splits.length; i++) {
-                    var newLine = "";
-                    if (splits[i].indexOf('|') != -1) {
-                        var kvp = splits[i].split('|');
-                        newLine = getRow(kvp[0], kvp[1], false);
-                    }
-                    else {
-                        if ($.trim(splits[i]).length > 0) {
-                            newLine = getRow("", splits[i], false);
-                        }
-                    }
-
-                    $("#inputTbl > tbody:last").append(newLine);
-                }
+        // isLast: the trailing empty row, which shows "add" until it is used
+        function addRow(caption, value, isLast) {
+            var remove = iconButton('bccf-cve-remove', s.removeButtonText, s.removeImageUrl);
+            var cmd = $('<td class="bccf-cve-cmd"></td>').append(remove);
+            if (isLast) {
+                remove.hide();
+                cmd.append(iconButton('bccf-cve-add', s.addButtonText, s.addImageUrl));
             }
-            $("#inputTbl > tbody:last").append(getRow("", "", true));
-//            $("#inputTbl tr:odd").addClass("dnnGridAltItem");
-//            $("#inputTbl tr:even").addClass("dnnGridItem");
-            $("#popupCaptions").show();
-        });
-
-        // tabelle auslesen
-        $("#cveditor").on('click', '#parse', function () {
-            var array = new Array();
-
-            $("#inputTbl > tbody tr").each(function () {
-                var value = $(this).find(':text');
-
-                var first = $.trim(value.first().val());
-                var last = $.trim(value.last().val());
-
-                if (first.length > 0 && last.length > 0) {
-                    if (first == last) {
-                        array.push(first);
-                    } else {
-                        array.push(first + "|" + last);
-                    }
-                } else if (last.length > 0) {
-                    array.push(last);
-                }
-            });
-            input.val(array.join(';'));
-            $("#popupCaptions").hide();
-            dialog.dialog("close");
-        });
-        $("#cveditor").on('click', '#cancelEdit', function () {
-            $("#popupCaptions").hide();
-            dialog.dialog("close");
-        });
-
-        // zeile entfernen
-        $("#cveditor").on('click', 'a.rem', function () {
-            $(this).parent().parent().remove();
-        });
-
-        // neue zeile
-        $("#cveditor").on('click', 'a.add', function () {
-            var values = $(this).parent().siblings().find(':text');
-            var first = $.trim(values.first().val());
-            var last = $.trim(values.last().val());
-
-            if (first.length > 0 || last.length > 0) {
-                $(this).hide();
-                $(this).siblings(".rem").show();
-                $("#inputTbl > tbody:last").append(getRow("", "", true));
-            }
-        });
-
-        function getRow(key, value, isAdd) {
-            var row = "<tr>";
-
-            if (isAdd) {
-                row += "<td><a class='rem' style='cursor: pointer; display:none;' title='" + settings.removeButtonText + "'><img src='" + settings.removeImageUrl + "' alt='" + settings.removeButtonText + "' /></a>"
-				+ "<a class='add' style='cursor: pointer;' title='" + settings.addButtonText + "'><img src='" + settings.addImageUrl + "' alt='" + settings.addButtonText + "'/></a></td>";
-            } else {
-                row += "<td><a class='rem' style='cursor: pointer' title='" + settings.removeButtonText + "'><img src='" + settings.removeImageUrl + "' alt='" + settings.removeButtonText + "' /></a></td>";
-            }
-
-            row += '<td><input type="text" value="' + key + '" style="width:100%;margin:-3px;border:2px inset #eee" /></td>'
-				+ '<td><input type="text" value="' + value + '" style="width:100%;margin:-3px;border:2px inset #eee" /></td></tr>';
-
+            var row = $('<tr></tr>').append(
+                cmd,
+                $('<td></td>').append(textBox(caption, s.captionHeaderText)),
+                $('<td></td>').append(textBox(value, s.valueHeaderText)));
+            tbody.append(row);
             return row;
         }
-    };
-})(jQuery);
 
-			
+        function load() {
+            tbody.empty();
+            $.each(String(input.val() || '').split(';'), function (i, item) {
+                var pipe = item.indexOf('|');
+                if (pipe !== -1) {
+                    addRow(item.substring(0, pipe), item.substring(pipe + 1), false);
+                } else if ($.trim(item).length > 0) {
+                    addRow('', item, false);
+                }
+            });
+            addRow('', '', true);
+        }
+
+        function save() {
+            var items = [];
+            tbody.children('tr').each(function () {
+                var boxes = $(this).find('input');
+                var caption = $.trim(boxes.eq(0).val());
+                var value = $.trim(boxes.eq(1).val());
+                if (caption.length > 0 && value.length > 0) {
+                    items.push(caption === value ? caption : caption + '|' + value);
+                } else if (caption.length > 0 || value.length > 0) {
+                    // a caption alone is also its value
+                    items.push(caption || value);
+                }
+            });
+            input.val(items.join(';')).trigger('change');
+            editor.dialog('close');
+        }
+
+        editor.dialog({
+            autoOpen: false,
+            modal: true,
+            resizable: true,
+            title: s.title,
+            width: s.width,
+            height: 'auto',
+            classes: { 'ui-dialog': dialogClasses },
+            open: function () {
+                tbody.find('input').first().trigger('focus');
+            },
+            close: function () {
+                input.trigger('focus');
+            }
+        });
+
+        editor.on('click', '.bccf-cve-remove', function (e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
+        });
+
+        editor.on('click', '.bccf-cve-add', function (e) {
+            e.preventDefault();
+            var row = $(this).closest('tr');
+            var boxes = row.find('input');
+            if ($.trim(boxes.eq(0).val()).length > 0 || $.trim(boxes.eq(1).val()).length > 0) {
+                $(this).remove();
+                row.find('.bccf-cve-remove').show();
+                addRow('', '', true).find('input').first().trigger('focus');
+            } else {
+                boxes.first().trigger('focus');
+            }
+        });
+
+        saveLink.on('click', function (e) {
+            e.preventDefault();
+            save();
+        });
+
+        cancelLink.on('click', function (e) {
+            e.preventDefault();
+            editor.dialog('close');
+        });
+
+        var openLink = iconButton('bccf-cve-open', s.editLinkText, s.editImageUrl);
+        openLink.on('click', function (e) {
+            e.preventDefault();
+            load();
+            // keep the popup inside narrow screens
+            editor.dialog('option', 'width', Math.min(s.width, $(window).width() - 32));
+            editor.dialog('open');
+        });
+        input.after(openLink);
+    }
+})(jQuery);

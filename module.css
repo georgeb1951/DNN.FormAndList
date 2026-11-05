@@ -406,6 +406,66 @@
     }
 }
 
+/* ---------- List of values editor (field editor popup) ----------
+   A jQuery UI dialog attached to <body>. CaptionValueEditor.js gives it DNN's
+   dnnFormPopup class (frame, background, stacking above the overlay) and the
+   bccForms class, so these scoped rules and the --bccf-* variables reach it. */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-open {
+    display: inline-block;
+    margin-left: .375rem;
+    vertical-align: middle;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .125rem;
+    line-height: 0;
+    cursor: pointer;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve {
+    color: var(--bccf-text);
+}
+
+/* long lists scroll inside the popup; the Save / Cancel buttons stay visible */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-scroll {
+    max-height: 55vh;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-table th {
+    padding: .375rem;
+    background: var(--bccf-surface-alt);
+    border-bottom: 1px solid var(--bccf-border);
+    font-weight: 700;
+    text-align: left;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-table td {
+    padding: .25rem .375rem;
+    vertical-align: middle;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-table .bccf-cve-cmd {
+    width: 1.75rem;
+    text-align: center;
+}
+
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-table input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+}
+
 /* ---------- Date picker (jQuery UI) ----------
    A neutral, theme-coloured replacement for the old jQuery UI "smoothness"
    theme. The picker is appended to <body>, so these rules are not scoped to
