@@ -137,17 +137,17 @@
 
 
             $("#<%=txtInputSettings.ClientID%>").CaptionValueEditor({
-                    captionHeaderText: '<%=LocalizeString("CaptionHeaderText")%>',
-                    valueHeaderText: '<%=LocalizeString("ValueHeaderText")%>',
-                    editLinkText: '<%=LocalizeString("EditLinkText")%>',
-                    addButtonText: '<%=LocalizeString("AddButtonText")%>',
-                    removeButtonText: '<%=LocalizeString("RemoveButtonText")%>',
-                    saveButtonText: '<%=LocalizeString("SaveButtonText")%>',
-                    cancelButtonText: '<%=LocalizeString("CancelButtonText")%>',
-                    title: '<%=LocalizeString("EditCaptionTitle")%>',
-                    editImageUrl: '<%=IconController.IconURL("Edit")%>',
-                    addImageUrl: '<%=IconController.IconURL("Add")%>',
-                    removeImageUrl: '<%=IconController.IconURL("Delete")%>'
+                    captionHeaderText: '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("CaptionHeaderText"))%>',
+                    valueHeaderText: '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("ValueHeaderText"))%>',
+                    editLinkText: '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("EditLinkText"))%>',
+                    addButtonText: '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("AddButtonText"))%>',
+                    removeButtonText: '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("RemoveButtonText"))%>',
+                    saveButtonText: '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("SaveButtonText"))%>',
+                    cancelButtonText: '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("CancelButtonText"))%>',
+                    title: '<%=HttpUtility.JavaScriptStringEncode(LocalizeString("EditCaptionTitle"))%>',
+                    editImageUrl: '<%=HttpUtility.JavaScriptStringEncode(IconController.IconURL("Edit"))%>',
+                    addImageUrl: '<%=HttpUtility.JavaScriptStringEncode(IconController.IconURL("Add"))%>',
+                    removeImageUrl: '<%=HttpUtility.JavaScriptStringEncode(IconController.IconURL("Delete"))%>'
                 });
 
         });
