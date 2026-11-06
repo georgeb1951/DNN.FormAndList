@@ -429,6 +429,24 @@
     color: var(--bccf-text);
 }
 
+/* Title bar in the theme's primary colour, edge to edge. Same specificity as
+   default.css's .dnnFormPopup .ui-dialog-titlebar, so a theme rule still wins.
+   The negative margins cancel .dnnFormPopup's 1.125rem padding. */
+.bccf-cve-dialog .ui-dialog-titlebar {
+    margin: -1.125rem -1.125rem 1.125rem;
+    padding: .75rem 1.125rem;
+    background: var(--bccf-accent);
+    color: var(--bccf-accent-contrast);
+    border-bottom: 0;
+}
+
+/* DNN parks the round close button at -30px of the title bar; the bar now
+   starts 1.125rem (18px) further out, so pull the button back to the corner */
+.bccf-cve-dialog div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
+    top: -12px;
+    right: -12px;
+}
+
 /* long lists scroll inside the popup; the Save / Cancel buttons stay visible */
 :where(.DnnModule-BCCForms, .bccForms) .bccf-cve-scroll {
     max-height: 55vh;
