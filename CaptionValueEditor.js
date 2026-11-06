@@ -62,8 +62,10 @@
         var saveLink = $('<a href="#" role="button" class="dnnPrimaryAction"></a>').text(s.saveButtonText);
         var cancelLink = $('<a href="#" role="button" class="dnnSecondaryAction"></a>').text(s.cancelButtonText);
 
-        var editor = $('<div class="bccf-cve"></div>').append(
-            $('<div class="bccf-cve-scroll"></div>').append(table),
+        // dnnForm / dnnFormItem: DNN's default.css and most themes style text boxes
+        // only inside these, so the grid's inputs match the rest of the field editor
+        var editor = $('<div class="bccf-cve dnnForm"></div>').append(
+            $('<div class="bccf-cve-scroll dnnFormItem"></div>').append(table),
             $('<ul class="dnnActions dnnClear"></ul>').append(
                 $('<li></li>').append(saveLink),
                 $('<li></li>').append(cancelLink)));

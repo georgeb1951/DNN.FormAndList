@@ -434,6 +434,7 @@
     max-height: 55vh;
     overflow-y: auto;
     margin-bottom: 1rem;
+    padding: 0 .25rem .25rem 0;
 }
 
 :where(.DnnModule-BCCForms, .bccForms) .bccf-cve-table {
@@ -459,9 +460,14 @@
     text-align: center;
 }
 
-:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-table input {
+/* The grid sits in a dnnFormItem, so the text boxes take DNN's and the theme's
+   colours, borders and padding. This only undoes the form-row layout
+   (45% width, bottom margin), with the same specificity as default.css's
+   .dnnFormItem input[type="text"] rule. */
+:where(.DnnModule-BCCForms, .bccForms) .bccf-cve-table input[type="text"] {
     box-sizing: border-box;
     width: 100%;
+    max-width: none;
     min-width: 0;
     margin: 0;
 }
